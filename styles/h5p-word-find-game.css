@@ -1,0 +1,136 @@
+.h5p-word-find{
+  border: 2px solid #eeeeee;
+}
+
+.h5p-task-description {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #000000;
+    font-size: 1.125em;
+    margin-bottom: 0.8em;
+    padding:8px;
+    border-bottom: 2px solid #eeeeee;
+}
+
+.h5p-word-find .gameContainer{
+  display: table;
+  table-layout: auto;
+  width:100%;
+  border:0;
+  padding:0;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.gameContainer > div{
+  background: #c3e5f1 none repeat scroll 0 0;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  display: table-cell;
+  float:left;
+  border: solid 2px #eeeeee;
+
+  list-style: none;
+  text-align: center;
+}
+
+.puzzleContainer{
+  width:70%;
+  cursor: pointer;
+  font-size: 20px;
+  overflow: hidden;
+  margin: 10px;
+  padding:10px;
+
+
+}
+
+.vocabularyContainer{
+  width: 20%;
+  margin-top:10px;
+  margin-bottom: 10px;
+}
+
+.h5p-row{
+  display: inline-block;
+  align-content: center;
+}
+
+.puzzleSquare{
+
+
+margin:3px;
+border-radius: 5px;
+background: #fff none repeat scroll 0 0;
+float:left;
+padding:0;
+text-transform: uppercase;
+
+
+-webkit-touch-callout: none; /* iOS Safari */
+-webkit-user-select: none; /* Safari */
+-khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+       user-select: none;
+
+
+}
+
+.puzzleContainer .h5p-row .selected {
+  background-color: orange !important;
+}
+
+/* indicates that the square is part of a word that has been found */
+.puzzleContainer .h5p-row .found {
+  background-color: blue;
+  color: white;
+}
+
+.puzzleContainer .h5p-row .solved {
+  background-color: purple;
+  color: white;
+}
+
+/* indicates that all words have been found */
+.puzzleContainer .h5p-row .complete {
+  background-color: green;
+}
+
+.vocabularyContainer ul {
+  list-style-type: none;
+  margin:0 !important;
+}
+
+.vocabularyContainer .vocHeading {
+  color: red;
+  text-transform: capitalize;;
+}
+
+.vocabularyContainer li {
+
+  font: 1em sans-serif;
+  text-align: left;
+}
+
+.vocabularyContainer .wordFound {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.footer-container{
+  clear:both;
+  border-top:2px solid #eeeeee;
+  padding-top:8px;
+}
+
+
+
+.feedback-container{
+  padding-left: 8px;
+}
+
+.feedback-text{
+  display: block;
+  color: #1a73d9;
+
+}

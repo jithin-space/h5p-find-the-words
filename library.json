@@ -1,0 +1,32 @@
+{
+  "title": "Word Find Game",
+  "description": "game to find a list of words in a given grid",
+  "machineName": "H5P.WordFindGame",
+  "majorVersion": 1,
+  "minorVersion": 1,
+  "patchVersion": 0,
+  "runnable": 1,
+  "author": "JithinSpace",
+  "license": "MIT",
+  "preloadedCss": [
+    {"path": "styles/h5p-word-find-game.css"}
+  ],
+  "preloadedJs": [
+    {"path": "scripts/h5p-word-find-game.js"},
+    { "path": "scripts/h5p-word-find-game-puzzle.js"}
+  ],
+  "preloadedDependencies": [
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": 4,
+      "minorVersion": 5
+    },
+    {
+      "machineName": "H5P.JoubelUI",
+      "majorVersion": 1,
+      "minorVersion": 2
+    }
+
+  ]
+
+}
