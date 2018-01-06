@@ -1,13 +1,13 @@
-(function(WordFindGame, EventDispatcher, $) {
+(function(FindTheWords, EventDispatcher, $) {
 
   /**
    * Controls all the operations on the puzzle
    *
-   * @class H5P.WordFindGame.WordFindPuzzle
+   * @class H5P.FindTheWords.FindWordPuzzle
    * @extends H5P.EventDispatcher
    * @param {Object} gameParams
    */
-  WordFindGame.WordFindPuzzle = function(gameParams) {
+  FindTheWords.FindWordPuzzle = function(gameParams) {
 
     // Initialize event inheritance
     EventDispatcher.call(this);
@@ -607,6 +607,6 @@
 
   };
 
-  WordFindGame.WordFindPuzzle.prototype = Object.create(EventDispatcher.prototype);
-  WordFindGame.WordFindPuzzle.prototype.constructor = WordFindGame.WordFindPuzzle;
-})(H5P.WordFindGame, H5P.EventDispatcher, H5P.jQuery);
+  FindTheWords.FindWordPuzzle.prototype = Object.create(EventDispatcher.prototype);
+  FindTheWords.FindWordPuzzle.prototype.constructor = FindTheWords.FindWordPuzzle;
+})(H5P.FindTheWords, H5P.EventDispatcher, H5P.jQuery);

@@ -1,10 +1,10 @@
-H5P.WordFindGame = (function($, UI) {
+H5P.FindTheWords = (function($, UI) {
 
   /**
-   * @class H5P.WordFindGame
+   * @class H5P.FindTheWords
    * @param {Object} params
    */
-  function WordFindGame(params) {
+  function FindTheWords(params) {
 
     /** @alias H5P.ImageSequencing# */
     var self = this;
@@ -18,7 +18,7 @@ H5P.WordFindGame = (function($, UI) {
     var create = function(gameParams) {
       wordList = gameParams.vocabulary.slice(0).sort();
       self.vocLength = wordList.length;
-      var puzzle = new WordFindGame.WordFindPuzzle(gameParams);
+      var puzzle = new FindTheWords.FindWordPuzzle(gameParams);
       return puzzle;
     };
 
@@ -192,6 +192,6 @@ H5P.WordFindGame = (function($, UI) {
 
 
   }
-  WordFindGame.prototype.constructor = WordFindGame;
-  return WordFindGame;
+  FindTheWords.prototype.constructor = FindTheWords;
+  return FindTheWords;
 })(H5P.jQuery, H5P.JoubelUI);
