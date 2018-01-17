@@ -6,7 +6,7 @@ H5P.FindTheWords = (function($, UI) {
    */
   function FindTheWords(params) {
 
-    /** @alias H5P.ImageSequencing# */
+    /** @alias H5P.FindTheWords# */
     var self = this;
     var score = 0;
     var wordList;
@@ -26,6 +26,7 @@ H5P.FindTheWords = (function($, UI) {
 
     var startTurn = function() {
       self.gamePuzzle.startTurn(this);
+      self.timer.play();
     };
 
     var mouseMove = function() {
@@ -34,12 +35,15 @@ H5P.FindTheWords = (function($, UI) {
 
     var endTurn = function() {
       score = (self.gamePuzzle.endTurn(this)) ? score + 1 : score;
+
     };
 
     /*
     * function to be called when clicking show solution button
     */
     self.solve = function() {
+
+      self.timer.stop();
 
       var solution = self.gamePuzzle.solve().found;
 
@@ -91,7 +95,7 @@ H5P.FindTheWords = (function($, UI) {
       scoreText = scoreText.replace('@score', score).replace('@total', totalScore);
       self.$feedbacks.html('<div class="feedback-text">' + scoreText + '</div>');
       self.$progressBar.appendTo(self.$feedbacks);
-      self.footerContainer.html('').append(self.$feedbacks);
+      self.footerContainer.html('').append(self.$status).append(self.$feedbacks);
       self.footerContainer.append(self.$retryButton);
 
     };
@@ -108,24 +112,42 @@ H5P.FindTheWords = (function($, UI) {
     /*
     * function that makes the content type responsive
     */
-    self.resize = function() {
-      var containerWidth = self.puzzleContainer.width();
-      var row = self.gamePuzzle.puzzle.length;
-      var col = self.gamePuzzle.puzzle[0].length;
-      var level = (col > row) ? col : row;
-      var elementWidth = (containerWidth - (6 * level) - 4 - 40) / level;
-      //set the grid elements size
-      self.puzzleContainer.find('.puzzleSquare').css({
-        'width': elementWidth + 'px',
-        'height': elementWidth + 'px',
-        'line-height': elementWidth + 'px'
-      });
-      //set the line-height of vocabulary words
-      self.vocabularyContainer.find('li').css({
-        'line-height': ((elementWidth * row + 80) / (self.vocLength + 1)) + "px"
-      });
-
-    };
+    // // self.resize = function() {
+    // //   var containerWidth = (self.$wrapper.width()*70)/100;
+    // //   var row = self.gamePuzzle.puzzle.length;
+    // //   var col = self.gamePuzzle.puzzle[0].length;
+    // //   var level = (col > row) ? col : row;
+    // //   var elementWidth = (containerWidth - (6 * level) - 4 - 40) / level;
+    // //   //set the grid elements size
+    // //
+    // //   if((elementWidth > 16)&&(elementWidth < 64)){
+    // //     self.puzzleContainer.find('.puzzleSquare').css({
+    // //       'width': elementWidth + 'px',
+    // //       'height': elementWidth + 'px',
+    // //       'line-height': elementWidth +'px'
+    // //     });
+    // //   }else if(elementWidth < 16){
+    // //     self.puzzleContainer.find('.puzzleSquare').css({
+    // //       'width': 16+ 'px',
+    // //       'height': 16+ 'px',
+    // //       'line-height': 16 +'px'
+    // //     });
+    // //   }else{
+    // //     self.puzzleContainer.find('.puzzleSquare').css({
+    // //       'width': 64+ 'px',
+    // //       'height': 64+ 'px',
+    // //       'line-height': 64 +'px'
+    // //     });
+    // //   }
+    //
+    //
+    //
+    //   //set the line-height of vocabulary words
+    //   self.vocabularyContainer.find('li').css({
+    //     'line-height': ((elementWidth * row + 80) / (self.vocLength + 1)) + "px"
+    //   });
+    //
+    // };
 
 
 
@@ -134,6 +156,7 @@ H5P.FindTheWords = (function($, UI) {
     // when user finds all words
     self.gamePuzzle.on('complete', function() {
       self.puzzleContainer.find('.puzzleSquare').addClass('complete');
+        self.timer.stop();
       self.displayFeedback();
     });
 
@@ -143,50 +166,292 @@ H5P.FindTheWords = (function($, UI) {
      * @param {H5P.jQuery} $container
      */
 
+
+     var ITEM_MIN_SIZE = 16;
+     var ITEM_MAX_SIXE = 64;
+     var showVocabulary = true;
+
+     var clickStartX;
+     var clickStartY;
+
+     var clickEndX;
+     var clickEndY;
+
+     var clickDragX;
+     var clickDragY;
+
+     var paint;
+     var context;
+     var canvas;
+
+     var canvasWidth;
+     var canvasHeight;
+     var elementSize;
+
+     var addStartClick = function (x,y){
+       clickStartX =x;
+       clickStartY = y
+     }
+
+     var addEndClick = function(x,y){
+       clickEndX=x;
+       clickEndY=y;
+     }
+
+     var addDragClick = function(x,y){
+       clickDragX=x;
+       clickDragY=y;
+     }
+
+     var drawLine = function(){
+       context.clearRect(0,0,448,512);
+       context.beginPath();
+       // Staring point (10,45)
+        context.moveTo(clickStartX,clickStartY);
+       // End point (180,47)
+       context.lineTo(clickDragX,clickDragY);
+       // Make the line visible
+       context.stroke();
+     }
+
+
+    var mouseDownEventHandler = function(e){
+      paint = true;
+      var x = e.pageX - canvas.offsetLeft;
+      var y = e.pageY - canvas.offsetTop;
+      addStartClick(x,y);
+    }
+
+    var mouseMoveEventHandler = function(e){
+
+      var x = e.pageX - canvas.offsetLeft;
+      var y = e.pageY - canvas.offsetTop;
+      if(paint){
+        addDragClick(x,y);
+        drawLine();
+      }
+    }
+
+    var mouseUpEventHandler = function(e){
+      var x = e.pageX - canvas.offsetLeft;
+      var y = e.pageY - canvas.offsetTop;
+      context.closePath();
+      paint=false;
+      addEndClick(x,y);
+      processLine(clickStartX,clickStartY,clickEndX,clickEndY);
+    }
+
+    var processLine = function(x1,y1,x2,y2){
+        var row1= Math.ceil(x1/elementSize);
+        var col1= Math.ceil(y1/elementSize)-1;
+        var row2= Math.ceil(x2/elementSize);
+        var col2= Math.ceil(y2/elementSize)-1;
+        console.log(x1+'_'+y1+'_'+x2+'_'+y2+'_'+elementSize);
+        console.log(row1+'_'+col1+'_'+row2+'_'+col2);
+
+        checkDirection(row1,col1,row2,col2);
+
+
+    }
+
+    var checkDirection=function(x1,y1,x2,y2){
+
+      var x;
+      var y;
+
+      if(x2>x1){
+        //possible directions--downward
+        x=1;
+
+      }else if(x2<x1){
+        //possible direction--upward
+        x=-1;
+      }else{
+        //possible direction-- horizontal
+        x=0;
+      }
+
+      if(y2>y1){
+        //possible directions--towardsright
+        y=1;
+
+      }else if(y2<y1){
+        //possible direction--towardsleft
+        y=-1;
+      }else{
+        //possible direction-- horizontal
+        y=0;
+      }
+
+      return possible(x,y,x1,y1,x2,y2);
+    }
+
+    var possible = function(dirx,diry,x1,y1,x2,y2){
+      var y=y1;
+      var x=x1;
+      if(dirx !=0){
+        while(x != x2){
+          x= x+dirx;
+          y=y+diry;
+          console.log(x+'_'+y);
+        }
+      }else{
+        while(y != y2){
+          y=y+diry;
+        }
+      }
+
+      if(y2==y){
+        //find the marked word
+        var markedWord='';
+        do{
+          markedWord+=self.gamePuzzle.puzzle[y1][x1-1];
+          console.log(y2+'____'+y1+'and'+x1+'--------'+x2);
+          x1=x1+dirx;
+          y1=y1+diry;
+        }while(!((y1 == y2)&&(x1 == x2)) )
+        markedWord+=self.gamePuzzle.puzzle[y2][x2-1];
+        console.log(markedWord);
+        console.log(self.gamePuzzle.wordList);
+        if($.inArray(markedWord,self.gamePuzzle.wordList) != -1){
+          console.log('correct marking');
+
+        }
+
+      }else{
+        console.log('not a valid marking');
+      }
+
+    }
+
+
+
+
     self.attach = function($container) {
 
-      self.puzzleContainer = $('<div class="puzzleContainer"></div>');
-      self.vocabularyContainer = $('<div class="vocabularyContainer"></div>');
-      self.footerContainer = $('<div class="footerContainer"></div>');
+      // console.log($container.width());
+      var row = self.gamePuzzle.puzzle.length;
+      var col = self.gamePuzzle.puzzle[0].length;
 
-      self.$solvePuzzleButton = UI.createButton({
-        title: 'Show Solution',
-        click: function(event) {
-          self.solve();
-        },
-        html: '<span><i class="fa fa-eye" aria-hidden="true"></i></span>&nbsp;' + params.l10n.showSolution
-      });
+      var requiredMinWidth = ITEM_MIN_SIZE * col;
+      var requiredMaxWidth = ITEM_MAX_SIXE * col;
+
+      if(showVocabulary){
+
+          var segmentWidth = Math.floor($container.width()/3)
+          var puzzleWidth = segmentWidth * 2;
+          var vocabularyWidth = segmentWidth;
+
+          var elementWidth= Math.floor(puzzleWidth / col);
+
+          if((elementWidth >16) & (elementWidth < 64)){
+
+            elementSize  = elementWidth;
+          }
+          else if (elementWidth > 64){
+
+            elementSize = 64;
+          }else{
+            // alert('need resizing');
+              // console.log('not properly display');
+              elementSize =16;
+          }
+
+
+
+      }else{
+          //if we didn't want to display vocabulary
+      }
+
+
+       canvasWidth = elementSize*col;
+      canvasHeight = elementSize*row;
 
       if (self.$wrapper === undefined) {
-        self.$wrapper = $('<div class="gameContainer"/>', {
+        self.$wrapper = $('<div class="gameContainer" style="height:'+canvasHeight+'px"/>', {
           html: ''
         });
       }
-      self.gamePuzzle.drawPuzzle(self.puzzleContainer);
-      self.gamePuzzle.drawWords(self.vocabularyContainer);
-
-      self.gamePuzzle.print(); // print the puzzle to console..useful for debugging
-
-      self.footerContainer.append(self.$solvePuzzleButton);
-      self.$wrapper.append(self.puzzleContainer);
-      self.$wrapper.append(self.vocabularyContainer);
-
-      //attach task description
-      $container.html('<div class="h5p-task-description" >' + params.taskDescription + '</div>');
       $container.addClass('h5p-word-find').append(self.$wrapper);
-      $container.append(self.footerContainer);
-      self.$container = $container;
-      self.puzzleContainer.find('.puzzleSquare').mousedown(startTurn);
-      self.puzzleContainer.find('.puzzleSquare').mouseenter(mouseMove);
-      self.puzzleContainer.find('.puzzleSquare').mouseup(endTurn);
+
+      var $canvas = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px" style="z-index:3"/>').appendTo(self.$wrapper);
+      var $canvas2 = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px" style="z-index:2"/>').appendTo(self.$wrapper);
 
 
-      // when window size changes trigger resize function
-      self.on('resize', function() {
-        self.resize();
+      self.gamePuzzle.drawPuzzle(self.$wrapper,elementSize,canvasWidth,canvasHeight);
+
+      canvas = $canvas[0];
+      canvas2 = $canvas2[0];
+      context = canvas.getContext("2d");
+      context.strokeStyle = "#ff0000";
+      context.lineJoin = "round";
+      context.lineWidth = 25;
+
+
+      $canvas.on('mousedown',function(event){
+       canvas.addEventListener('mouseup', mouseUpEventHandler);
+       canvas.addEventListener('mousemove', mouseMoveEventHandler);
+       canvas.addEventListener('mousedown', mouseDownEventHandler);
+       mouseDownEventHandler(event);
+      });
+      $canvas.on('drag',function(event){
+        console.log('mousemoving');
+      });
+      $canvas.on('dragend',function(event){
+        console.log(event.pageX);
       });
 
-      self.resize();
+      // self.puzzleContainer = $('<div class="puzzleContainer"></div>');
+      // self.vocabularyContainer = $('<div class="vocabularyContainer"></div>');
+      // self.footerContainer = $('<div class="footerContainer"></div>');
+      //
+      // self.$solvePuzzleButton = UI.createButton({
+      //   title: 'Show Solution',
+      //   click: function(event) {
+      //     self.solve();
+      //   },
+      //   html: '<span><i class="fa fa-eye" aria-hidden="true"></i></span>&nbsp;' + params.l10n.showSolution
+      // });
+      //
+      // if (self.$wrapper === undefined) {
+      //   self.$wrapper = $('<div class="gameContainer"/>', {
+      //     html: ''
+      //   });
+      // }
+      // self.gamePuzzle.drawPuzzle(self.puzzleContainer);
+      // self.gamePuzzle.drawWords(self.vocabularyContainer);
+      //
+      // self.gamePuzzle.print(); // print the puzzle to console..useful for debugging
+      //
+      // self.$status = $('<dl class="sequencing-status">' + '<dt>' + 'parameters.l10n.timeSpent' + '</dt>' + '<dd class="h5p-time-spent">0:00</dd>' +
+      //     '</dl>');
+      //
+      //
+      // self.footerContainer.append(self.$status);
+      // self.footerContainer.append(self.$solvePuzzleButton);
+      // self.$wrapper.append(self.puzzleContainer);
+      // self.$wrapper.append(self.vocabularyContainer);
+      //
+      // //attach task description
+      // if(params.taskDescription){
+      //   $container.html('<div class="h5p-task-description" >' + params.taskDescription + '</div>');
+      // }
+      // $container.addClass('h5p-word-find').append(self.$wrapper);
+      // $container.append(self.footerContainer);
+      // self.$container = $container;
+      //
+      // self.timer = new FindTheWords.Timer(self.$status.find('.h5p-time-spent')[0]);
+      // self.puzzleContainer.find('.puzzleSquare').mousedown(startTurn);
+      // self.puzzleContainer.find('.puzzleSquare').mouseenter(mouseMove);
+      // self.puzzleContainer.find('.puzzleSquare').mouseup(endTurn);
+      //
+      //
+      // // when window size changes trigger resize function
+      // self.on('resize', function() {
+      //   self.resize();
+      // });
+
+      self.trigger('resize');
 
     };
 

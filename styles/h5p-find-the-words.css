@@ -17,6 +17,8 @@
     padding: 0;
     margin-left: auto;
     margin-right: auto;
+    /*max-width: 68.25em;*/
+    position:relative;
 }
 .h5p-word-find .gameContainer > div {
     background: #c3e5f1 none repeat scroll 0 0;
@@ -29,7 +31,7 @@
     text-align: center;
 }
 .h5p-word-find .puzzleContainer {
-    width: 70%;
+    max-width: 70%;
     cursor: pointer;
     font-size: 20px;
     overflow: hidden;
@@ -42,7 +44,7 @@
     margin-bottom: 10px;
 }
 .h5p-word-find-row {
-    display: inline-block;
+    display: block;
     align-content: center;
 }
 .h5p-word-find-row .puzzleSquare {
@@ -53,6 +55,14 @@
     padding: 0;
     text-transform: uppercase;
     -webkit-touch-callout: none;
+
+    max-width: 64px !important;
+    max-height: 64px !important;
+    min-width: 16px;
+    min-height: 16px;
+    display: inline-block;
+    position: relative;
+
     /* iOS Safari */
 
     -webkit-user-select: none;
@@ -69,8 +79,19 @@
 
     user-select: none;
 }
-.h5p-word-find-row .selected {
-    background-color: orange !important;
+
+.h5p-word-find-row .selected  span{
+    /*background-color: orange !important;*/
+    position:absolute;
+
+}
+.h5p-word-find-row .selected span{
+
+  background-color: black;
+  color: white;
+  height: 100%;
+  width: 100%;
+  border-radius:20px;
 }
 /* indicates that the square is part of a word that has been found */
 
@@ -115,4 +136,11 @@
 .h5p-word-find .feedback-text {
     display: block;
     color: #1a73d9;
+}
+
+
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
 }

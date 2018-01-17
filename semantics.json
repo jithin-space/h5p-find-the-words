@@ -3,9 +3,8 @@
 		"label": "Task Description",
 		"name": "taskDescription",
 		"type": "text",
-		"default": "Find the words in the vocabulary from the Grid",
-		"description": "Description of the Game",
-		"importance": "high"
+		"description": "Optional Description of the Game",
+		"optional": true
 	},
 	{
 		"name": "vocabulary",
