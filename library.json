@@ -1,6 +1,6 @@
 {
 	"title": "Find The Words",
-	"description": "game to find a list of words in a given grid",
+	"description": "Game to find a list of words in a given word grid",
 	"machineName": "H5P.FindTheWords",
 	"majorVersion": 1,
 	"minorVersion": 2,

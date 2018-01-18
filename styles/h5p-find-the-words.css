@@ -37,6 +37,7 @@
     overflow: hidden;
     margin: 10px;
     padding: 10px;
+    position: relative;
 }
 .h5p-word-find .vocabularyContainer {
     width: 20%;
@@ -139,8 +140,23 @@
 }
 
 
-canvas{
+.gridCanvas{
   position:absolute;
-  top:0;
-  left:0;
+  z-index:1;
+  top:11px;
+  left:11px;
+}
+.outputCanvas{
+  position: absolute;
+  z-index:2;
+  top:11px;
+  left:11px;
+}
+.vocabularyContainer{
+  margin: 10px;
+  border: 2px;
+  padding: 10px;
+}
+.puzzleContainer{
+  position:relative;
 }

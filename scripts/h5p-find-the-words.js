@@ -168,7 +168,7 @@ H5P.FindTheWords = (function($, UI) {
 
 
      var ITEM_MIN_SIZE = 16;
-     var ITEM_MAX_SIXE = 64;
+     var ITEM_MAX_SIZE = 64;
      var showVocabulary = true;
 
      var clickStartX;
@@ -215,11 +215,16 @@ H5P.FindTheWords = (function($, UI) {
      }
 
 
-    var mouseDownEventHandler = function(e){
+    var mouseDownEventHandler = function(e,canvas){
       paint = true;
-      var x = e.pageX - canvas.offsetLeft;
-      var y = e.pageY - canvas.offsetTop;
-      addStartClick(x,y);
+      var x = e.pageX - $(canvas).offset().left;
+      var y = e.pageY - $(canvas).offset().top;
+      var row1= Math.ceil(x/elementSize);
+      var col1= Math.ceil(y/elementSize);
+      console.log(x+'_'+y);
+      console.log(row1+'_'+col1);
+      console.log(self.gamePuzzle.puzzle[col1-1][row1-1]);
+      // addStartClick(x,y);
     }
 
     var mouseMoveEventHandler = function(e){
@@ -348,72 +353,106 @@ H5P.FindTheWords = (function($, UI) {
       var col = self.gamePuzzle.puzzle[0].length;
 
       var requiredMinWidth = ITEM_MIN_SIZE * col;
-      var requiredMaxWidth = ITEM_MAX_SIXE * col;
+      var requiredMaxWidth = ITEM_MAX_SIZE * col;
+
+      var containerWidth = $container.width();
+      var segmentWidth = Math.floor(containerWidth/3)
+      var puzzleWidth;
+      var vocabularyWidth;
+      var elementWidth;
 
       if(showVocabulary){
 
-          var segmentWidth = Math.floor($container.width()/3)
-          var puzzleWidth = segmentWidth * 2;
-          var vocabularyWidth = segmentWidth;
-
-          var elementWidth= Math.floor(puzzleWidth / col);
-
-          if((elementWidth >16) & (elementWidth < 64)){
-
-            elementSize  = elementWidth;
-          }
-          else if (elementWidth > 64){
-
-            elementSize = 64;
-          }else{
-            // alert('need resizing');
-              // console.log('not properly display');
-              elementSize =16;
-          }
-
-
+        puzzleWidth = segmentWidth * 2;
+        vocabularyWidth = segmentWidth;
 
       }else{
-          //if we didn't want to display vocabulary
+        //diplay as two blocks
+        puzzleWidth = containerWidth;
+        vocabulareWidth= containerWidth;
+
       }
+
+      elementWidth= Math.floor(puzzleWidth / col);
+
+        if((elementWidth >ITEM_MIN_SIZE) & (elementWidth < ITEM_MAX_SIZE)){
+
+          elementSize  = elementWidth;
+        }
+        else if (elementWidth > 64){
+
+          elementSize = 64;
+        }else{
+
+            elementSize =16;
+        }
 
 
        canvasWidth = elementSize*col;
-      canvasHeight = elementSize*row;
+       canvasHeight = elementSize*row;
 
       if (self.$wrapper === undefined) {
-        self.$wrapper = $('<div class="gameContainer" style="height:'+canvasHeight+'px"/>', {
+        self.$wrapper = $('<div class="gameContainer" />', {
           html: ''
         });
       }
+
       $container.addClass('h5p-word-find').append(self.$wrapper);
 
-      var $canvas = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px" style="z-index:3"/>').appendTo(self.$wrapper);
-      var $canvas2 = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px" style="z-index:2"/>').appendTo(self.$wrapper);
+      self.puzzleContainer = $('<div class="puzzleContainer" style="height:'+canvasHeight+'px;width:'+canvasWidth+'px;"></div>').appendTo(self.$wrapper);
+      self.vocabularyContainer = $('<div class="vocabularyContainer" style="min-height:'+canvasHeight+'px"></div>').appendTo(self.$wrapper);
+
+      var $gridCanvas = $('<canvas class="gridCanvas" height="'+canvasHeight+'px" width="'+canvasWidth+'px" />').appendTo(self.puzzleContainer);
 
 
-      self.gamePuzzle.drawPuzzle(self.$wrapper,elementSize,canvasWidth,canvasHeight);
 
-      canvas = $canvas[0];
-      canvas2 = $canvas2[0];
-      context = canvas.getContext("2d");
-      context.strokeStyle = "#ff0000";
-      context.lineJoin = "round";
-      context.lineWidth = 25;
+      self.gamePuzzle.drawPuzzle($gridCanvas,elementSize,canvasWidth,canvasHeight);
+      self.gamePuzzle.drawWords(self.vocabularyContainer);
+
+      var $outputCanvas =  $('<canvas class="outputCanvas" height="'+canvasHeight+'px" width="'+canvasWidth+'px"/>').appendTo(self.puzzleContainer);
 
 
-      $canvas.on('mousedown',function(event){
-       canvas.addEventListener('mouseup', mouseUpEventHandler);
-       canvas.addEventListener('mousemove', mouseMoveEventHandler);
-       canvas.addEventListener('mousedown', mouseDownEventHandler);
-       mouseDownEventHandler(event);
+      $outputCanvas.on('mousedown',function(event){
+
+
+        // $gridCanvas.addEventListener('mouseup', mouseUpEventHandler);
+        // canvas.addEventListener('mousemove', mouseMoveEventHandler);
+        // canvas.addEventListener('mousedown', mouseDownEventHandler);
+
+        mouseDownEventHandler(event,this);
+
       });
-      $canvas.on('drag',function(event){
-        console.log('mousemoving');
-      });
-      $canvas.on('dragend',function(event){
-        console.log(event.pageX);
-      });
+
+
+
+
+
+      // var $canvas = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px" style="z-index:3"/>').appendTo(self.$wrapper);
+      // var $canvas2 = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px" style="z-index:2"/>').appendTo(self.$wrapper);
+      //
+      //
+      // self.gamePuzzle.drawPuzzle(self.$wrapper,elementSize,canvasWidth,canvasHeight);
+      //
+      // canvas = $canvas[0];
+      // canvas2 = $canvas2[0];
+      // context = canvas.getContext("2d");
+      // context.strokeStyle = "#ff0000";
+      // context.lineJoin = "round";
+      // context.lineWidth = 25;
+      //
+      //
+      // $canvas.on('mousedown',function(event){
+      //  canvas.addEventListener('mouseup', mouseUpEventHandler);
+      //  canvas.addEventListener('mousemove', mouseMoveEventHandler);
+      //  canvas.addEventListener('mousedown', mouseDownEventHandler);
+      //  mouseDownEventHandler(event);
+      // });
+      // $canvas.on('drag',function(event){
+      //   console.log('mousemoving');
+      // });
+      // $canvas.on('dragend',function(event){
+      //   console.log(event.pageX);
+      // });
 
       // self.puzzleContainer = $('<div class="puzzleContainer"></div>');
       // self.vocabularyContainer = $('<div class="vocabularyContainer"></div>');

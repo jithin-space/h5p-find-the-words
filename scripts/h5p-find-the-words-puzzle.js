@@ -389,23 +389,19 @@
 
       var puzzle = this.puzzle;
 
-      var drawingCanvas = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px"  style="z-index:1"/>').appendTo($container);
-      var element = drawingCanvas[0];
-
-      var ctx1 = element.getContext("2d");
-
-
+      var drawingCanvas = $container;
+      var canvasElement = drawingCanvas[0];
+      var ctx1 = canvasElement.getContext("2d");
       var rowHeight = elementSize;
       var colWidth = elementSize;
 
-      ctx1.clearRect(0, 0, element.width, element.height);
+      ctx1.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
       for (var i = 0, height = puzzle.length; i < height; i++) {
         var letterRow = [];
         var row = puzzle[i];
         for (var j = 0, width = row.length; j < width; j++) {
-           // ctx1.rect(j * colWidth, i * rowHeight, colWidth, rowHeight);
-           // ctx1.stroke();
-           ctx1.font = "30px Arial";
+           ctx1.font =  (elementSize/2)+"px Arial";
            ctx1.fillText(row[j].toUpperCase(), j * colWidth + (colWidth/2 -15), i * (rowHeight) + (colWidth/2 + 10));
          }
      }

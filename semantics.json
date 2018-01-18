@@ -22,108 +22,126 @@
 		"importance": "high"
 	},
 	{
-		"name": "gridDimensions",
-		"type": "group",
-		"label": "Prefferd Grid Dimensions",
+    "name": "behaviour",
+    "type": "group",
+    "label": "Behavioural settings",
+    "importance": "low",
+    "description": "These options will let you control how the game behaves.",
+    "optional": true,
 		"fields": [
 			{
-				"name": "height",
+				"name": "gridDimensions",
+				"type": "group",
+				"label": "Prefferd Grid Dimensions",
+				"fields": [
+					{
+						"name": "height",
+						"type": "number",
+						"label": "Height",
+						"description": "The desired number of rows in the puzzle. Will automatically be increased if a valid puzzle cannot be found with specified number of rows.      Specifying a reasonable height will improve performance when creating puzzles.      Defaults to the minimum number of rows needed to create a valid puzzle.",
+						"max": 20,
+						"min": 5,
+						"default": 5,
+						"importance": "low"
+					},
+					{
+						"name": "width",
+						"type": "number",
+						"label": "Width",
+						"description": "The desired number of columns in the puzzle.       Will automatically be increased if a valid puzzle cannot be found with specified number of columns.      Specifying a reasonable width will improve performance when creating puzzles.      Defaults to the minimum number of columns needed to create a valid puzzle.",
+						"max": 20,
+						"min": 5,
+						"default": 5,
+						"importance": "low"
+					}
+				]
+			},
+			{
+				"name": "orientations",
+				"type": "group",
+				"label": "Orientations",
+				"description": "An array containing the names of the word directions that should be used when creating the puzzle",
+				"fields": [
+					{
+						"name": "horizontal",
+						"type": "boolean",
+						"label": "ToRight",
+						"default": true
+					},
+					{
+						"name": "horizontalBack",
+						"type": "boolean",
+						"label": "ToLeft",
+						"default": true
+					},
+					{
+						"name": "vertical",
+						"type": "boolean",
+						"label": "ToDown",
+						"default": true
+					},
+					{
+						"name": "verticalUp",
+						"type": "boolean",
+						"label": "ToTop",
+						"default": true
+					},
+					{
+						"name": "diagonal",
+						"type": "boolean",
+						"label": "ToRightDown",
+						"default": true
+					},
+					{
+						"name": "diagonalBack",
+						"type": "boolean",
+						"label": "ToLeftDown",
+						"default": true
+					},
+					{
+						"name": "diagonalUp",
+						"type": "boolean",
+						"label": "ToRightTop",
+						"default": true
+					},
+					{
+						"name": "diagonalUpBack",
+						"type": "boolean",
+						"label": "ToLeftTop",
+						"default": true
+					}
+				]
+			},
+			{
+				"name": "fillBlanks",
+				"type": "boolean",
+				"label": "Fill Blanks",
+				"description": "True to fill in the remaining empty squares after generating the puzzle, false to leave them empty.   This is useful when testing to see what the shape of the solution looks like.   Can also be used to generate a mask to determine when all words have been found.",
+				"default": true
+			},
+			{
+				"name": "maxAttempts",
 				"type": "number",
-				"label": "Height",
-				"description": "The desired number of rows in the puzzle.      Will automatically be increased if a valid puzzle cannot be found with specified number of rows.      Specifying a reasonable height will improve performance when creating puzzles.      Defaults to the minimum number of rows needed to create a valid puzzle.",
-				"max": 20,
-				"min": 5,
-				"default": 5,
-				"importance": "low"
+				"label": "Maximum Attempts",
+				"description": "Specifies the maximum number of attempts to create a valid puzzle of a certain size.   If a valid puzzle cannot be constructed after maxAttempts have been made, the puzzle height and width are incremented by one and the number of attempts is reset. ",
+				"default": "3"
 			},
 			{
-				"name": "width",
-				"type": "number",
-				"label": "Width",
-				"description": "The desired number of columns in the puzzle.       Will automatically be increased if a valid puzzle cannot be found with specified number of columns.      Specifying a reasonable width will improve performance when creating puzzles.      Defaults to the minimum number of columns needed to create a valid puzzle.",
-				"max": 20,
-				"min": 5,
-				"default": 5,
-				"importance": "low"
-			}
-		]
-	},
-	{
-		"name": "orientations",
-		"type": "group",
-		"label": "Orientations",
-		"description": "An array containing the names of the word directions that should be used when creating the puzzle",
-		"fields": [
-			{
-				"name": "horizontal",
+				"name": "preferOverlap",
 				"type": "boolean",
-				"label": "ToRight",
+				"label": "Prefer Overlap",
+				"description": "Determines how wordfind decides where to place a word within the puzzle.   When true, it randomly selects amongst the positions the highest number of letters that overlap creating a more compact puzzle.   When false, it randomly selects amongst all valid positions creating a less compact puzzle.",
 				"default": true
 			},
 			{
-				"name": "horizontalBack",
+				"name": "showVocabulary",
 				"type": "boolean",
-				"label": "ToLeft",
-				"default": true
-			},
-			{
-				"name": "vertical",
-				"type": "boolean",
-				"label": "ToDown",
-				"default": true
-			},
-			{
-				"name": "verticalUp",
-				"type": "boolean",
-				"label": "ToTop",
-				"default": true
-			},
-			{
-				"name": "diagonal",
-				"type": "boolean",
-				"label": "ToRightDown",
-				"default": true
-			},
-			{
-				"name": "diagonalBack",
-				"type": "boolean",
-				"label": "ToLeftDown",
-				"default": true
-			},
-			{
-				"name": "diagonalUp",
-				"type": "boolean",
-				"label": "ToRightTop",
-				"default": true
-			},
-			{
-				"name": "diagonalUpBack",
-				"type": "boolean",
-				"label": "ToLeftTop",
+				"label": "Show Vocabulary",
+				"description": "Determines whether to show vocabularies to the player",
 				"default": true
 			}
+
 		]
-	},
-	{
-		"name": "fillBlanks",
-		"type": "boolean",
-		"label": "Fill Blanks",
-		"description": "True to fill in the remaining empty squares after generating the puzzle, false to leave them empty.   This is useful when testing to see what the shape of the solution looks like.   Can also be used to generate a mask to determine when all words have been found.",
-		"default": true
-	},
-	{
-		"name": "maxAttempts",
-		"type": "number",
-		"label": "Maximum Attempts",
-		"description": "Specifies the maximum number of attempts to create a valid puzzle of a certain size.   If a valid puzzle cannot be constructed after maxAttempts have been made, the puzzle height and width are incremented by one and the number of attempts is reset. ",
-		"default": "3"
-	},
-	{
-		"name": "preferOverlap",
-		"type": "boolean",
-		"label": "Prefer Overlap",
-		"description": "Determines how wordfind decides where to place a word within the puzzle.   When true, it randomly selects amongst the positions the highest number of letters that overlap creating a more compact puzzle.   When false, it randomly selects amongst all valid positions creating a less compact puzzle.",
-		"default": true
 	},
 	{
 		"label": "Localization",
