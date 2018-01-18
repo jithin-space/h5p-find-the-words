@@ -316,6 +316,20 @@ H5P.FindTheWords = (function($, UI) {
         if($.inArray(markedWord,self.gamePuzzle.wordList) != -1){
           console.log('correct marking');
 
+          context2=canvas2.getContext('2d');
+
+          context2.strokeStyle = "blue";
+          context2.lineJoin = "round";
+          context2.lineWidth = 2;
+
+
+          context2.beginPath();
+          // Staring point (10,45)
+           context2.moveTo(clickStartX,clickStartY);
+          // End point (180,47)
+          context2.lineTo(clickEndX,clickEndY);
+          // Make the line visible
+          context2.stroke();
         }
 
       }else{
