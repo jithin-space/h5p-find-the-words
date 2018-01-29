@@ -151,6 +151,13 @@
 		"common": true,
 		"fields": [
 			{
+				"label": "Text for \"Check\" button",
+				"importance": "low",
+				"name": "check",
+				"type": "text",
+				"default": "Check"
+			},
+			{
 				"label": "Text for \"Retry\" button",
 				"importance": "low",
 				"name": "tryAgain",
@@ -163,6 +170,14 @@
 				"name": "showSolution",
 				"type": "text",
 				"default": "Show Solution"
+			},
+			{
+				"label": "Counter text",
+				"importance": "low",
+				"name": "found",
+				"type": "text",
+				"default": "@found of @totalWords found",
+				"description": "Feedback text, variables available: @found and @totalWords. Example: '@found of @totalWords found'"
 			},
 			{
 				"label": "Feedback text",

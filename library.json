@@ -22,6 +22,9 @@
 		},
 		{
 			"path": "scripts/h5p-find-the-words-timer.js"
+		},
+		{
+			"path": "scripts/h5p-find-the-words-counter.js"
 		}
 	],
 	"preloadedDependencies": [

@@ -1,5 +1,13 @@
-.h5p-word-find {
-    border: 2px solid #eeeeee;
+.vocabularyInlineContainer.h5p-word-find {
+
+}
+
+.vocabularyBlockContainer {
+  height: auto !important;
+  width: 100%;
+}
+.vocabularyInlineContainer {
+  width: auto;
 }
 .h5p-task-description {
     font-family: Helvetica, Arial, sans-serif;
@@ -12,37 +20,36 @@
 .h5p-word-find .gameContainer {
     display: table;
     table-layout: auto;
-    width: 100%;
     border: 0;
     padding: 0;
     margin-left: auto;
     margin-right: auto;
-    /*max-width: 68.25em;*/
+    max-width: 68.25em;
     position:relative;
+
+}
+
+.inline{
+  width:100% !important;
+  border:2px solid blue;
 }
 .h5p-word-find .gameContainer > div {
-    background: #c3e5f1 none repeat scroll 0 0;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    display: table-cell;
     float: left;
-    border: solid 2px #eeeeee;
     list-style: none;
-    text-align: center;
 }
+
 .h5p-word-find .puzzleContainer {
-    max-width: 70%;
+
     cursor: pointer;
     font-size: 20px;
     overflow: hidden;
-    margin: 10px;
-    padding: 10px;
     position: relative;
+    background-color:white;
 }
 .h5p-word-find .vocabularyContainer {
-    width: 20%;
-    margin-top: 10px;
-    margin-bottom: 10px;
+
+    background-color:#e6e6e6;
+    overflow-y: auto;
 }
 .h5p-word-find-row {
     display: block;
@@ -111,20 +118,56 @@
 }
 .h5p-word-find .vocabularyContainer ul {
     list-style-type: none;
-    margin: 0 !important;
+
+}
+.h5p-word-find .vocabularyBlockContainer ul {
+    padding-left: 0px;
+
 }
 .h5p-word-find .vocabularyContainer .vocHeading {
-    color: red;
+    color: black;
+    font-weight: bold;
     text-transform: capitalize;
-    ;
+    padding:10px;
+    border-bottom: 1px solid grey;
 }
-.h5p-word-find .vocabularyContainer li {
+.h5p-word-find .vocabularyInlineContainer li {
     font: 1em sans-serif;
     text-align: left;
+    margin: 4px;
+}
+.h5p-word-find .vocabularyBlockContainer li {
+    font: 1em sans-serif;
+    text-align: left;
+    margin: 4px;
+    float:left;
 }
 .h5p-word-find .vocabularyContainer .wordFound {
-    text-decoration: line-through;
-    color: gray;
+    /*text-decoration: line-through;*/
+    color: green;
+}
+.h5p-word-find .vocabularyInlineContainer .wordFound i{
+    /*text-decoration: line-through;*/
+    color: green;
+    visibility: visible;
+}
+.h5p-word-find .vocabularyContainer .wordSolved {
+    /*text-decoration: line-through;*/
+    color: blue;
+}
+.h5p-word-find .vocabularyInlineContainer .wordSolved i{
+    /*text-decoration: line-through;*/
+    color: blue;
+    visibility: visible;
+}
+.h5p-word-find .vocabularyContainer .word{
+  font-weight: bold;
+  font-size: 1em;
+  display:inline-block;
+}
+
+.h5p-word-find .vocabularyContainer li i{
+    visibility: hidden;
 }
 .h5p-word-find .footerContainer {
     clear: both;
@@ -142,21 +185,23 @@
 
 .gridCanvas{
   position:absolute;
-  z-index:1;
-  top:11px;
-  left:11px;
+  z-index:0;
+  top:0;
+  left:0;
 }
 .outputCanvas{
   position: absolute;
+  top:0;
+  left:0;
+  z-index:1;
+}
+.drawingCanvas{
+  position: absolute;
   z-index:2;
-  top:11px;
-  left:11px;
+  top:0;
+  left:0;
 }
-.vocabularyContainer{
-  margin: 10px;
-  border: 2px;
-  padding: 10px;
-}
+
 .puzzleContainer{
   position:relative;
 }

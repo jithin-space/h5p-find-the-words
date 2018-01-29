@@ -198,7 +198,7 @@
       return orientations;
     };
 
-    directions = processOrientations(opts.orientations);
+    directions = processOrientations(opts.behaviour.orientations);
 
     var fillPuzzle = function(words, options) {
 
@@ -401,7 +401,7 @@
         var letterRow = [];
         var row = puzzle[i];
         for (var j = 0, width = row.length; j < width; j++) {
-           ctx1.font =  (elementSize/2)+"px Arial";
+           ctx1.font =  (elementSize/3)+"px Arial";
            ctx1.fillText(row[j].toUpperCase(), j * colWidth + (colWidth/2 -15), i * (rowHeight) + (colWidth/2 + 10));
          }
      }
@@ -410,11 +410,11 @@
     }
     this.drawWords = function($container) {
       var words = this.wordList;
-      var output = '<ul>';
-      output += '<li class="vocHeading"> vocabulary </li>';
+      var output = '<div class="vocHeading"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Find the words</div><ul>';
+
       for (var i = 0, len = words.length; i < len; i++) {
         var word = words[i];
-        output += '<li class="word ' + word + '">' + word;
+        output += '<li><div class="word ' + word + '"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;' + word+'</div></li>';
       }
       output += '</ul>';
 
@@ -597,12 +597,12 @@
 
     //  initialize the options
     var options = {
-      height: opts.gridDimensions.height || wordList[0].length,
-      width: opts.gridDimensionswidth || wordList[0].length,
+      height: opts.behaviour.gridDimensions.height || wordList[0].length,
+      width: opts.behaviour.gridDimensionswidth || wordList[0].length,
       orientations: directions || allOrientations,
-      fillBlanks: opts.fillBlanks !== undefined ? opts.fillBlanks : true,
-      maxAttempts: opts.maxAttempts || 3,
-      preferOverlap: opts.preferOverlap !== undefined ? opts.preferOverlap : true
+      fillBlanks: opts.behaviour.fillBlanks !== undefined ? opts.behaviour.fillBlanks : true,
+      maxAttempts: opts.behaviour.maxAttempts || 3,
+      preferOverlap: opts.behaviour.preferOverlap !== undefined ? opts.behaviour.preferOverlap : true
     };
 
     // add the words to the puzzle

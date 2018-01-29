@@ -9,6 +9,7 @@ H5P.FindTheWords = (function($, UI) {
     /** @alias H5P.FindTheWords# */
     var self = this;
     var score = 0;
+    var found= 0;
     var wordList;
 
     /*
@@ -29,9 +30,9 @@ H5P.FindTheWords = (function($, UI) {
       self.timer.play();
     };
 
-    var mouseMove = function() {
-      self.gamePuzzle.mouseMove(this);
-    };
+    // var mouseMove = function() {
+    //   self.gamePuzzle.mouseMove(this);
+    // };
 
     var endTurn = function() {
       score = (self.gamePuzzle.endTurn(this)) ? score + 1 : score;
@@ -43,9 +44,15 @@ H5P.FindTheWords = (function($, UI) {
     */
     self.solve = function() {
 
-      self.timer.stop();
+      // self.timer.stop();
+
+      self.$solvePuzzleButton.remove();
 
       var solution = self.gamePuzzle.solve().found;
+
+      console.log(solution);
+
+
 
       for (var i = 0, len = solution.length; i < len; i++) {
         var word = solution[i].word,
@@ -54,19 +61,26 @@ H5P.FindTheWords = (function($, UI) {
           y = solution[i].y,
           next = self.gamePuzzle.orientations[orientation];
 
-        if (!$('.' + word).hasClass('wordFound')) {
-          for (var j = 0, size = word.length; j < size; j++) {
-            var nextPos = next(x, y, j);
-            // $('[x="' + nextPos.x + '"][y="' + nextPos.y + '"]').addClass('solved');
-            self.puzzleContainer.find('[x="' + nextPos.x + '"][y="' + nextPos.y + '"]').addClass('solved');
-          }
+          console.log(next(x,y,word.length-1).x);
+          cord= next(x,y,word.length-1);
 
-          self.vocabularyContainer.find('.' + word).addClass('wordFound');
-        }
+          output=[x,y,cord.x,cord.y,word];
+
+          self.drawOutput(output,self.canvas2,false);
+
+        // if (!$('.' + word).hasClass('wordFound')) {
+        //   for (var j = 0, size = word.length; j < size; j++) {
+        //     var nextPos = next(x, y, j);
+        //     // $('[x="' + nextPos.x + '"][y="' + nextPos.y + '"]').addClass('solved');
+        //     self.puzzleContainer.find('[x="' + nextPos.x + '"][y="' + nextPos.y + '"]').addClass('solved');
+        //   }
+        //
+        //   self.vocabularyContainer.find('.' + word).addClass('wordFound');
+        // }
 
       }
 
-      self.displayFeedback();
+      // self.displayFeedback();
 
 
     };
@@ -75,7 +89,8 @@ H5P.FindTheWords = (function($, UI) {
 
     self.displayFeedback = function() {
 
-      var totalScore = score + self.gamePuzzle.solve().found.length;
+      var totalScore = self.gamePuzzle.wordList.length+found;
+        self.timer.stop();
       //create the retry button
       self.$retryButton = UI.createButton({
         title: 'retryButton',
@@ -86,16 +101,30 @@ H5P.FindTheWords = (function($, UI) {
         html: '<span><i class="fa fa-check" aria-hidden="true"></i></span>&nbsp;' + params.l10n.tryAgain
       });
 
+
+
+
       // create the progress bar
       self.$progressBar = UI.createScoreBar(totalScore, 'scoreBarLabel');
-      self.$progressBar.setScore(score);
+      self.$progressBar.setScore(found);
       //create the feedback container
       self.$feedbacks = $('<div class="feedback-container" />');
       var scoreText = params.l10n.score;
-      scoreText = scoreText.replace('@score', score).replace('@total', totalScore);
+      scoreText = scoreText.replace('@score', found).replace('@total', totalScore);
       self.$feedbacks.html('<div class="feedback-text">' + scoreText + '</div>');
       self.$progressBar.appendTo(self.$feedbacks);
       self.footerContainer.html('').append(self.$status).append(self.$feedbacks);
+      if(totalScore !== found){
+        self.$solvePuzzleButton = UI.createButton({
+          title: 'Show Solution',
+          click: function(event) {
+            self.solve();
+          },
+          html: '<span><i class="fa fa-eye" aria-hidden="true"></i></span>&nbsp;' + params.l10n.showSolution
+        });
+        self.footerContainer.append(self.$solvePuzzleButton);
+      }
+
       self.footerContainer.append(self.$retryButton);
 
     };
@@ -171,6 +200,8 @@ H5P.FindTheWords = (function($, UI) {
      var ITEM_MAX_SIZE = 64;
      var showVocabulary = true;
 
+     var wordList;
+
      var clickStartX;
      var clickStartY;
 
@@ -203,15 +234,58 @@ H5P.FindTheWords = (function($, UI) {
        clickDragY=y;
      }
 
-     var drawLine = function(){
-       context.clearRect(0,0,448,512);
+     var drawinit=function(clickStartX,clickStartY,canvas){
+       // var context=canvas.getContext("2d");
+       // context.clearRect(0,0,canvasWidth,canvasHeight);
+       // context.strokeStyle="rgba(107, 177, 125,0.3)";
+       // context.fillStyle="rgba(107,177,125,0.8)";
+       //
+       // context.beginPath();
+       // // // Staring point (10,45)
+       // var startx=clickStartX*elementSize+(elementSize/2-20)+10;
+       // var starty=clickStartY*elementSize+(elementSize/2-10)+10;
+       // context.moveTo(startx,starty);
+       // context.arc(startx,starty, 10, 0,2*Math.PI);
+       // context.lineWidth=35;
+       // context.fill();
+       // context.closePath();
+     }
+
+     var drawLine = function(context){
+       context.clearRect(0,0,canvasWidth,canvasHeight);
+       context.strokeStyle="rgba(107, 177, 125,0.3)";
+       context.fillStyle="rgba(107,177,125,0.8)";
+
        context.beginPath();
        // Staring point (10,45)
-        context.moveTo(clickStartX,clickStartY);
-       // End point (180,47)
+       var startx=clickStartX*elementSize+(elementSize/2-20)+10;
+       var starty=clickStartY*elementSize+(elementSize/2-10)+10;
+       context.moveTo(startx,starty);
+       context.arc(startx,starty, 15, 0,2*Math.PI,false);
+       context.lineWidth=30;
+       context.fill();
+       context.closePath();
+
+       // context.stroke();
+       context.beginPath()
+       context.moveTo(startx,starty);
+       // // End point (180,47)
        context.lineTo(clickDragX,clickDragY);
-       // Make the line visible
        context.stroke();
+       context.closePath();
+
+       // context.stroke();
+
+       context.beginPath();
+       context.moveTo(clickDragX,clickDragY);
+       context.arc(clickDragX,clickDragY,15, 0, 2 * Math.PI, true);
+       context.fill();
+       context.closePath();
+
+
+       // context.fill();
+       // context.stroke();
+
      }
 
 
@@ -221,74 +295,115 @@ H5P.FindTheWords = (function($, UI) {
       var y = e.pageY - $(canvas).offset().top;
       var row1= Math.ceil(x/elementSize);
       var col1= Math.ceil(y/elementSize);
-      console.log(x+'_'+y);
-      console.log(row1+'_'+col1);
-      console.log(self.gamePuzzle.puzzle[col1-1][row1-1]);
-      // addStartClick(x,y);
+
+      // console.log("clicked_on"+self.gamePuzzle.puzzle[col1-1][row1-1]);
+      console.log("clicking x and y"+x+"_"+y);
+      var x_click= (row1-1)*elementSize+(elementSize/2-15)+10;
+      var y_click= (col1-1)*elementSize+(elementSize/2-5)+10;
+      console.log("element start"+x_click+"_"+y_click);
+      addStartClick(row1-1,col1-1);
+      drawinit(row1-1,col1-1,canvas);
+      var context2 = canvas.getContext("2d");
+
+
+      // context2.fillRect(x_click,y_click,10,10);
+
+      // drawCordinates(x_click,y_click)
+
+
     }
 
-    var mouseMoveEventHandler = function(e){
-
-      var x = e.pageX - canvas.offsetLeft;
-      var y = e.pageY - canvas.offsetTop;
+    var mouseMoveEventHandler = function(e,canvas){
+      var x = e.pageX - $(canvas).offset().left;
+      var y = e.pageY - $(canvas).offset().top;
       if(paint){
+        console.log(paint);
         addDragClick(x,y);
-        drawLine();
+        drawLine(canvas.getContext("2d"));
       }
     }
 
-    var mouseUpEventHandler = function(e){
-      var x = e.pageX - canvas.offsetLeft;
-      var y = e.pageY - canvas.offsetTop;
-      context.closePath();
-      paint=false;
-      addEndClick(x,y);
-      processLine(clickStartX,clickStartY,clickEndX,clickEndY);
+    var mouseUpEventHandler = function(e,canvas){
+      if(paint){
+        var x = e.pageX - $(canvas).offset().left;
+        var y = e.pageY - $(canvas).offset().top;
+        var row1= Math.ceil(x/elementSize);
+        var col1= Math.ceil(y/elementSize);
+        var x_click= (row1-1)*elementSize+(elementSize/2-15)+10;
+        var y_click= (col1-1)*elementSize+(elementSize/2-5)+10;
+
+        if((Math.abs(x_click-x)<10)&&(Math.abs(y_click-y)<10)){
+          var context2 = canvas.getContext("2d");
+          context2.arc(x_click, y_click, 10, 0, 2 * Math.PI, true);
+          context2.fill();
+          addEndClick(row1-1,col1-1);
+
+          //valid end process
+          var obtainedWord=processLine(clickStartX,clickStartY,clickEndX,clickEndY);
+
+          if(obtainedWord){
+            canvas.getContext("2d").closePath();
+            paint= false;
+            return [clickStartX,clickStartY,clickEndX,clickEndY,obtainedWord];
+          }
+
+        }
+
+        canvas.getContext("2d").closePath();
+        paint= false;
+
+        return;
+
+
+
+      }
+
     }
 
     var processLine = function(x1,y1,x2,y2){
-        var row1= Math.ceil(x1/elementSize);
-        var col1= Math.ceil(y1/elementSize)-1;
-        var row2= Math.ceil(x2/elementSize);
-        var col2= Math.ceil(y2/elementSize)-1;
-        console.log(x1+'_'+y1+'_'+x2+'_'+y2+'_'+elementSize);
-        console.log(row1+'_'+col1+'_'+row2+'_'+col2);
 
-        checkDirection(row1,col1,row2,col2);
+      var x;
+      var y;
+      x= directionalValue(x1,x2);
+      y= directionalValue(y1,y2);
+
+
+
+      if(possible(x,y,x1,y1,x2,y2)){
+        var markedWord='';
+        do{
+          markedWord+=self.gamePuzzle.puzzle[y1][x1];
+          x1=x1+x;
+          y1=y1+y;
+        }while(!((y1 == y2)&&(x1 == x2)) )
+
+        markedWord+=self.gamePuzzle.puzzle[y2][x2];
+        console.log(markedWord);
+
+        if($.inArray(markedWord,wordList) != -1){
+
+          return markedWord;
+        }else {
+          return;
+        }
+      }else{
+        return;
+      }
+
 
 
     }
 
-    var checkDirection=function(x1,y1,x2,y2){
-
+    var directionalValue=function(x1,x2){
       var x;
-      var y;
-
       if(x2>x1){
-        //possible directions--downward
         x=1;
-
       }else if(x2<x1){
-        //possible direction--upward
         x=-1;
       }else{
-        //possible direction-- horizontal
         x=0;
       }
-
-      if(y2>y1){
-        //possible directions--towardsright
-        y=1;
-
-      }else if(y2<y1){
-        //possible direction--towardsleft
-        y=-1;
-      }else{
-        //possible direction-- horizontal
-        y=0;
-      }
-
-      return possible(x,y,x1,y1,x2,y2);
+      return x;
     }
 
     var possible = function(dirx,diry,x1,y1,x2,y2){
@@ -308,40 +423,82 @@ H5P.FindTheWords = (function($, UI) {
 
       if(y2==y){
         //find the marked word
-        var markedWord='';
-        do{
-          markedWord+=self.gamePuzzle.puzzle[y1][x1-1];
-          console.log(y2+'____'+y1+'and'+x1+'--------'+x2);
-          x1=x1+dirx;
-          y1=y1+diry;
-        }while(!((y1 == y2)&&(x1 == x2)) )
-        markedWord+=self.gamePuzzle.puzzle[y2][x2-1];
-        console.log(markedWord);
-        console.log(self.gamePuzzle.wordList);
-        if($.inArray(markedWord,self.gamePuzzle.wordList) != -1){
-          console.log('correct marking');
-
-          context2=canvas2.getContext('2d');
-
-          context2.strokeStyle = "blue";
-          context2.lineJoin = "round";
-          context2.lineWidth = 2;
-
-
-          context2.beginPath();
-          // Staring point (10,45)
-           context2.moveTo(clickStartX,clickStartY);
-          // End point (180,47)
-          context2.lineTo(clickEndX,clickEndY);
-          // Make the line visible
-          context2.stroke();
-        }
+        return true;
 
       }else{
-        console.log('not a valid marking');
+        return false;
       }
 
     }
+
+self.drawOutput=function(output,canvas2,solved){
+
+
+
+  self.counter.increment();
+  found++;
+
+
+  context=canvas2.getContext("2d");
+  context.globalCompositeOperation='destination-over';
+
+  if(solved){
+    self.vocabularyContainer.find('.' + output[4]).addClass('wordFound');
+    const index = wordList.indexOf(output[4]);
+    wordList.splice(index, 1);
+
+    if (wordList.length === 0) {
+      // this.trigger('complete');
+      console.log('complete');
+    }
+    context.strokeStyle="rgba(107,177,125,0.3)";
+    context.fillStyle="rgba(107,177,125,0.8)";
+  }
+  else{
+    self.vocabularyContainer.find('.' + output[4]).addClass('wordSolved');
+    context.strokeStyle="rgba(51, 102, 255,0.3)";
+    context.fillStyle="rgba(51, 102, 255,0.8)";
+    context.setLineDash([1, 1])
+  }
+
+  context.lineWidth=30;
+  context.beginPath();
+  // Staring point (10,45)
+  var startx=output[0]*elementSize+(elementSize/2)-10;
+  var starty=output[1]*elementSize+(elementSize/2);
+  var endx=output[2]*elementSize+(elementSize/2)-10;
+  var endy=output[3]*elementSize+(elementSize/2);
+
+  context.moveTo(startx,starty);
+  context.arc(startx,starty, 15, 0,2*Math.PI,true);
+  context.lineWidth=30;
+  context.fill();
+  context.closePath();
+
+
+  context.beginPath()
+  context.moveTo(startx,starty);
+  // // End point (180,47)
+  context.lineTo(endx,endy);
+  context.stroke();
+  context.closePath();
+
+  // context.stroke();
+
+  context.beginPath();
+  context.moveTo(endx,endy);
+  context.arc(endx,endy,15, 0, 2 * Math.PI, true);
+  context.fill();
+  context.closePath();
+
+
+
+
+
+
+
+}
+
 
 
 
@@ -356,7 +513,8 @@ H5P.FindTheWords = (function($, UI) {
       var requiredMaxWidth = ITEM_MAX_SIZE * col;
 
       var containerWidth = $container.width();
-      var segmentWidth = Math.floor(containerWidth/3)
+      console.log(containerWidth);
+      var segmentWidth = containerWidth/3;
       var puzzleWidth;
       var vocabularyWidth;
       var elementWidth;
@@ -369,7 +527,7 @@ H5P.FindTheWords = (function($, UI) {
       }else{
         //diplay as two blocks
         puzzleWidth = containerWidth;
-        vocabulareWidth= containerWidth;
+        vocabularyWidth= containerWidth;
 
       }
 
@@ -400,7 +558,9 @@ H5P.FindTheWords = (function($, UI) {
       $container.addClass('h5p-word-find').append(self.$wrapper);
 
       self.puzzleContainer = $('<div class="puzzleContainer" style="height:'+canvasHeight+'px;width:'+canvasWidth+'px;"></div>').appendTo(self.$wrapper);
-      self.vocabularyContainer = $('<div class="vocabularyContainer" style="min-height:'+canvasHeight+'px"></div>').appendTo(self.$wrapper);
+      self.vocabularyContainer = $('<div class="vocabularyContainer"></div>').appendTo(self.$wrapper);
+
+
 
       var $gridCanvas = $('<canvas class="gridCanvas" height="'+canvasHeight+'px" width="'+canvasWidth+'px" />').appendTo(self.puzzleContainer);
 
@@ -409,15 +569,39 @@ H5P.FindTheWords = (function($, UI) {
       self.gamePuzzle.drawPuzzle($gridCanvas,elementSize,canvasWidth,canvasHeight);
       self.gamePuzzle.drawWords(self.vocabularyContainer);
 
+      wordList=self.gamePuzzle.wordList;
+
       var $outputCanvas =  $('<canvas class="outputCanvas" height="'+canvasHeight+'px" width="'+canvasWidth+'px"/>').appendTo(self.puzzleContainer);
+      var $drawingCanvas = $('<canvas class="drawingCanvas" height="'+canvasHeight+'px" width="'+canvasWidth+'px"/>').appendTo(self.puzzleContainer);
+      var canvas=$drawingCanvas[0];
+      var canvas2=$outputCanvas[0];
+      self.canvas2 = canvas2;
+      $drawingCanvas.on('mousedown',function(event){
+
+          self.timer.play();
+
+       $drawingCanvas.on('mouseup',function(event){
+         var output=mouseUpEventHandler(event,this);
+
+         canvas.getContext("2d").clearRect(0,0,canvasWidth,canvasHeight);
+
+         if(output){
 
 
-      $outputCanvas.on('mousedown',function(event){
+
+            self.drawOutput(output,canvas2,true);
 
 
-        // $gridCanvas.addEventListener('mouseup', mouseUpEventHandler);
-        // canvas.addEventListener('mousemove', mouseMoveEventHandler);
-        // canvas.addEventListener('mousedown', mouseDownEventHandler);
+         }
+
+       });
+       $drawingCanvas.on('mousemove',function(event){
+         mouseMoveEventHandler(event,this);
+       });
+       $drawingCanvas.on('mousedown',function(event){
+         mouseDownEventHandler(event,this);
+       });
+
 
         mouseDownEventHandler(event,this);
 
@@ -425,63 +609,35 @@ H5P.FindTheWords = (function($, UI) {
 
 
 
+      self.footerContainer = $('<div class="footerContainer"></div>');
+
+      self.$checkPuzzleButton = UI.createButton({
+        title: 'Show Solution',
+        click: function(event) {
+          // self.solve();
+          self.displayFeedback();
+        },
+        html: '<span><i class="fa fa-check" aria-hidden="true"></i></span>&nbsp;' + params.l10n.check
+      });
 
 
-      // var $canvas = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px" style="z-index:3"/>').appendTo(self.$wrapper);
-      // var $canvas2 = $('<canvas height="'+canvasHeight+'px" width="'+canvasWidth+'px" style="z-index:2"/>').appendTo(self.$wrapper);
-      //
-      //
-      // self.gamePuzzle.drawPuzzle(self.$wrapper,elementSize,canvasWidth,canvasHeight);
-      //
-      // canvas = $canvas[0];
-      // canvas2 = $canvas2[0];
-      // context = canvas.getContext("2d");
-      // context.strokeStyle = "#ff0000";
-      // context.lineJoin = "round";
-      // context.lineWidth = 25;
-      //
-      //
-      // $canvas.on('mousedown',function(event){
-      //  canvas.addEventListener('mouseup', mouseUpEventHandler);
-      //  canvas.addEventListener('mousemove', mouseMoveEventHandler);
-      //  canvas.addEventListener('mousedown', mouseDownEventHandler);
-      //  mouseDownEventHandler(event);
-      // });
-      // $canvas.on('drag',function(event){
-      //   console.log('mousemoving');
-      // });
-      // $canvas.on('dragend',function(event){
-      //   console.log(event.pageX);
-      // });
 
-      // self.puzzleContainer = $('<div class="puzzleContainer"></div>');
-      // self.vocabularyContainer = $('<div class="vocabularyContainer"></div>');
-      // self.footerContainer = $('<div class="footerContainer"></div>');
-      //
-      // self.$solvePuzzleButton = UI.createButton({
-      //   title: 'Show Solution',
-      //   click: function(event) {
-      //     self.solve();
-      //   },
-      //   html: '<span><i class="fa fa-eye" aria-hidden="true"></i></span>&nbsp;' + params.l10n.showSolution
-      // });
-      //
-      // if (self.$wrapper === undefined) {
-      //   self.$wrapper = $('<div class="gameContainer"/>', {
-      //     html: ''
-      //   });
-      // }
-      // self.gamePuzzle.drawPuzzle(self.puzzleContainer);
-      // self.gamePuzzle.drawWords(self.vocabularyContainer);
-      //
+
       // self.gamePuzzle.print(); // print the puzzle to console..useful for debugging
-      //
-      // self.$status = $('<dl class="sequencing-status">' + '<dt>' + 'parameters.l10n.timeSpent' + '</dt>' + '<dd class="h5p-time-spent">0:00</dd>' +
-      //     '</dl>');
-      //
-      //
-      // self.footerContainer.append(self.$status);
-      // self.footerContainer.append(self.$solvePuzzleButton);
+
+      self.$status = $('<dl class="sequencing-status">' + '<dt>' + 'parameters.l10n.timeSpent' + '</dt>' + '<dd class="h5p-time-spent">0:00</dd>' +
+          '<dt>' + 'words found' + '</dt>' + '<dd class="h5p-submits">0</dd></dl>');
+
+        self.$counter = $('<div class="counter-container" />');
+
+          var counterText = params.l10n.found;
+          counterText = counterText.replace('@found', '<span class="h5p-found">'+found+'</span>').replace('@totalWords', self.gamePuzzle.wordList.length);
+          self.$counter.html('<div class="feedback-text">' + counterText + '</div>');
+
+
+      self.footerContainer.append(self.$status);
+      self.footerContainer.append(self.$counter)
+      self.footerContainer.append(self.$checkPuzzleButton);
       // self.$wrapper.append(self.puzzleContainer);
       // self.$wrapper.append(self.vocabularyContainer);
       //
@@ -490,19 +646,32 @@ H5P.FindTheWords = (function($, UI) {
       //   $container.html('<div class="h5p-task-description" >' + params.taskDescription + '</div>');
       // }
       // $container.addClass('h5p-word-find').append(self.$wrapper);
-      // $container.append(self.footerContainer);
-      // self.$container = $container;
+      $container.append(self.footerContainer);
+
+      self.counter = new FindTheWords.Counter(self.$counter.find('.h5p-found'));
+      self.$container = $container;
       //
-      // self.timer = new FindTheWords.Timer(self.$status.find('.h5p-time-spent')[0]);
-      // self.puzzleContainer.find('.puzzleSquare').mousedown(startTurn);
-      // self.puzzleContainer.find('.puzzleSquare').mouseenter(mouseMove);
-      // self.puzzleContainer.find('.puzzleSquare').mouseup(endTurn);
-      //
-      //
-      // // when window size changes trigger resize function
-      // self.on('resize', function() {
-      //   self.resize();
-      // });
+      self.timer = new FindTheWords.Timer(self.$status.find('.h5p-time-spent')[0]);
+
+
+      // self.trigger('resize');
+
+      self.on('resize',function(){
+        console.log(self.vocabularyContainer.width());
+        console.log(self.$container.width());
+        console.log(self.puzzleContainer.width());
+        if(250+self.puzzleContainer.width() > self.$container.width()){
+          self.vocabularyContainer.removeClass('vocabularyInlineContainer').addClass('vocabularyBlockContainer');
+          self.vocabularyContainer.css('height','auto');
+          // self.$container.addClass('inline');
+
+        }else{
+            self.vocabularyContainer.removeClass('vocabularyBlockContainer').addClass('vocabularyInlineContainer');
+            self.vocabularyContainer.css('height',canvasHeight+'px');
+            // self.$container.removeClass('inline');
+        }
+
+      });
 
       self.trigger('resize');
 
