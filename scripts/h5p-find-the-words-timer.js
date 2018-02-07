@@ -1,7 +1,7 @@
 (function(FindTheWords, Timer) {
 
   /**
-   * Adapter between image sequencing and H5P.Timer
+   * Adapter between H5P.FindTheWords and H5P.Timer
    *
    * @class H5P.FindTheWords.Timer
    * @extends H5P.Timer

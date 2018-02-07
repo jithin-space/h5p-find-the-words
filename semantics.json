@@ -180,6 +180,14 @@
 				"description": "Feedback text, variables available: @found and @totalWords. Example: '@found of @totalWords found'"
 			},
 			{
+				"label": "Time Spent text",
+				"importance": "low",
+				"name": "timeSpent",
+				"type": "text",
+				"default": "Time Spent",
+				"description": "label for showing the time spent while playing the game"
+			},
+			{
 				"label": "Feedback text",
 				"importance": "low",
 				"name": "score",

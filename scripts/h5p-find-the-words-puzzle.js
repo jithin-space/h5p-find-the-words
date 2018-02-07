@@ -13,7 +13,8 @@
     EventDispatcher.call(this);
     // Letters that can be used to fill blanks
     var letters = 'abcdefghijklmnoprstuvwy';
-    var wordList, puzzle, directions, attempts = 0, opts = gameParams || {};
+    var wordList, puzzle, directions, attempts = 0,
+      opts = gameParams || {};
     var allOrientations = ['horizontal', 'horizontalBack', 'vertical', 'verticalUp',
       'diagonal', 'diagonalUp', 'diagonalBack', 'diagonalUpBack'
     ];
@@ -346,6 +347,10 @@
       return overlap;
     };
 
+    /*
+    * function for printing the puzzle in console
+    * useful for debugging
+    */
     this.print = function() {
       puzzle = this.puzzle;
       var puzzleString = '';
@@ -356,73 +361,62 @@
         }
         puzzleString += '\n';
       }
-
       console.log(puzzleString);
       return puzzleString;
     };
 
-    // this.drawPuzzle = function($container) {
-    //
-    //   var output = '';
-    //   var puzzle = this.puzzle;
-    //   // for each row in the puzzle
-    //   for (var i = 0, height = puzzle.length; i < height; i++) {
-    //     // append a div to represent a row in the puzzle
-    //     var row = puzzle[i];
-    //     output += '<div class="h5p-word-find-row">';
-    //     // for each element in that row
-    //     for (var j = 0, width = row.length; j < width; j++) {
-    //       // append our button with the appropriate class
-    //       output += '<div class="puzzleSquare" x="' + j + '" y="' + i + '"><span>';
-    //       output += row[j] || '&nbsp;';
-    //       output += '</span></div>';
-    //     }
-    //     // close our div that represents a row
-    //     output += '</div>';
-    //   }
-    //
-    //   $container.html(output);
-    // };
-
-    this.drawPuzzle = function($container,elementSize,canvasWidth,canvasHeight){
-
+    /*
+    * function for drawing the grid on the container
+    * with the specified width & height
+    */
+    this.drawPuzzle = function($container, elementSize, canvasWidth, canvasHeight) {
 
       var puzzle = this.puzzle;
-
+      if (elementSize === undefined)
+        elementSize = 64;
+      if (canvasWidth === undefined)
+        canvasWidth = elementSize * puzzle[0].length;
+      if (canvasHeight === undefined)
+        canvasHeight == elementSize * puzzle.length;
       var drawingCanvas = $container;
       var canvasElement = drawingCanvas[0];
       var ctx1 = canvasElement.getContext("2d");
       var rowHeight = elementSize;
       var colWidth = elementSize;
-
       ctx1.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
       for (var i = 0, height = puzzle.length; i < height; i++) {
         var letterRow = [];
         var row = puzzle[i];
         for (var j = 0, width = row.length; j < width; j++) {
-           ctx1.font =  (elementSize/3)+"px Arial";
-           ctx1.fillText(row[j].toUpperCase(), j * colWidth + (colWidth/2 -15), i * (rowHeight) + (colWidth/2 + 10));
-         }
-     }
-
-
+          ctx1.font = (elementSize / 3) + "px Arial";
+          ctx1.fillText(row[j].toUpperCase(), j * colWidth + (colWidth / 2 - 15), i * (rowHeight) + (colWidth / 2 + 10));
+        }
+      }
     }
+
+    /*
+    * function for creating the vocabulary listing inside the gamecontainer
+    */
     this.drawWords = function($container) {
       var words = this.wordList;
       var output = '<div class="vocHeading"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Find the words</div><ul>';
 
       for (var i = 0, len = words.length; i < len; i++) {
         var word = words[i];
-        output += '<li><div class="word ' + word + '"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;' + word+'</div></li>';
+        var classname = word.replace(/ /g, '');
+        output += '<li><div class="word ' + classname + '"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;' + word + '</div></li>';
       }
       output += '</ul>';
 
       $container.html(output);
     };
 
-    this.solve = function() {
-      var words = this.wordList;
+    /*
+    * function returning the solution of the puzzle if requested
+    */
+
+    this.solve = function(wordList) {
+      var words = wordList;
       var puzzle = this.puzzle;
       var options = {
           height: puzzle.length,
@@ -444,29 +438,16 @@
           notFound.push(word);
         }
       }
-
       return {
         found: found,
         notFound: notFound
       };
     };
 
-    var startSquare, selectedSquares = [],
-      curOrientation, curWord = '';
 
-
-
-    this.startTurn = function(obj) {
-      $(obj).addClass('selected');
-      startSquare = obj;
-      selectedSquares.push(obj);
-      curWord = $(obj).text();
-    };
-
-    this.mouseMove = function(obj) {
-      select(obj);
-    };
-
+    /*
+    * function for finding the orientation using the given the endpoints
+    */
     var calcOrientation = function(x1, y1, x2, y2) {
 
       for (var orientation in orientations) {
@@ -480,120 +461,6 @@
 
       return null;
     };
-
-    var select = function(target) {
-      // if the user hasn't started a word yet, just return
-
-      if (!startSquare) {
-        return;
-      }
-
-      // if the new square is actually the previous square, just return
-      var lastSquare = selectedSquares[selectedSquares.length - 1];
-      if (lastSquare == target) {
-        return;
-      }
-
-      // see if the user backed up and correct the selectedSquares state if
-      // they did
-      var backTo;
-      for (var i = 0, len = selectedSquares.length; i < len; i++) {
-        if (selectedSquares[i] == target) {
-          backTo = i + 1;
-          break;
-        }
-      }
-
-      while (backTo < selectedSquares.length) {
-        $(selectedSquares[selectedSquares.length - 1]).removeClass('selected');
-        selectedSquares.splice(backTo, 1);
-        curWord = curWord.substr(0, curWord.length - 1);
-      }
-
-
-      // see if this is just a new orientation from the first square
-      // this is needed to make selecting diagonal words easier
-      var newOrientation = calcOrientation(
-        $(startSquare).attr('x') - 0,
-        $(startSquare).attr('y') - 0,
-        $(target).attr('x') - 0,
-        $(target).attr('y') - 0
-      );
-
-      if (newOrientation) {
-        selectedSquares = [startSquare];
-        curWord = $(startSquare).text();
-        if (lastSquare !== startSquare) {
-          $(lastSquare).removeClass('selected');
-          lastSquare = startSquare;
-        }
-        curOrientation = newOrientation;
-      }
-
-      // see if the move is along the same orientation as the last move
-      var orientation = calcOrientation(
-        $(lastSquare).attr('x') - 0,
-        $(lastSquare).attr('y') - 0,
-        $(target).attr('x') - 0,
-        $(target).attr('y') - 0
-      );
-
-      // if the new square isn't along a valid orientation, just ignore it.
-      // this makes selecting diagonal words less frustrating
-      if (!orientation) {
-        return;
-      }
-
-      // finally, if there was no previous orientation or this move is along
-      // the same orientation as the last move then play the move
-      if (!curOrientation || curOrientation === orientation) {
-        curOrientation = orientation;
-        playTurn(target);
-      }
-
-    };
-
-    var playTurn = function(square) {
-
-      // make sure we are still forming a valid word
-      for (var i = 0, len = wordList.length; i < len; i++) {
-        if (wordList[i].indexOf(curWord + $(square).text()) === 0) {
-          $(square).addClass('selected');
-          selectedSquares.push(square);
-          curWord += $(square).text();
-          console.log("current word:" + curWord);
-          break;
-        }
-      }
-    };
-
-
-    this.endTurn = function(obj) {
-
-      var flag = false;
-      for (var i = 0, len = wordList.length; i < len; i++) {
-
-        if (wordList[i] === curWord) {
-          $('.selected').addClass('found');
-          wordList.splice(i, 1);
-          flag = true;
-          $('.' + curWord).addClass('wordFound');
-        }
-
-        if (wordList.length === 0) {
-          this.trigger('complete');
-        }
-      }
-
-      // reset the turn
-      $('.selected').removeClass('selected');
-      startSquare = null;
-      selectedSquares = [];
-      curWord = '';
-      curOrientation = null;
-      return flag;
-    };
-
 
     //  initialize the options
     var options = {
