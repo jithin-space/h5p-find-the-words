@@ -6,7 +6,6 @@ H5P.FindTheWords = (function($, UI) {
    * @class H5P.FindTheWords
    * @param {Object} params
    */
-
   function FindTheWords(params) {
 
     var self = this;
@@ -21,6 +20,8 @@ H5P.FindTheWords = (function($, UI) {
     var clickStart = [];
     var clickEnd = [];
     var wordList = [];
+    var outerMarkings=[];
+    var innerMarkings=[];
     var showVocabulary = params.behaviour.showVocabulary;
 
     /*
@@ -31,6 +32,7 @@ H5P.FindTheWords = (function($, UI) {
     var createGame = function() {
       return new FindTheWords.FindWordPuzzle(params);
     }
+
     /*
      * function to dynamically calculate the grid element size
      * based on the vocabulary status (not available,inline or block)
@@ -70,49 +72,103 @@ H5P.FindTheWords = (function($, UI) {
     }
 
     /*
+    * Function for drawing the marking one a word is found or marked as solved
+    * @private
+    * @param {Object} canvas
+    * @param {Number} endx
+    * @param {Number} endy
+    */
+    var drawLine = function(canvas, endx, endy) {
+      var context = canvas.getContext("2d");
+      var cordinates = calculateCordinates(endx,endy,canvas);
+      var dir = processDrawnLine(clickStart[2],clickStart[3],cordinates[2],cordinates[3]);
+      var dict = {
+        1 : [1,0],
+        2 : [-1,0],
+        3 : [1,1],
+        4 : [-1,1],
+        5 : [1,-1],
+        6 : [-1,-1],
+        7 : [0,1],
+        8 : [0,-1]
+      };
+      for(key in dict){
+        if(dict[key][0]==dir[0]&&dict[key][1]==dir[1]){
+          dirIndex=key;
+          break;
+        }
+      }
+      var startingAngle;
+      switch(dirIndex){
+        case '1':{
+              startingAngle = (Math.PI/2);
+              break;
+            }
+        case '2':{
+            startingAngle = -(Math.PI/2);
+            break;
+        }
+        case '3':{
+          startingAngle = 3*(Math.PI/4);
+          break;
+        }
+        case '4':{
+          startingAngle = 5*(Math.PI/4);
+          break;
+        }
+        case '5':{
+          startingAngle = (Math.PI/4);
+          break;
+        }
+        case '6':{
+          startingAngle = -(Math.PI/4);
+          break;
+        }
+        case '7':{
+          startingAngle = (Math.PI);
+          break;
+        }
+        case '8':{
+          startingAngle = 0;
+          break;
+        }
+      }
+      context.beginPath();
+      context.lineWidth = 2;
+      context.arc(clickStart[0] - 7.5, clickStart[1] + 5,15,startingAngle,startingAngle+(Math.PI));
+      context.arc(cordinates[0] - 7.5, cordinates[1] + 5,15,startingAngle+(Math.PI),startingAngle+(2*Math.PI));
+      context.closePath();
+      context.stroke();
+      context.fill();
+    }
+
+    /*
      * function for drawing the line in the cavas as per the mouse/touch movements
      * @private
-     * @param {CanvasRenderingContext2D} context
+     * @param {Object} canvas
      * @param {Number} endx
      * @param {Number} endy
      */
-
-
-    var drawLine = function(context, endx, endy) {
-
-      //draw the begining circle
+    var drawLineMarking = function(canvas, endx, endy) {
+      var context = canvas.getContext("2d");
       context.beginPath();
-      context.moveTo(clickStart[0], clickStart[1]);
-      context.arc(clickStart[0] - 7.5, clickStart[1] + 5, 15, 0, 2 * Math.PI, false);
-      context.fill();
-      //draw the line
-      context.beginPath()
-      context.globalCompositeOperation = '';
+      context.lineCap="round";
       context.moveTo(clickStart[0] - 7.5, clickStart[1] + 5);
+      context.strokeStyle = "rgba(107,177,125,0.4)";
       context.lineWidth = 30;
       context.lineTo(endx - 7.5, endy + 5);
       context.stroke();
       context.closePath();
-      // draw the ending circle
-      context.beginPath();
-      context.moveTo(endx, endy);
-      context.arc(endx - 7.5, endy + 5, 15, 0, 2 * Math.PI, true);
-      context.fill();
-
     }
 
     /*
      * function to calculate the cordinates & grid postions at which the event occured
      */
-    var calculateCordinates = function(e, canvas) {
-      var x, y;
-      x = e.pageX - $(canvas).offset().left;
-      y = e.pageY - $(canvas).offset().top;
+    var calculateCordinates = function(x,y, canvas) {
       var row1 = Math.floor(x / self.elementSize);
       var col1 = Math.floor(y / self.elementSize);
       var x_click = row1 * elementSize + (elementSize / 2);
       var y_click = col1 * elementSize + (elementSize / 2);
-
       return [x_click, y_click, row1, col1];
     }
 
@@ -138,23 +194,23 @@ H5P.FindTheWords = (function($, UI) {
      * returns directional value if it is a valid marking
      * else return false
      */
-    var processDrawnLine = function() {
-      var dirx = directionalValue(clickStart[2], clickEnd[2]);
-      var diry = directionalValue(clickStart[3], clickEnd[3]);
-      var y = clickStart[3];
-      var x = clickStart[2];
+    var processDrawnLine = function(x1,y1,x2,y2) {
+      var dirx = directionalValue(x1, x2);
+      var diry = directionalValue(y1, y2);
+      var y = y1;
+      var x = x1;
       if (dirx != 0) {
-        while (x != clickEnd[2]) {
+        while (x != x2) {
           x = x + dirx;
           y = y + diry;
         }
       } else {
-        while (y != clickEnd[3]) {
+        while (y != y2) {
           y = y + diry;
         }
       }
 
-      if (clickEnd[3] == y) {
+      if (y2 == y) {
         return [dirx, diry];
       } else {
         return false;
@@ -170,7 +226,7 @@ H5P.FindTheWords = (function($, UI) {
       if (enableDrawing) {
         paint = true;
       }
-      clickStart = calculateCordinates(e, canvas);
+      clickStart = calculateCordinates(e.pageX,e.pageY, canvas);
     }
 
     /*
@@ -185,9 +241,9 @@ H5P.FindTheWords = (function($, UI) {
       if (paint) {
         var context = canvas.getContext("2d");
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-        context.strokeStyle = "rgba(107,177,125,0.3)";
+        context.strokeStyle = "rgba(107,177,125,0.9)";
         context.fillStyle = "rgba(107,177,125,0.3)";
-        drawLine(context, x, y);
+        drawLineMarking(canvas, x, y);
       }
     }
 
@@ -198,7 +254,7 @@ H5P.FindTheWords = (function($, UI) {
     var mouseUpEventHandler = function(e, canvas) {
       var markedWord = '';
       if (paint) {
-        var cordinate = calculateCordinates(e, canvas);
+        var cordinate = calculateCordinates(e.pageX,e.pageY, canvas);
         var x = e.pageX - $(canvas).offset().left;
         var y = e.pageY - $(canvas).offset().top;
         var x_click = cordinate[0];
@@ -206,7 +262,7 @@ H5P.FindTheWords = (function($, UI) {
         if ((Math.abs(x_click - x) < 20) && (Math.abs(y_click - y) < 10)) {
           //drag ended within permissible orange
           clickEnd = cordinate;
-          var isDir = processDrawnLine();
+          var isDir = processDrawnLine(clickStart[2],clickStart[3],clickEnd[2],clickEnd[3]);
           //if it is a valid directional marking.
           if (isDir !== false) {
             var y1 = clickStart[3];
@@ -245,17 +301,17 @@ H5P.FindTheWords = (function($, UI) {
         if (showVocabulary) {
           self.$vocabularyContainer.find('.' + classname).addClass('word-found');
         }
-        context.strokeStyle = "rgba(107,177,125,0.3)";
-        context.fillStyle = "rgba(107,177,125,0.6)";
+        context.strokeStyle = "rgba(107,177,125,0.9)";
+        context.fillStyle = "rgba(107,177,125,0.3)";
       } else {
         if (showVocabulary) {
           self.$vocabularyContainer.find('.' + classname).addClass('word-solved');
         }
-        context.strokeStyle = "rgba(51, 102, 255,0.3)";
-        context.fillStyle = "rgba(51, 102, 255,0.6)";
-        context.setLineDash([1, 1])
+        context.strokeStyle = "rgba(51, 102, 255,0.9)";
+        context.fillStyle = "rgba(51, 102, 255,0.1)";
+        context.setLineDash([8, 4])
       }
-      drawLine(context, clickEnd[0], clickEnd[1]);
+      drawLine($canvas[0], clickEnd[0], clickEnd[1]);
     }
 
     /*
