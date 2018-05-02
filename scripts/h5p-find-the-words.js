@@ -226,7 +226,10 @@ H5P.FindTheWords = (function($, UI) {
       if (enableDrawing) {
         paint = true;
       }
-      clickStart = calculateCordinates(e.pageX,e.pageY, canvas);
+      x = e.pageX - $(canvas).offset().left;
+      y = e.pageY - $(canvas).offset().top;
+
+      clickStart = calculateCordinates(x,y, canvas);
     }
 
     /*
@@ -254,9 +257,10 @@ H5P.FindTheWords = (function($, UI) {
     var mouseUpEventHandler = function(e, canvas) {
       var markedWord = '';
       if (paint) {
-        var cordinate = calculateCordinates(e.pageX,e.pageY, canvas);
+
         var x = e.pageX - $(canvas).offset().left;
         var y = e.pageY - $(canvas).offset().top;
+        var cordinate = calculateCordinates(x,y, canvas);
         var x_click = cordinate[0];
         var y_click = cordinate[1];
         if ((Math.abs(x_click - x) < 20) && (Math.abs(y_click - y) < 10)) {
