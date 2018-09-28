@@ -65,49 +65,49 @@
 					{
 						"name": "horizontal",
 						"type": "boolean",
-						"label": "ToRight",
+						"label": "Horizontal-Left To Right",
 						"default": true
 					},
 					{
 						"name": "horizontalBack",
 						"type": "boolean",
-						"label": "ToLeft",
+						"label": "Horizontal-Right To Left",
 						"default": true
 					},
 					{
 						"name": "vertical",
 						"type": "boolean",
-						"label": "ToDown",
+						"label": "Vertical Downwards",
 						"default": true
 					},
 					{
 						"name": "verticalUp",
 						"type": "boolean",
-						"label": "ToTop",
+						"label": "Vertical Upwards",
 						"default": true
 					},
 					{
 						"name": "diagonal",
 						"type": "boolean",
-						"label": "ToRightDown",
+						"label": "Diagonal Downwards-Left To Right",
 						"default": true
 					},
 					{
 						"name": "diagonalBack",
 						"type": "boolean",
-						"label": "ToLeftDown",
+						"label": "Diagonal Downwards-Right To Left",
 						"default": true
 					},
 					{
 						"name": "diagonalUp",
 						"type": "boolean",
-						"label": "ToRightTop",
+						"label": "Diagonal Upwards-Left To Right",
 						"default": true
 					},
 					{
 						"name": "diagonalUpBack",
 						"type": "boolean",
-						"label": "ToLeftTop",
+						"label": "Diagonal Upwards-Right To Left",
 						"default": true
 					}
 				]

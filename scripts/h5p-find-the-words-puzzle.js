@@ -372,12 +372,15 @@
     this.drawPuzzle = function($container, elementSize, canvasWidth, canvasHeight) {
 
       var puzzle = this.puzzle;
-      if (elementSize === undefined)
+      if (elementSize === undefined){
         elementSize = 64;
-      if (canvasWidth === undefined)
+      }
+      if (canvasWidth === undefined){
         canvasWidth = elementSize * puzzle[0].length;
-      if (canvasHeight === undefined)
-        canvasHeight == elementSize * puzzle.length;
+      }
+      if (canvasHeight === undefined){
+        canvasHeight = elementSize * puzzle.length;
+      }
       var drawingCanvas = $container;
       var canvasElement = drawingCanvas[0];
       var ctx1 = canvasElement.getContext("2d");
@@ -385,14 +388,13 @@
       var colWidth = elementSize;
       ctx1.clearRect(0, 0, canvasElement.width, canvasElement.height);
       for (var i = 0, height = puzzle.length; i < height; i++) {
-        var letterRow = [];
         var row = puzzle[i];
         for (var j = 0, width = row.length; j < width; j++) {
           ctx1.font = (elementSize / 3) + "px Arial";
           ctx1.fillText(row[j].toUpperCase(), j * colWidth + (colWidth / 2 - 15), i * (rowHeight) + (colWidth / 2 + 10));
         }
       }
-    }
+    };
 
     /*
     * function for creating the vocabulary listing inside the gamecontainer

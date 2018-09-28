@@ -5,6 +5,7 @@
 	"majorVersion": 1,
 	"minorVersion": 2,
 	"patchVersion": 0,
+	"embedTypes": ["iframe"],
 	"runnable": 1,
 	"author": "JithinSpace",
 	"license": "MIT",
