@@ -1,4 +1,4 @@
-(function(FindTheWords, EventDispatcher, $) {
+(function (FindTheWords, EventDispatcher, $) {
 
   /**
    * Controls all the operations on the puzzle
@@ -7,7 +7,7 @@
    * @extends H5P.EventDispatcher
    * @param {Object} gameParams
    */
-  FindTheWords.FindWordPuzzle = function(gameParams) {
+  FindTheWords.FindWordPuzzle = function (gameParams) {
 
     // Initialize event inheritance
     EventDispatcher.call(this);
@@ -22,49 +22,49 @@
     // get i th element position based on the current position for different orientations
 
     var orientations = {
-      horizontal: function(x, y, i) {
+      horizontal: function (x, y, i) {
         return {
           x: x + i,
           y: y
         };
       },
-      horizontalBack: function(x, y, i) {
+      horizontalBack: function (x, y, i) {
         return {
           x: x - i,
           y: y
         };
       },
-      vertical: function(x, y, i) {
+      vertical: function (x, y, i) {
         return {
           x: x,
           y: y + i
         };
       },
-      verticalUp: function(x, y, i) {
+      verticalUp: function (x, y, i) {
         return {
           x: x,
           y: y - i
         };
       },
-      diagonal: function(x, y, i) {
+      diagonal: function (x, y, i) {
         return {
           x: x + i,
           y: y + i
         };
       },
-      diagonalBack: function(x, y, i) {
+      diagonalBack: function (x, y, i) {
         return {
           x: x - i,
           y: y + i
         };
       },
-      diagonalUp: function(x, y, i) {
+      diagonalUp: function (x, y, i) {
         return {
           x: x + i,
           y: y - i
         };
       },
-      diagonalUpBack: function(x, y, i) {
+      diagonalUpBack: function (x, y, i) {
         return {
           x: x - i,
           y: y - i
@@ -80,28 +80,28 @@
     // the specified orientation.
 
     var checkOrientations = {
-      horizontal: function(x, y, h, w, l) {
+      horizontal: function (x, y, h, w, l) {
         return w >= x + l;
       },
-      horizontalBack: function(x, y, h, w, l) {
+      horizontalBack: function (x, y, h, w, l) {
         return x + 1 >= l;
       },
-      vertical: function(x, y, h, w, l) {
+      vertical: function (x, y, h, w, l) {
         return h >= y + l;
       },
-      verticalUp: function(x, y, h, w, l) {
+      verticalUp: function (x, y, h, w, l) {
         return y + 1 >= l;
       },
-      diagonal: function(x, y, h, w, l) {
+      diagonal: function (x, y, h, w, l) {
         return (w >= x + l) && (h >= y + l);
       },
-      diagonalBack: function(x, y, h, w, l) {
+      diagonalBack: function (x, y, h, w, l) {
         return (x + 1 >= l) && (h >= y + l);
       },
-      diagonalUp: function(x, y, h, w, l) {
+      diagonalUp: function (x, y, h, w, l) {
         return (w >= x + l) && (y + 1 >= l);
       },
-      diagonalUpBack: function(x, y, h, w, l) {
+      diagonalUpBack: function (x, y, h, w, l) {
         return (x + 1 >= l) && (y + 1 >= l);
       }
     };
@@ -113,49 +113,49 @@
 
 
     var skipOrientations = {
-      horizontal: function(x, y, l) {
+      horizontal: function (x, y, l) {
         return {
           x: 0,
           y: y + 1
         };
       },
-      horizontalBack: function(x, y, l) {
+      horizontalBack: function (x, y, l) {
         return {
           x: l - 1,
           y: y
         };
       },
-      vertical: function(x, y, l) {
+      vertical: function (x, y, l) {
         return {
           x: 0,
           y: y + 100
         };
       },
-      verticalUp: function(x, y, l) {
+      verticalUp: function (x, y, l) {
         return {
           x: 0,
           y: l - 1
         };
       },
-      diagonal: function(x, y, l) {
+      diagonal: function (x, y, l) {
         return {
           x: 0,
           y: y + 1
         };
       },
-      diagonalBack: function(x, y, l) {
+      diagonalBack: function (x, y, l) {
         return {
           x: l - 1,
           y: x >= l - 1 ? y + 1 : y
         };
       },
-      diagonalUp: function(x, y, l) {
+      diagonalUp: function (x, y, l) {
         return {
           x: 0,
           y: y < l - 1 ? l - 1 : y + 1
         };
       },
-      diagonalUpBack: function(x, y, l) {
+      diagonalUpBack: function (x, y, l) {
         return {
           x: l - 1,
           y: x >= l - 1 ? y + 1 : y
@@ -165,7 +165,7 @@
 
     // copy and sort the words by length, inserting words into the puzzle
     // from longest to shortest works out the best
-    wordList = gameParams.vocabulary.slice(0).sort(function(a, b) {
+    wordList = gameParams.vocabulary.slice(0).sort(function (a, b) {
       return (a.length < b.length) ? 1 : 0;
     });
 
@@ -174,7 +174,7 @@
 
     //for removing locations that are exceeding maximum overlap value;
 
-    var pruneLocations = function(locations, overlap) {
+    var pruneLocations = function (locations, overlap) {
       var pruned = [];
       for (var i = 0, len = locations.length; i < len; i++) {
         if (locations[i].overlap >= overlap) {
@@ -187,7 +187,7 @@
 
     // An adapter between original code and h5p parameters
 
-    var processOrientations = function(directions) {
+    var processOrientations = function (directions) {
 
       var orientations = [];
       for (var key in directions) {
@@ -201,7 +201,7 @@
 
     directions = processOrientations(opts.behaviour.orientations);
 
-    var fillPuzzle = function(words, options) {
+    var fillPuzzle = function (words, options) {
 
       var puzzle = [],
         i, j, len;
@@ -226,7 +226,7 @@
       return puzzle;
     };
 
-    var fillBlanks = function(puzzle) {
+    var fillBlanks = function (puzzle) {
       for (var i = 0, height = puzzle.length; i < height; i++) {
         var row = puzzle[i];
         for (var j = 0, width = row.length; j < width; j++) {
@@ -238,7 +238,7 @@
         }
       }
     };
-    var placeWordInPuzzle = function(puzzle, options, word) {
+    var placeWordInPuzzle = function (puzzle, options, word) {
 
       // find all of the best locations where this word would fit
       var locations = findBestLocations(puzzle, options, word);
@@ -254,7 +254,7 @@
       return true;
     };
 
-    var findBestLocations = function(puzzle, options, word) {
+    var findBestLocations = function (puzzle, options, word) {
       var locations = [],
         height = options.height,
         width = options.width,
@@ -296,7 +296,8 @@
               x = 0;
               y++;
             }
-          } else {
+          }
+          else {
             // if current cell is invalid, then skip to the next cell where
             // this orientation is possible. this greatly reduces the number
             // of checks that we have to do overall
@@ -314,14 +315,14 @@
         pruneLocations(locations, maxOverlap) :
         locations;
     };
-    var placeWord = function(puzzle, word, x, y, fnGetSquare) {
+    var placeWord = function (puzzle, word, x, y, fnGetSquare) {
       for (var i = 0, len = word.length; i < len; i++) {
         var next = fnGetSquare(x, y, i);
         puzzle[next.y][next.x] = word[i];
       }
     };
 
-    var calcOverlap = function(word, puzzle, x, y, fnGetSquare) {
+    var calcOverlap = function (word, puzzle, x, y, fnGetSquare) {
       var overlap = 0;
 
       // traverse the squares to determine if the word fits
@@ -351,7 +352,7 @@
     * function for printing the puzzle in console
     * useful for debugging
     */
-    this.print = function() {
+    this.print = function () {
       puzzle = this.puzzle;
       var puzzleString = '';
       for (var i = 0, height = puzzle.length; i < height; i++) {
@@ -361,7 +362,7 @@
         }
         puzzleString += '\n';
       }
-      console.log(puzzleString);
+
       return puzzleString;
     };
 
@@ -369,16 +370,16 @@
     * function for drawing the grid on the container
     * with the specified width & height
     */
-    this.drawPuzzle = function($container, elementSize, canvasWidth, canvasHeight) {
+    this.drawPuzzle = function ($container, elementSize, canvasWidth, canvasHeight) {
 
       var puzzle = this.puzzle;
-      if (elementSize === undefined){
+      if (elementSize === undefined) {
         elementSize = 64;
       }
-      if (canvasWidth === undefined){
+      if (canvasWidth === undefined) {
         canvasWidth = elementSize * puzzle[0].length;
       }
-      if (canvasHeight === undefined){
+      if (canvasHeight === undefined) {
         canvasHeight = elementSize * puzzle.length;
       }
       var drawingCanvas = $container;
@@ -399,7 +400,7 @@
     /*
     * function for creating the vocabulary listing inside the gamecontainer
     */
-    this.drawWords = function($container) {
+    this.drawWords = function ($container) {
       var words = this.wordList;
       var output = '<div class="vocHeading"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Find the words</div><ul>';
 
@@ -417,7 +418,7 @@
     * function returning the solution of the puzzle if requested
     */
 
-    this.solve = function(wordList) {
+    this.solve = function (wordList) {
       var words = wordList;
       var puzzle = this.puzzle;
       var options = {
@@ -436,7 +437,8 @@
         if (locations.length > 0 && locations[0].overlap === word.length) {
           locations[0].word = word;
           found.push(locations[0]);
-        } else {
+        }
+        else {
           notFound.push(word);
         }
       }
