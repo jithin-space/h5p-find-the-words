@@ -1,4 +1,4 @@
-H5P.FindTheWords = (function($, UI) {
+H5P.FindTheWords = (function ($, UI) {
 
   /**
    * FindTheWords Constructor
@@ -28,7 +28,7 @@ H5P.FindTheWords = (function($, UI) {
      * @private
      * @param {Object} params
      */
-    var createGame = function() {
+    var createGame = function () {
       return new FindTheWords.FindWordPuzzle(params);
     };
 
@@ -38,10 +38,10 @@ H5P.FindTheWords = (function($, UI) {
      * @private
      * @param {Boolean} isBlock
      */
-    var calculateElementSize = function(isBlock) {
+    var calculateElementSize = function (isBlock) {
       var puzzle = self.game.puzzle;
       var col = puzzle[0].length;
-          var availableWidth = self.$gameWrapper.width();
+      var availableWidth = self.$gameWrapper.width();
 
       if (self.vocabularyWidth !== undefined && !isBlock) {
         //we need to give space for vocabulary
@@ -54,10 +54,12 @@ H5P.FindTheWords = (function($, UI) {
       if ((elementWidth > ELEMENT_MIN_SIZE) && (elementWidth < ELEMENT_MAX_SIZE)) {
         //if element width is inside the permissible ranges
         elementSize = elementWidth;
-      } else if (elementWidth > 64) {
+      }
+      else if (elementWidth > 64) {
         // calculated width is greater than maximum allowed value
         elementSize = ELEMENT_MAX_SIZE;
-      } else {
+      }
+      else {
         // calculated width is less than the minimum allowed value
         elementSize = ELEMENT_MIN_SIZE;
       }
@@ -73,7 +75,7 @@ H5P.FindTheWords = (function($, UI) {
     * @param {Number} endx
     * @param {Number} endy
     */
-    var drawLine = function(canvas, endx, endy) {
+    var drawLine = function (canvas, endx, endy) {
       var context = canvas.getContext("2d");
       var dirIndex;
       var cordinates = calculateCordinates(endx,endy,canvas);
@@ -86,45 +88,45 @@ H5P.FindTheWords = (function($, UI) {
         5 : [1,-1],
         6 : [-1,-1],
         7 : [0,1],
-        8 : [0,-1]
+        8  : [0,-1]
       };
-      for(var key in dict){
-        if(dict[key][0]==dir[0]&&dict[key][1]==dir[1]){
+      for (var key in dict) {
+        if (dict[key][0]==dir[0]&&dict[key][1]==dir[1]) {
           dirIndex=key;
           break;
         }
       }
       var startingAngle;
-      switch(dirIndex){
-        case '1':{
-              startingAngle = (Math.PI/2);
-              break;
-            }
-        case '2':{
-            startingAngle = -(Math.PI/2);
-            break;
+      switch (dirIndex) {
+        case '1': {
+          startingAngle = (Math.PI/2);
+          break;
         }
-        case '3':{
+        case '2': {
+          startingAngle = -(Math.PI/2);
+          break;
+        }
+        case '3': {
           startingAngle = 3*(Math.PI/4);
           break;
         }
-        case '4':{
+        case '4': {
           startingAngle = 5*(Math.PI/4);
           break;
         }
-        case '5':{
+        case '5': {
           startingAngle = (Math.PI/4);
           break;
         }
-        case '6':{
+        case '6': {
           startingAngle = -(Math.PI/4);
           break;
         }
-        case '7':{
+        case '7': {
           startingAngle = (Math.PI);
           break;
         }
-        case '8':{
+        case '8': {
           startingAngle = 0;
           break;
         }
@@ -145,7 +147,7 @@ H5P.FindTheWords = (function($, UI) {
      * @param {Number} endx
      * @param {Number} endy
      */
-    var drawLineMarking = function(canvas, endx, endy) {
+    var drawLineMarking = function (canvas, endx, endy) {
       var context = canvas.getContext("2d");
       context.beginPath();
       context.lineCap="round";
@@ -160,7 +162,7 @@ H5P.FindTheWords = (function($, UI) {
     /*
      * function to calculate the cordinates & grid postions at which the event occured
      */
-    var calculateCordinates = function(x,y, canvas) {
+    var calculateCordinates = function (x,y, canvas) {
       var row1 = Math.floor(x / self.elementSize);
       var col1 = Math.floor(y / self.elementSize);
       var x_click = row1 * elementSize + (elementSize / 2);
@@ -172,13 +174,15 @@ H5P.FindTheWords = (function($, UI) {
      * function to calulate the directional increment value
      * based on the endpoints given
      */
-    var directionalValue = function(cordinate1, cordinate2) {
+    var directionalValue = function (cordinate1, cordinate2) {
       var dirIncr;
       if (cordinate2 > cordinate1) {
         dirIncr = 1;
-      } else if (cordinate2 < cordinate1) {
+      }
+      else if (cordinate2 < cordinate1) {
         dirIncr = -1;
-      } else {
+      }
+      else {
         dirIncr = 0;
       }
       return dirIncr;
@@ -190,7 +194,7 @@ H5P.FindTheWords = (function($, UI) {
      * returns directional value if it is a valid marking
      * else return false
      */
-    var processDrawnLine = function(x1,y1,x2,y2) {
+    var processDrawnLine = function (x1,y1,x2,y2) {
       var dirx = directionalValue(x1, x2);
       var diry = directionalValue(y1, y2);
       var y = y1;
@@ -200,7 +204,8 @@ H5P.FindTheWords = (function($, UI) {
           x = x + dirx;
           y = y + diry;
         }
-      } else {
+      }
+      else {
         while (y != y2) {
           y = y + diry;
         }
@@ -208,7 +213,8 @@ H5P.FindTheWords = (function($, UI) {
 
       if (y2 == y) {
         return [dirx, diry];
-      } else {
+      }
+      else {
         return false;
       }
 
@@ -218,7 +224,7 @@ H5P.FindTheWords = (function($, UI) {
      * event handler for handling mousedown event
      * @private
      */
-    var mouseDownEventHandler = function(e, canvas) {
+    var mouseDownEventHandler = function (e, canvas) {
       if (enableDrawing) {
         paint = true;
       }
@@ -233,7 +239,7 @@ H5P.FindTheWords = (function($, UI) {
      * @private
      */
 
-    var mouseMoveEventHandler = function(e, canvas) {
+    var mouseMoveEventHandler = function (e, canvas) {
       var x, y;
       x = e.pageX - $(canvas).offset().left;
       y = e.pageY - $(canvas).offset().top;
@@ -250,7 +256,7 @@ H5P.FindTheWords = (function($, UI) {
      * event handler for handling mouseup events
      * @private
      */
-    var mouseUpEventHandler = function(e, canvas) {
+    var mouseUpEventHandler = function (e, canvas) {
       var markedWord = '';
       if (paint) {
 
@@ -295,7 +301,7 @@ H5P.FindTheWords = (function($, UI) {
      * used also for showing the solution if solved is false
      * @private
      */
-    var makeWordFound = function(word, $canvas, solved) {
+    var makeWordFound = function (word, $canvas, solved) {
       var context = $canvas[0].getContext("2d");
       var classname = word.replace(/ /g, '');
       if (solved) {
@@ -304,7 +310,8 @@ H5P.FindTheWords = (function($, UI) {
         }
         context.strokeStyle = "rgba(107,177,125,0.9)";
         context.fillStyle = "rgba(107,177,125,0.3)";
-      } else {
+      }
+      else {
         if (showVocabulary) {
           self.$vocabularyContainer.find('.' + classname).addClass('word-solved');
         }
@@ -320,7 +327,7 @@ H5P.FindTheWords = (function($, UI) {
      * @private
      */
 
-    var touchHandler = function(event) {
+    var touchHandler = function (event) {
       var touches = event.changedTouches,
         first = touches[0],
         type = "";
@@ -353,7 +360,7 @@ H5P.FindTheWords = (function($, UI) {
      * function to trigger when the user clicks on the show solution button
      * @public
      */
-    self.solvePuzzle = function(wordList) {
+    self.solvePuzzle = function (wordList) {
       self.$solvePuzzleButton.remove();
       var solution = self.game.solve(wordList).found;
       for (var i = 0, len = solution.length; i < len; i++) {
@@ -396,7 +403,7 @@ H5P.FindTheWords = (function($, UI) {
      * function to trigger when the user clicks on the check button
      * @public
      */
-    self.displayFeedback = function() {
+    self.displayFeedback = function () {
 
       var totalScore = self.game.wordList.length;
       self.timer.stop();
@@ -404,7 +411,7 @@ H5P.FindTheWords = (function($, UI) {
       //create the retry button
       self.$retryButton = UI.createButton({
         title: 'retryButton',
-        click: function(event) {
+        click: function (event) {
           self.retry();
         },
         html: '<span><i class="fa fa-refresh" aria-hidden="true"></i></span>&nbsp;' + params.l10n.tryAgain
@@ -435,7 +442,7 @@ H5P.FindTheWords = (function($, UI) {
      * function to attach the footer section to gamecontainer
      * @public
      */
-    self.attachFooter = function($container) {
+    self.attachFooter = function ($container) {
       self.$footerContainer = $('<div class="footer-container"></div>');
       self.$statusContainer = $('<div class="status-container"></div>');
       self.$timeStatus = $('<div class="time-status"><span><i class="fa fa-clock-o" aria-hidden="true"></i></span>&nbsp;' + params.l10n.timeSpent + '&nbsp;:&nbsp;<span class="h5p-time-spent">0:00</span></div>').appendTo(self.$statusContainer);
@@ -446,7 +453,7 @@ H5P.FindTheWords = (function($, UI) {
       //creating the check button
       self.$checkPuzzleButton = UI.createButton({
         title: 'Show Solution',
-        click: function(event) {
+        click: function (event) {
           self.displayFeedback();
         },
         html: '<span><i class="fa fa-check" aria-hidden="true"></i></span>&nbsp;' + params.l10n.check
