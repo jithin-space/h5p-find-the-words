@@ -124,7 +124,7 @@
 				"type": "number",
 				"label": "Maximum Attempts",
 				"description": "Specifies the maximum number of attempts to create a valid puzzle of a certain size.   If a valid puzzle cannot be constructed after maxAttempts have been made, the puzzle height and width are incremented by one and the number of attempts is reset. ",
-				"default": "3"
+				"default": 3
 			},
 			{
 				"name": "preferOverlap",

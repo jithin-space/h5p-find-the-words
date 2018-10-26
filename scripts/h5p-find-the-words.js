@@ -3,7 +3,6 @@ H5P.FindTheWords = (function ($, UI) {
   function FindTheWords(options, id, extras) {
     this.id = id;
     this.extras = extras;
-
     this.numFound = 0;
 
     // TODO : fill default parameters
@@ -11,11 +10,21 @@ H5P.FindTheWords = (function ($, UI) {
 
     H5P.EventDispatcher.call(this);
 
+    const gridParams = {
+      height: options.behaviour.gridDimensions.height,
+      width: options.behaviour.gridDimensions.width,
+      orientations: filterOrientations(options.behaviour.orientations),
+      fillBlanks: options.behaviour.fillBlanks,
+      maxAttempts: options.behaviour.maxAttempts,
+      preferOverlap: options.behaviour.preferOverlap,
+      vocabulary: options.vocabulary
+    }
+
+    this.wordGrid = new FindTheWords.WordGrid(gridParams);
+    //TODO : separate vocabulary as a separate class
+    this.vocabulary = new FindTheWords.Vocabulary(this.options.vocabulary);
 
     this.registerDOMElements();
-
-
-
 
   }
 
@@ -25,12 +34,16 @@ H5P.FindTheWords = (function ($, UI) {
 
   //private and all prototype function goes there
 
+  const filterOrientations = function (directions) {
+    return Object.keys(directions).filter(function (key) {
+      return directions[key];
+    });
+  };
+
+
   FindTheWords.prototype.registerDOMElements = function () {
 
-    this.wordGrid = new FindTheWords.WordGrid(this.options);
-    //TODO : separate vocabulary as a separate class
-    this.vocabulary = new FindTheWords.Vocabulary(this.options);
-
+    
 
     this.$timer = $('<div/>',{
       class: 'time-status',
@@ -67,9 +80,6 @@ H5P.FindTheWords = (function ($, UI) {
       this.$retryButton = this.createButton('retry', 'undo', this.params.l10n.tryAgain, this.resetTask);
     }
 
-
-
-
     this.$footerContainer = $('<div class="footer-container" />');
     this.$statusContainer = $('<div class="game-status"/>');
     this.$feedbackContainer = $('<div class="sequencing-feedback"/>');
@@ -103,11 +113,13 @@ H5P.FindTheWords = (function ($, UI) {
     });
 
     if (this.wordGrid) {
-      this.wordGrid.appendTo(this.$gameContainer);
+      if (this.options.behaviour.showVocabulary) {
+        this.wordGrid.appendTo(this.$gameContainer);
+        this.vocabulary.appendTo(this.$gameContainer);
+      }
+
     }
-    if (this.options.behaviour.showVocabulary) {
-      this.vocabulary.appendTo(this.$gameContainer);
-    }
+
 
     this.$timer.appendTo(this.$statusContainer);
     this.$counter.appendTo(this.$statusContainer);
@@ -126,7 +138,7 @@ H5P.FindTheWords = (function ($, UI) {
     //append description , cards and footer to main container.
     this.$taskDescription.appendTo(this.$container);
     this.$gameContainer.appendTo(this.$container);
-    this.$gameContainer.appendTo(this.$container);
+    this.$footerContainer.appendTo(this.$container);
 
   }
 

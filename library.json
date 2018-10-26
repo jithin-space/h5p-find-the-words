@@ -19,7 +19,10 @@
 			"path": "scripts/h5p-find-the-words.js"
 		},
 		{
-			"path": "scripts/h5p-find-the-words-puzzle.js"
+			"path": "scripts/h5p-find-the-words-word-grid.js"
+		},
+		{
+			"path": "scripts/h5p-find-the-words-vocabulary.js"
 		},
 		{
 			"path": "scripts/h5p-find-the-words-timer.js"
