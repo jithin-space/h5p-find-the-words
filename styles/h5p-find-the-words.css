@@ -16,10 +16,10 @@
  .h5p-find-the-words .game-container{
     /*text-align: center;
     */
+    position: relative;
+    display: table;
 }
- .h5p-find-the-words .game-container > div{
-     display:inline-block;
-}
+
  .h5p-find-the-words .canvas-element{
      position:absolute;
      top:0;
@@ -27,6 +27,15 @@
 }
  .h5p-find-the-words .puzzle-container{
      position: relative;
+
+}
+
+.h5p-find-the-words .puzzle-inline{
+  display: table-cell;
+}
+
+.h5p-find-the-words .puzzle-block{
+  display:table-row;
 }
  .h5p-find-the-words .vocabulary-container{
      background-color:#eeeeee;
@@ -54,13 +63,15 @@
      height:auto !important;
      overflow-x: auto;
      width:100% !important;
+     display: table-row;
 }
  .h5p-find-the-words .vocabulary-block-container li{
      float:left;
 }
  .h5p-find-the-words .vocabulary-inline-container{
-     width:auto !important;
+     width: auto !important;
      overflow-y: auto;
+     display: table-cell;
 }
  .h5p-find-the-words .vocabulary-container .word-found {
      color: green;
@@ -87,12 +98,25 @@
  .h5p-find-the-words .footer-container {
      border-top: 1px solid #eeeeee;
      position: relative;
-     top: -8px;
      padding:8px;
 }
  .h5p-find-the-words .feedback-container {
      clear:both;
      padding:8px;
+     display: none;
+
+}
+
+.h5p-find-the-words .feedback-show {
+    clear:both;
+    padding:8px;
+    display: block;
+
+}
+
+.h5p-find-the-words .button-container {
+  clear:both;
+  padding: 8px;
 }
  .h5p-find-the-words .time-status {
      display:inline-block;
@@ -109,6 +133,6 @@
      color: rgb(26, 115, 217);
      position: relative;
 }
- .h5p-find-the-words .h5p-found , .h5p-find-the-words .total-words, .h5p-find-the-words .h5p-time-spent{
+ .h5p-find-the-words .h5p-found , .h5p-find-the-words .counter-status  span, .h5p-find-the-words .h5p-time-spent{
      font-weight: bold;
 }

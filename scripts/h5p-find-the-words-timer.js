@@ -1,43 +1,43 @@
 (function (FindTheWords, Timer) {
 
   /**
-   * Adapter between H5P.FindTheWords and H5P.Timer
+   * FindTheWords.Timer - Adapter between image sequencing and H5P.Timer
    *
    * @class H5P.FindTheWords.Timer
    * @extends H5P.Timer
-   * @param {Element} element
+   * @param {H5P.jQuery} $element
    */
-  FindTheWords.Timer = function (element) {
+  FindTheWords.Timer = function ($element) {
     /** @alias H5P.FindTheWords.Timer# */
-    var self = this;
+    const that = this;
     // Initialize event inheritance
-    Timer.call(self, 100);
+    Timer.call(that, 100);
+
     /** @private {string} */
-    var naturalState = element.innerText;
+    const naturalState = '0:00';
+
     /**
-     * Set up callback for time updates.
+     * update - Set up callback for time updates.
      * Formats time stamp for humans.
      *
      * @private
      */
+    const update = function () {
+      const time = that.getTime();
 
-    var update = function () {
-      var time = self.getTime();
-
-      var minutes = Timer.extractTimeElement(time, 'minutes');
-      var seconds = Timer.extractTimeElement(time, 'seconds') % 60;
+      const minutes = Timer.extractTimeElement(time, 'minutes');
+      let seconds = Timer.extractTimeElement(time, 'seconds') % 60;
       if (seconds < 10) {
         seconds = '0' + seconds;
       }
-
-      element.innerText = minutes + ':' + seconds;
+      $element.text(minutes + ':' + seconds);
     };
 
     // Setup default behavior
-    self.notify('every_tenth_second', update);
-    self.on('reset', function () {
-      element.innerText = naturalState;
-      self.notify('every_tenth_second', update);
+    that.notify('every_tenth_second', update);
+    that.on('reset', function () {
+      $element.text(naturalState);
+      that.notify('every_tenth_second', update);
     });
   };
 
@@ -45,4 +45,4 @@
   FindTheWords.Timer.prototype = Object.create(Timer.prototype);
   FindTheWords.Timer.prototype.constructor = FindTheWords.Timer;
 
-})(H5P.FindTheWords, H5P.Timer);
+}) (H5P.FindTheWords, H5P.Timer);

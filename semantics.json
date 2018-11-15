@@ -139,6 +139,20 @@
 				"label": "Show Vocabulary",
 				"description": "Determines whether to show vocabularies to the player",
 				"default": true
+			},
+			{
+				"name": "enableShowSolution",
+				"type": "boolean",
+				"label": "Enable Show Solution",
+				"description": "Add a show solution button for the game",
+				"default": true
+			},
+			{
+				"name": "enableRetry",
+				"type": "boolean",
+				"label": "Enable Retry",
+				"description": "Add a retry button for the game",
+				"default": true
 			}
 
 		]
