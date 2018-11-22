@@ -374,22 +374,22 @@
 
 
 
-    const offsetTop = ($(canvas).offset().top > eSize*0.75)? Math.floor($(canvas).offset().top/2): $(canvas).offset().top;
+    const offsetTop = ($(canvas).offset().top > eSize*0.75)? Math.floor(eSize*0.75): $(canvas).offset().top;
 
     const desX = e.pageX - $(canvas).offset().left;
-    const desY = e.pageY - offsetTop;
+    const desY = e.pageY - Math.abs(offsetTop);
 
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    context.strokeStyle = "rgba(107,177,125,0.9)";
+    // context.strokeStyle = "rgba(107,177,125,0.9)";
     context.fillStyle = "rgba(107,177,125,0.3)";
 
     context.beginPath();
     context.lineCap="round";
-    context.moveTo(srcPos[0] - (eSize/8), srcPos[1] + (eSize/16));
+    context.moveTo(srcPos[0] - (eSize/8), srcPos[1] + (offsetTop/8));
     context.strokeStyle = "rgba(107,177,125,0.4)";
     context.lineWidth = Math.floor(eSize/2);
-    context.lineTo(desX - (eSize/8), desY +(eSize/16));
+    context.lineTo(desX - (eSize/8), desY +(offsetTop/8));
     context.stroke();
     context.closePath();
 
@@ -402,11 +402,12 @@
    */
   var mouseUpEventHandler = function (e, canvas,elementSize, clickStart) {
     let wordObject = {};
+    const offsetTop = ($(canvas).offset().top > elementSize*0.75)? Math.floor(elementSize*0.75)*(-1): $(canvas).offset().top;
     const x = e.pageX - $(canvas).offset().left;
-    const y = e.pageY - $(canvas).offset().top;
+    const y = e.pageY - Math.abs(offsetTop);
     const clickEnd = calculateCordinates(x,y, elementSize);
 
-    if ((Math.abs(clickEnd[0] - x) < 20) && (Math.abs(clickEnd[1] - y) < 10)) {
+    if ((Math.abs(clickEnd[0] - x) < 20) && (Math.abs(clickEnd[1] - y) < 15)) {
       //drag ended within permissible range
       wordObject = {
         'start': clickStart,
@@ -420,6 +421,37 @@
     return wordObject;
   };
 
+
+  const touchHandler = function (event) {
+
+    const touches = event.changedTouches;
+    const  first = touches[0];
+    const simulatedEvent = document.createEvent('MouseEvent');
+    let type = '';
+
+    switch (event.type) {
+      case 'touchstart':
+        type = "mousedown";
+        break;
+      case 'touchmove':
+        type = "mousemove";
+        break;
+      case 'touchend':
+        type = "mouseup";
+        break;
+      default:
+        return;
+    }
+
+
+    simulatedEvent.initMouseEvent(type, true, true, window, 1,
+      first.screenX, first.screenY,
+      first.clientX, first.clientY, false,
+      false, false, false, 0 /*left*/ , null);
+
+    first.target.dispatchEvent(simulatedEvent);
+    event.preventDefault();
+  };
 
 
 
@@ -496,6 +528,8 @@
 
   FindTheWords.WordGrid.prototype.markWord = function (wordParams) {
     const context = this.$outputCanvas[0].getContext("2d");
+    const offsetTop = (this.$container.offset().top > this.elementSize*0.75)? Math.floor(this.elementSize*0.75)*(-1): this.$container.offset().top;
+
 
     context.strokeStyle = "rgba(107,177,125,0.9)";
     context.fillStyle = "rgba(107,177,125,0.3)";
@@ -557,7 +591,7 @@
     context.lineWidth = 2;
 
     const topRadius = Math.floor(this.elementSize/8);
-    const bottomRadius = Math.floor(this.elementSize/16);
+    const bottomRadius = Math.abs(Math.floor(offsetTop/8));
     const lineWidth = Math.floor(this.elementSize/4);
 
     context.arc(clickStart[0] - topRadius, clickStart[1] + bottomRadius,lineWidth,startingAngle,startingAngle+(Math.PI));
@@ -652,7 +686,7 @@
 
     const that = this;
     const marginResp = (Math.floor(that.elementSize/8)<margin)? (Math.floor(that.elementSize/8)): margin;
-    const offsetTop = (that.$container.offset().top > that.elementSize*0.75)? Math.floor(that.$container.offset().top/2): that.$container.offset().top;
+    const offsetTop = (that.$container.offset().top > that.elementSize*0.75)? Math.floor(that.elementSize*0.75): that.$container.offset().top;
     this.$gridCanvas = $('<canvas id="grid-canvas" class="canvas-element" height="' + that.canvasHeight + 'px" width="' + that.canvasWidth + 'px" />').appendTo(that.$container);
     this.$outputCanvas = $('<canvas class="canvas-element" height="' + that.canvasHeight + 'px" width="' + that.canvasWidth + 'px"/>').appendTo(that.$container);
     this.$drawingCanvas = $('<canvas id="drawing-canvas" class="canvas-element" height="' + that.canvasHeight + 'px" width="' + that.canvasWidth + 'px"/>').appendTo(that.$container);
@@ -667,17 +701,44 @@
 
     that.wordGrid.forEach(function (row, index1) {
       row.forEach(function (element, index2) {
-        ctx1.fillText(element.toUpperCase(), index2 * that.elementSize + offset.left+ 2*marginResp , index1 * that.elementSize + offsetTop );
+        ctx1.fillText(element.toUpperCase(), index2 * that.elementSize + offset.left+ 2*marginResp , index1 * that.elementSize + (offsetTop) );
       });
     });
 
     let clickStart = [];
+    let isDragged = 0;
+    let clickMode = 0;
+
+
+    this.$drawingCanvas[0].addEventListener("touchstart", function (event) {
+      touchHandler(event);
+    }, false);
+
+    this.$drawingCanvas[0].addEventListener("touchmove", function (event) {
+      touchHandler(event);
+    }, false);
+
+    this.$drawingCanvas[0].addEventListener("touchend", function (event) {
+      touchHandler(event);
+    }, false);
+
+
+
+
 
     this.$drawingCanvas.on('mousedown', function (event) {
-      if (that.options.gridActive) {
-        that.enableDrawing = true;
-        that.trigger('drawStart');
-        clickStart = mouseDownEventHandler(event, this, that.elementSize);
+      if (that.options.gridActive ) {
+        if (clickMode === 0) {
+          that.enableDrawing = true;
+          clickStart = mouseDownEventHandler(event, this, that.elementSize);
+          that.trigger('drawStart');
+
+        }
+        // else {
+        //   console.log('testing');
+        //   clickPointStart= mouseDownEventHandler(event, this, that.elementSize);
+        // }
+
       }
     });
 
@@ -686,64 +747,75 @@
     this.$drawingCanvas.on('mouseup', function (event) {
 
       if (that.enableDrawing) {
-        let markedWord = '';
-        const wordObject = mouseUpEventHandler(event, this, that.elementSize, clickStart);
 
-        const dict = {
-          'horizontal' : [1,0],
-          'horizontalBack' : [-1,0],
-          'diagonal' : [1,1],
-          'diagonalBack' : [-1,1],
-          'diagonalUp' : [1,-1],
-          'diagonalUpBack' : [-1,-1],
-          'vertical' : [0,1],
-          'verticalUp' : [0,-1]
-        };
+        if (isDragged === 1 || clickMode === 1) {
+          if (clickMode === 1) {
+            clickMode = 0;
+          }
+          let markedWord = '';
+          const wordObject = mouseUpEventHandler(event, this, that.elementSize, clickStart);
 
-        if ( ! $.isEmptyObject(wordObject) && wordObject['dir'] !== false ) {
+          const dict = {
+            'horizontal' : [1,0],
+            'horizontalBack' : [-1,0],
+            'diagonal' : [1,1],
+            'diagonalBack' : [-1,1],
+            'diagonalUp' : [1,-1],
+            'diagonalUpBack' : [-1,-1],
+            'vertical' : [0,1],
+            'verticalUp' : [0,-1]
+          };
 
-          const dir = wordObject['dir'];
-          let y1 = wordObject['start'][3];
-          let x1 = wordObject['start'][2];
-          let x2 = wordObject['end'][2];
-          let y2 = wordObject['end'][3];
+          if ( ! $.isEmptyObject(wordObject) && wordObject['dir'] !== false ) {
+
+            const dir = wordObject['dir'];
+            let y1 = wordObject['start'][3];
+            let x1 = wordObject['start'][2];
+            let x2 = wordObject['end'][2];
+            let y2 = wordObject['end'][3];
 
 
-          do {
-            markedWord += that.wordGrid[y1][x1];
-            x1 = x1 + dir[0];
-            y1 = y1 + dir[1];
-          } while (!((y1 == y2) && (x1 == x2)));
+            do {
+              markedWord += that.wordGrid[y1][x1];
+              x1 = x1 + dir[0];
+              y1 = y1 + dir[1];
+            } while (!((y1 == y2) && (x1 == x2)));
 
-          markedWord += that.wordGrid[y2][x2];
+            markedWord += that.wordGrid[y2][x2];
 
-          for (let key in dict) {
-            if (dict[key][0]==dir[0]&&dict[key][1]==dir[1]) {
-              wordObject['directionKey'] = key;
-              break;
+            for (let key in dict) {
+              if (dict[key][0]==dir[0]&&dict[key][1]==dir[1]) {
+                wordObject['directionKey'] = key;
+                break;
+              }
             }
           }
+          that.enableDrawing = false;
+          isDragged = 0;
+          that.trigger('drawEnd',{'markedWord': markedWord, 'wordObject': wordObject});
         }
-        that.enableDrawing = false;
-        that.trigger('drawEnd',{'markedWord': markedWord, 'wordObject': wordObject});
+        else if (clickMode === 0) {
+          clickMode = 1;
+        }
       }
     });
 
 
 
 
-    // $drawingCanvas.on('mousedown', function (event) {
-    //   clickStart = mouseDownEventHandler(event, this);
-    // });
+
     this.$drawingCanvas.on('mousemove', function (event) {
-      if (that.enableDrawing) {
+      if (that.enableDrawing ) {
+        isDragged = 1;
         mouseMoveEventHandler(event, this , clickStart,that.elementSize);
       }
     });
+
+
 
 
   };
   return FindTheWords.WordGrid;
 
 
-}) (H5P.FindTheWords, H5P.EventDispatcher, H5P.jQuery)
+}) (H5P.FindTheWords, H5P.EventDispatcher, H5P.jQuery);

@@ -29,7 +29,7 @@ H5P.FindTheWords = (function ($, UI) {
 
     this.grid = new FindTheWords.WordGrid(this.gridParams);
     //TODO : separate vocabulary as a separate class
-    this.vocabulary = new FindTheWords.Vocabulary(this.options.vocabulary);
+    this.vocabulary = new FindTheWords.Vocabulary(this.options.vocabulary,this.options.behaviour.showVocabulary);
 
     this.registerDOMElements();
 
@@ -71,7 +71,11 @@ H5P.FindTheWords = (function ($, UI) {
         }
 
       }
+
+
     });
+
+
 
   }
 
@@ -214,6 +218,7 @@ H5P.FindTheWords = (function ($, UI) {
 
     this.$feedbackContainer.addClass('feedback-show'); //show feedbackMessage
     this.$feedback.focus();
+    this.trigger('resize');
   };
 
 
@@ -222,10 +227,10 @@ H5P.FindTheWords = (function ($, UI) {
     this.grid.disableGrid();
     this.grid.mark(this.vocabulary.getNotFound());
     this.$showSolutionButton.detach();
+    this.trigger('resize');
   };
 
   FindTheWords.prototype.resetTask = function () {
-
 
     this.numFound = 0;
     this.timer.reset();
@@ -247,6 +252,8 @@ H5P.FindTheWords = (function ($, UI) {
     this.registerGridEvents();
 
     this.$submitButton.appendTo(this.$buttonContainer);
+
+    this.trigger('resize');
   };
 
 
@@ -257,7 +264,7 @@ H5P.FindTheWords = (function ($, UI) {
     });
 
     this.grid.on('drawEnd', function (event) {
-      console.log(event.data['markedWord']);
+
 
       if (that.vocabulary.checkWord(event.data['markedWord'])) {
         that.numFound++;

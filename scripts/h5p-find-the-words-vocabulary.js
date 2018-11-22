@@ -1,8 +1,11 @@
 (function (FindTheWords, EventDispatcher, $) {
 
-  FindTheWords.Vocabulary = function (params) {
+  FindTheWords.Vocabulary = function (params,showVocabulary) {
 
     this.words = params;
+    this.showVocabulary = showVocabulary;
+    this.wordsFound = [];
+    this.wordsSolved = [];
 
   };
 
@@ -41,10 +44,19 @@
 
   FindTheWords.Vocabulary.prototype.checkWord = function (word) {
 
-    if ($.inArray(word,this.words) != -1) {
-      const idName = word.replace(/ /g, '');
-      this.$container.find('#' + idName).addClass('word-found');
-      return true;
+    const reverse = word.split("").reverse().join("");
+    const originalWord = ($.inArray(word,this.words) != -1)? word: ( $.inArray(reverse,this.words) != -1)? reverse:null;
+
+    if (originalWord) {
+      if ($.inArray(originalWord,this.wordsFound) === -1) {
+        this.wordsFound.push(originalWord);
+        if (this.showVocabulary) {
+          const idName = originalWord.replace(/ /g, '');
+          this.$container.find('#' + idName).addClass('word-found');
+        }
+        return true;
+      }
+      return false;
     }
 
     return false;
@@ -52,34 +64,38 @@
   };
 
   FindTheWords.Vocabulary.prototype.reset = function () {
-    this.$container.find('.word').each(function () {
-      $(this).removeClass('word-found').removeClass('word-solved');
-    });
+    this.wordsFound = [];
+    this.wordsSolved = [];
+    if (this.showVocabulary) {
+      this.$container.find('.word').each(function () {
+        $(this).removeClass('word-found').removeClass('word-solved');
+      });
+    }
+
   };
 
   FindTheWords.Vocabulary.prototype.getNotFound = function () {
-    return this.$container.find('.word').filter(function () {
-      return !$(this).hasClass('word-found');
-    }).map(function () {
-      $(this).addClass('word-solved');
-      return $(this).attr('id');
-    }).get();
+    const that = this;
+
+    this.wordsSolved = this.words.filter(function (word) {
+      return ($.inArray(word, that.wordsFound) === -1);
+    });
+    return this.wordsSolved;
+
   };
 
   FindTheWords.Vocabulary.prototype.getFound = function () {
-    return this.$container.find('.word').filter(function () {
-      return $(this).hasClass('word-found') ;
-    }).map(function () {
-      return $(this).attr('id');
-    }).get();
+    const that = this;
+    return this.words.filter(function (word) {
+      return ($.inArray(word, that.wordsFound) !== -1);
+    });
   };
 
   FindTheWords.Vocabulary.prototype.getSolved = function () {
-    return this.$container.find('.word').filter(function () {
-      return $(this).hasClass('word-solved') ;
-    }).map(function () {
-      return $(this).attr('id');
-    }).get();
+    const that = this;
+    return this.words.filter(function (word) {
+      return ($.inArray(word, that.wordsSolved) !== -1);
+    });
   };
 
   return FindTheWords.Vocabulary;
