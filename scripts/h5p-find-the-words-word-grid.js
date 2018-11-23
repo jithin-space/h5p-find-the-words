@@ -682,6 +682,7 @@
     $container.css('width', this.canvasWidth);
   };
 
+
   FindTheWords.WordGrid.prototype.drawGrid = function (margin) {
 
     const that = this;
@@ -701,7 +702,7 @@
 
     that.wordGrid.forEach(function (row, index1) {
       row.forEach(function (element, index2) {
-        ctx1.fillText(element.toUpperCase(), index2 * that.elementSize + offset.left+ 2*marginResp , index1 * that.elementSize + (offsetTop) );
+        ctx1.fillText(element.toUpperCase(), index2 * that.elementSize + 2*marginResp , index1 * that.elementSize + (offsetTop) );
       });
     });
 
@@ -796,6 +797,16 @@
         }
         else if (clickMode === 0) {
           clickMode = 1;
+          const offsetTop = (that.$container.offset().top > that.elementSize*0.75)? Math.floor(that.elementSize*0.75): that.$container.offset().top;
+          const context = that.$drawingCanvas[0].getContext("2d");
+          context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+          context.lineWidth = Math.floor(that.elementSize/2);
+          context.strokeStyle = "rgba(107,177,125,0.9)";
+          context.fillStyle = "rgba(107,177,125,0.3)";
+          context.beginPath();
+          context.arc(clickStart[0]- (that.elementSize/8),clickStart[1]+ Math.floor(offsetTop/8) ,that.elementSize/4,0,2*Math.PI);
+          context.fill();
+          context.closePath();
         }
       }
     });

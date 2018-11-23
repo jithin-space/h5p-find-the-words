@@ -67,11 +67,19 @@ H5P.FindTheWords = (function ($, UI) {
           }
           else {
             this.$puzzleContainer.removeClass('puzzle-block').addClass('puzzle-inline');
+            //initial update has to be done manually
+            this.$playArea.css({'width':parseInt(this.$gameContainer.width())+VOCABULARY_INLINE_WIDTH});
           }
         }
 
       }
 
+      if (this.vocMode === 'inline') {
+        this.$playArea.css({'width':parseInt(this.$gameContainer.width())+2});
+      }
+      else {
+        this.$playArea.css({'width':parseInt(this.$puzzleContainer.width())+2});
+      }
 
     });
 
@@ -226,6 +234,7 @@ H5P.FindTheWords = (function ($, UI) {
   FindTheWords.prototype.showSolutions = function () {
     this.grid.disableGrid();
     this.grid.mark(this.vocabulary.getNotFound());
+    this.vocabulary.solveWords();
     this.$showSolutionButton.detach();
     this.trigger('resize');
   };
@@ -281,6 +290,10 @@ H5P.FindTheWords = (function ($, UI) {
 
     this.$container = $container.addClass('h5p-find-the-words');
 
+    this.$playArea = $('<div />',{
+      class: 'h5p-play-area'
+    });
+
 
 
     this.$taskDescription = $('<div />',{
@@ -321,9 +334,11 @@ H5P.FindTheWords = (function ($, UI) {
     this.$buttonContainer.appendTo(this.$footerContainer);
 
     //append description , cards and footer to main container.
-    this.$taskDescription.appendTo(this.$container);
-    this.$gameContainer.appendTo(this.$container);
-    this.$footerContainer.appendTo(this.$container);
+    this.$taskDescription.appendTo(this.$playArea);
+    this.$gameContainer.appendTo(this.$playArea);
+    this.$footerContainer.appendTo(this.$playArea);
+
+    this.$playArea.appendTo(this.$container);
 
 
     this.grid.drawGrid(MARGIN);

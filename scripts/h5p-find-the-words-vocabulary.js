@@ -5,6 +5,7 @@
     this.words = params;
     this.showVocabulary = showVocabulary;
     this.wordsFound = [];
+    this.wordsNotFound = [];
     this.wordsSolved = [];
 
   };
@@ -65,22 +66,32 @@
 
   FindTheWords.Vocabulary.prototype.reset = function () {
     this.wordsFound = [];
-    this.wordsSolved = [];
+    this.wordsNotFound = this.words;
     if (this.showVocabulary) {
       this.$container.find('.word').each(function () {
         $(this).removeClass('word-found').removeClass('word-solved');
       });
     }
-
   };
+
+  FindTheWords.Vocabulary.prototype.solveWords = function () {
+    const that = this;
+    that.wordsSolved = that.wordsNotFound;
+    if (that.showVocabulary) {
+      that.wordsNotFound.forEach(function (word) {
+        const idName = word.replace(/ /g, '');
+        that.$container.find('#' + idName).addClass('word-solved');
+      });
+    }
+  }
 
   FindTheWords.Vocabulary.prototype.getNotFound = function () {
     const that = this;
 
-    this.wordsSolved = this.words.filter(function (word) {
+    this.wordsNotFound = this.words.filter(function (word) {
       return ($.inArray(word, that.wordsFound) === -1);
     });
-    return this.wordsSolved;
+    return this.wordsNotFound;
 
   };
 
