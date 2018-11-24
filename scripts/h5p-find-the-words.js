@@ -108,7 +108,8 @@ H5P.FindTheWords = (function ($, UI) {
 
     this.$timer = $('<div/>',{
       class: 'time-status',
-      html: '<span role="term" ><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;'
+      tabindex: 0,
+      html: '<span role="term" ><i class="fa fa-clock-o" ></i>&nbsp;&nbsp;'
        + this.options.l10n.timeSpent + '</span >:&nbsp;&nbsp;'+
         '<span role="definition"  class="h5p-time-spent" >0:00</span>'
     });
@@ -117,7 +118,8 @@ H5P.FindTheWords = (function ($, UI) {
     // TODO l10n.found rename
     this.$counter= $('<div/>', {
       class: 'counter-status',
-      html: '<div role="term" ><span class="h5p-counter">0</span>&nbsp;of&nbsp;<span>&nbsp;'+this.vocabulary.words.length+'&nbsp;</span> found</div>'
+      tabindex: 0,
+      html: '<div role="term" ><span role="definition" class="h5p-counter">0</span>&nbsp;of&nbsp;<span>&nbsp;'+this.vocabulary.words.length+'&nbsp;</span> found</div>'
     });
 
     this.timer = new FindTheWords.Timer(this.$timer.find('.h5p-time-spent'));
@@ -141,11 +143,18 @@ H5P.FindTheWords = (function ($, UI) {
       this.$retryButton = this.createButton('retry', 'undo', this.options.l10n.tryAgain, that.resetTask);
     }
 
-    this.$puzzleContainer = $('<div class="puzzle-container puzzle-inline" />');
-    this.$vocabularyContainer = $('<div class="vocabulary-container" />');
+    this.$puzzleContainer = $('<div class="puzzle-container puzzle-inline" tabIndex="0" role="grid" />');
+    this.$vocabularyContainer = $('<div class="vocabulary-container" tabIndex="0" />');
 
     this.$footerContainer = $('<div class="footer-container" />');
-    this.$statusContainer = $('<div class="game-status"/>');
+
+
+    this.$statusContainer = $('<div />',{
+      class: 'game-status',
+      'aria-label': 'game-status',
+      role: 'group',
+      tabindex: '0'
+    });
     this.$feedbackContainer = $('<div class="feedback-container"/>');
     this.$buttonContainer = $('<div class="button-container" />');
   };
@@ -236,6 +245,7 @@ H5P.FindTheWords = (function ($, UI) {
     this.grid.mark(this.vocabulary.getNotFound());
     this.vocabulary.solveWords();
     this.$showSolutionButton.detach();
+    this.$vocabularyContainer.focus();
     this.trigger('resize');
   };
 
@@ -261,7 +271,7 @@ H5P.FindTheWords = (function ($, UI) {
     this.registerGridEvents();
 
     this.$submitButton.appendTo(this.$buttonContainer);
-
+    this.$puzzleContainer.focus();
     this.trigger('resize');
   };
 
@@ -299,6 +309,7 @@ H5P.FindTheWords = (function ($, UI) {
     this.$taskDescription = $('<div />',{
       class: 'h5p-task-description',
       html: this.options.taskDescription,
+      tabIndex: 0,
     });
 
     this.$gameContainer = $('<div/>',{

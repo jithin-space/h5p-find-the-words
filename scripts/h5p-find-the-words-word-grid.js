@@ -710,6 +710,10 @@
     let isDragged = 0;
     let clickMode = 0;
 
+    this.$container[0].addEventListener("keydown",function (event) {
+      //TODO: need to implement for a11y
+    },false);
+
 
     this.$drawingCanvas[0].addEventListener("touchstart", function (event) {
       touchHandler(event);
@@ -735,10 +739,6 @@
           that.trigger('drawStart');
 
         }
-        // else {
-        //   console.log('testing');
-        //   clickPointStart= mouseDownEventHandler(event, this, that.elementSize);
-        // }
 
       }
     });

@@ -15,14 +15,12 @@
 
   FindTheWords.Vocabulary.prototype.appendTo = function ($container,vocMode) {
 
-    // $container = $('<div class="vocabulary-container vocabulary-inline-container"></div>').css('padding-top', MARGIN + 'px').css('padding-bottom', MARGIN + 'px');
-    //self.game.drawWords(self.$vocabularyContainer);
 
-    let output = '<div class="vocHeading"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Find the words</div><ul>';
+    let output = '<div class="vocHeading" ><i class="fa fa-book fa-fw" ></i>&nbsp;&nbsp;Find the words</div><ul role="list"  tabindex="0">';
 
     this.words.forEach(function (element) {
       let identifierName= element.replace(/ /g, '');
-      output+= '<li><div id="'+ identifierName +'"class="word"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;' + element + '</div></li>';
+      output+= '<li role="presentation" ><div role="listitem"  aria-label="'+identifierName+' not found" id="'+ identifierName +'"class="word"><i class="fa fa-check" ></i>&nbsp;' + element + '</div></li>';
     });
 
     output += '</ul>';
@@ -53,7 +51,7 @@
         this.wordsFound.push(originalWord);
         if (this.showVocabulary) {
           const idName = originalWord.replace(/ /g, '');
-          this.$container.find('#' + idName).addClass('word-found');
+          this.$container.find('#' + idName).addClass('word-found').attr('aria-label', idName+' found');
         }
         return true;
       }
@@ -69,7 +67,7 @@
     this.wordsNotFound = this.words;
     if (this.showVocabulary) {
       this.$container.find('.word').each(function () {
-        $(this).removeClass('word-found').removeClass('word-solved');
+        $(this).removeClass('word-found').removeClass('word-solved').attr('aria-label',$(this).attr('id')+' not found');
       });
     }
   };
@@ -80,7 +78,7 @@
     if (that.showVocabulary) {
       that.wordsNotFound.forEach(function (word) {
         const idName = word.replace(/ /g, '');
-        that.$container.find('#' + idName).addClass('word-solved');
+        that.$container.find('#' + idName).addClass('word-solved').attr('aria-label',idName+' solved');
       });
     }
   }
