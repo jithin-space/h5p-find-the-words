@@ -1,26 +1,24 @@
 [
 	{
-		"label": "Task Description",
+		"label": "Task description",
 		"name": "taskDescription",
 		"type": "text",
-		"description": "Optional Description of the Game",
-		"optional": true
+		"description": "Description of the Game",
+		"default": "Find the words from the grid",
+		"importance": "high"
 	},
 	{
-		"name": "vocabulary",
-		"type": "list",
-		"label": "Vocabulary (Max :20)",
-		"entity": "word",
-		"min": 1,
-		"max": 20,
-		"field": {
-			"name": "word",
-			"type": "text",
-			"label": "vocabulary word",
-			"placeholder": "word"
+		"name": "wordList",
+		"type": "text",
+		"label": "Word list",
+		"description": "Comma Separated list of words. Special Characters, White Spaces and Numbers Not allowed",
+		"default": "one,two,three",
+		"regexp": {
+			"pattern": "^([a-zA-Z]+,)+[a-zA-Z]+$"
 		},
 		"importance": "high"
 	},
+
 	{
     "name": "behaviour",
     "type": "group",
@@ -30,33 +28,6 @@
     "optional": true,
 		"fields": [
 			{
-				"name": "gridDimensions",
-				"type": "group",
-				"label": "Prefferd Grid Dimensions",
-				"fields": [
-					{
-						"name": "height",
-						"type": "number",
-						"label": "Height",
-						"description": "The desired number of rows in the puzzle. Will automatically be increased if a valid puzzle cannot be found with specified number of rows.      Specifying a reasonable height will improve performance when creating puzzles.      Defaults to the minimum number of rows needed to create a valid puzzle.",
-						"max": 20,
-						"min": 5,
-						"default": 5,
-						"importance": "low"
-					},
-					{
-						"name": "width",
-						"type": "number",
-						"label": "Width",
-						"description": "The desired number of columns in the puzzle.       Will automatically be increased if a valid puzzle cannot be found with specified number of columns.      Specifying a reasonable width will improve performance when creating puzzles.      Defaults to the minimum number of columns needed to create a valid puzzle.",
-						"max": 20,
-						"min": 5,
-						"default": 5,
-						"importance": "low"
-					}
-				]
-			},
-			{
 				"name": "orientations",
 				"type": "group",
 				"label": "Orientations",
@@ -65,92 +36,88 @@
 					{
 						"name": "horizontal",
 						"type": "boolean",
-						"label": "Horizontal-Left To Right",
+						"label": "Horizontal- left to right",
 						"default": true
 					},
 					{
 						"name": "horizontalBack",
 						"type": "boolean",
-						"label": "Horizontal-Right To Left",
+						"label": "Horizontal- right to left",
 						"default": true
 					},
 					{
 						"name": "vertical",
 						"type": "boolean",
-						"label": "Vertical Downwards",
+						"label": "Vertical downwards",
 						"default": true
 					},
 					{
 						"name": "verticalUp",
 						"type": "boolean",
-						"label": "Vertical Upwards",
+						"label": "Vertical upwards",
 						"default": true
 					},
 					{
 						"name": "diagonal",
 						"type": "boolean",
-						"label": "Diagonal Downwards-Left To Right",
+						"label": "Diagonal downwards- left to right",
 						"default": true
 					},
 					{
 						"name": "diagonalBack",
 						"type": "boolean",
-						"label": "Diagonal Downwards-Right To Left",
+						"label": "Diagonal downwards- right to left",
 						"default": true
 					},
 					{
 						"name": "diagonalUp",
 						"type": "boolean",
-						"label": "Diagonal Upwards-Left To Right",
+						"label": "Diagonal upwards- left to right",
 						"default": true
 					},
 					{
 						"name": "diagonalUpBack",
 						"type": "boolean",
-						"label": "Diagonal Upwards-Right To Left",
+						"label": "Diagonal upwards- right to left",
 						"default": true
 					}
 				]
 			},
 			{
-				"name": "fillBlanks",
-				"type": "boolean",
-				"label": "Fill Blanks",
-				"description": "True to fill in the remaining empty squares after generating the puzzle, false to leave them empty.   This is useful when testing to see what the shape of the solution looks like.   Can also be used to generate a mask to determine when all words have been found.",
-				"default": true
-			},
-			{
-				"name": "maxAttempts",
-				"type": "number",
-				"label": "Maximum Attempts",
-				"description": "Specifies the maximum number of attempts to create a valid puzzle of a certain size.   If a valid puzzle cannot be constructed after maxAttempts have been made, the puzzle height and width are incremented by one and the number of attempts is reset. ",
-				"default": 3
+				"name": "fillPool",
+				"type": "text",
+				"label": "Vertical downwards",
+				"description": "pool of letters from which the blanks to be filled",
+				"default": "abcdefghijklmnopqrstuvwxy",
+				"regexp": {
+					"pattern": "^[^\t\n .<>?;:\"'`!@#$%^&*()\\[\\]{}_+=|\\-]*$"
+				}
 			},
 			{
 				"name": "preferOverlap",
 				"type": "boolean",
-				"label": "Prefer Overlap",
+				"label": "Prefer overlap",
 				"description": "Determines how wordfind decides where to place a word within the puzzle.   When true, it randomly selects amongst the positions the highest number of letters that overlap creating a more compact puzzle.   When false, it randomly selects amongst all valid positions creating a less compact puzzle.",
 				"default": true
 			},
 			{
 				"name": "showVocabulary",
 				"type": "boolean",
-				"label": "Show Vocabulary",
+				"label": "Show vocabulary",
 				"description": "Determines whether to show vocabularies to the player",
 				"default": true
 			},
 			{
 				"name": "enableShowSolution",
 				"type": "boolean",
-				"label": "Enable Show Solution",
+				"label": "Enable show solution",
 				"description": "Add a show solution button for the game",
 				"default": true
 			},
 			{
 				"name": "enableRetry",
 				"type": "boolean",
-				"label": "Enable Retry",
+				"label": "Enable retry",
 				"description": "Add a retry button for the game",
 				"default": true
 			}
@@ -194,7 +161,7 @@
 				"description": "Feedback text, variables available: @found and @totalWords. Example: '@found of @totalWords found'"
 			},
 			{
-				"label": "Time Spent text",
+				"label": "Time spent text",
 				"importance": "low",
 				"name": "timeSpent",
 				"type": "text",

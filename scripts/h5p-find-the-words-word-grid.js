@@ -15,7 +15,8 @@
       fillBlanks: true,
       maxAttempts: 3,
       preferOverlap: true,
-      gridActive: true
+      gridActive: true,
+      fillPool: 'abcdefghijklmnopqrstuvwxy'
     },params);
 
 
@@ -286,9 +287,9 @@
     return wordGrid;
   }
 
-  const fillBlanks = function (wordGrid) {
+  const fillBlanks = function (wordGrid,fillPool) {
 
-    const letters = 'abcdefghijklmnoprstuvwy';
+    const letters = fillPool;
 
     wordGrid.forEach(function (row , index1) {
       row.forEach(function (element, index2) {
@@ -517,7 +518,7 @@
 
     // fill in empty spaces with random letters
     if (this.options.fillBlanks) {
-      wordGrid = fillBlanks(wordGrid);
+      wordGrid = fillBlanks(wordGrid,this.options.fillPool);
     }
 
     //set the output puzzle

@@ -12,19 +12,33 @@ H5P.FindTheWords = (function ($, UI) {
 
 
     // TODO : fill default parameters
-    this.options = $.extend(true,{},options);
+
+    //only take the unique words
+    const vocabulary = options.wordList.split(',').filter(function (word,pos,self) {
+      return self.indexOf(word)=== pos;
+    });
+
+    this.options = $.extend(true,{
+      vocabulary: vocabulary,
+      height: 5,
+      width: 5,
+      fillBlanks: true,
+      maxAttempts: 3
+    },options);
+
 
     H5P.EventDispatcher.call(this);
 
     this.gridParams = {
-      height: options.behaviour.gridDimensions.height,
-      width: options.behaviour.gridDimensions.width,
+      height: this.options.height,
+      width: this.options.width,
       orientations: filterOrientations(options.behaviour.orientations),
-      fillBlanks: options.behaviour.fillBlanks,
-      maxAttempts: options.behaviour.maxAttempts,
+      fillBlanks: this.options.fillBlanks,
+      maxAttempts: this.options.maxAttempts,
       preferOverlap: options.behaviour.preferOverlap,
-      vocabulary: options.vocabulary,
-      gridActive: true
+      vocabulary: this.options.vocabulary,
+      gridActive: true,
+      fillPool: this.options.behaviour.fillPool
     }
 
     this.grid = new FindTheWords.WordGrid(this.gridParams);
@@ -311,6 +325,8 @@ H5P.FindTheWords = (function ($, UI) {
       html: this.options.taskDescription,
       tabIndex: 0,
     });
+  
+
 
     this.$gameContainer = $('<div/>',{
       class: 'game-container'
@@ -345,7 +361,9 @@ H5P.FindTheWords = (function ($, UI) {
     this.$buttonContainer.appendTo(this.$footerContainer);
 
     //append description , cards and footer to main container.
+
     this.$taskDescription.appendTo(this.$playArea);
+
     this.$gameContainer.appendTo(this.$playArea);
     this.$footerContainer.appendTo(this.$playArea);
 
