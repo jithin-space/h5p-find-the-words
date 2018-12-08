@@ -9,7 +9,7 @@
 
 .h5p-find-the-words .h5p-play-area {
   margin: 0 auto;
-  border: 2px solid #eeeeee;
+  border: 1px solid #eeeeee;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
@@ -98,10 +98,10 @@
      visibility: visible;
 }
  .h5p-find-the-words .vocabulary-container .word-solved {
-     color: blue;
+     color: #0067de;
 }
  .h5p-find-the-words .vocabulary-inline-container .word-solved i{
-     color: blue;
+     color: #0067de;
      visibility: visible;
 }
  .h5p-find-the-words .vocabulary-container .word{
@@ -150,6 +150,6 @@
      color: rgb(26, 115, 217);
      position: relative;
 }
- .h5p-find-the-words .h5p-found , .h5p-find-the-words .counter-status  span, .h5p-find-the-words .h5p-time-spent{
+ .h5p-find-the-words .h5p-found , .h5p-find-the-words .h5p-counter, .h5p-find-the-words .h5p-time-spent{
      font-weight: bold;
 }

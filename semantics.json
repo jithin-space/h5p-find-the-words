@@ -18,7 +18,6 @@
 		},
 		"importance": "high"
 	},
-
 	{
     "name": "behaviour",
     "type": "group",

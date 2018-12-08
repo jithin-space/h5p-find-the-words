@@ -1,7 +1,16 @@
 (function (FindTheWords, EventDispatcher, $) {
 
+  /**
+   * Vocabulary - Handles the vocabulary part
+   *
+   * @class H5P.FindTheWords.Vocabulary
+   * @param {Object} params
+   * @param {boolean} showVocabulary
+   *
+   */
   FindTheWords.Vocabulary = function (params,showVocabulary) {
 
+    /** @alias H5P.FindTheWords.Vocabulary# */
     this.words = params;
     this.showVocabulary = showVocabulary;
     this.wordsFound = [];
@@ -13,25 +22,38 @@
   FindTheWords.Vocabulary.prototype = Object.create(EventDispatcher.prototype);
   FindTheWords.Vocabulary.prototype.constructor = FindTheWords.Vocabulary;
 
+
+
+  /**
+   * appendTo - appending vocabulary to the play area
+   *
+   * @param {H5P.jQuery} $container
+   * @param {String} vocMode    either in inline/block mode
+   *
+   */
   FindTheWords.Vocabulary.prototype.appendTo = function ($container,vocMode) {
 
-
-    let output = '<div class="vocHeading" ><i class="fa fa-book fa-fw" ></i>&nbsp;&nbsp;Find the words</div><ul role="list"  tabindex="0">';
-
+    let output = '<div class="vocHeading" ><i class="fa fa-book fa-fw" ></i>&nbsp;&nbsp;Find the words</div>\
+    <ul role="list"  tabindex="0">';
     this.words.forEach(function (element) {
       let identifierName= element.replace(/ /g, '');
-      output+= '<li role="presentation" ><div role="listitem"  aria-label="'+identifierName+' not found" id="'+ identifierName +'"class="word"><i class="fa fa-check" ></i>&nbsp;' + element + '</div></li>';
+      output+= '<li role="presentation" ><div role="listitem"  aria-label="'+identifierName+' not found" id="'+ identifierName +'"class="word">\
+      <i class="fa fa-check" ></i>&nbsp;' + element + '</div></li>';
     });
-
     output += '</ul>';
 
     $container.html(output);
     $container.addClass('vocabulary-container');
     this.$container = $container;
     this.setMode(vocMode);
-
   };
 
+
+  /**
+   * setMode - set the vocabularies
+   *
+   * @param {String} mode
+   */
   FindTheWords.Vocabulary.prototype.setMode = function (mode) {
     if (mode === 'inline') {
       this.$container.removeClass('vocabulary-block-container').addClass('vocabulary-inline-container');
@@ -39,8 +61,15 @@
     else {
       this.$container.removeClass('vocabulary-inline-container').addClass('vocabulary-block-container');
     }
-  }
+  };
 
+
+  /**
+   * checkWord - if the marked word belongs to the vocabulary as not found.
+   *
+   * @param {String} word
+   *
+   */
   FindTheWords.Vocabulary.prototype.checkWord = function (word) {
 
     const reverse = word.split("").reverse().join("");
@@ -57,11 +86,15 @@
       }
       return false;
     }
-
     return false;
-
   };
 
+
+
+  /**
+   * reset - reset the vocabulary upon game resetting
+   *
+   */
   FindTheWords.Vocabulary.prototype.reset = function () {
     this.wordsFound = [];
     this.wordsNotFound = this.words;
@@ -72,6 +105,11 @@
     }
   };
 
+
+  /**
+   * solveWords - changes on vocabulary upon showing the solution
+   *
+   */
   FindTheWords.Vocabulary.prototype.solveWords = function () {
     const that = this;
     that.wordsSolved = that.wordsNotFound;
@@ -81,18 +119,27 @@
         that.$container.find('#' + idName).addClass('word-solved').attr('aria-label',idName+' solved');
       });
     }
-  }
+  };
 
+
+  /**
+   * getNotFound - return the list of words that are not found yet
+   *
+   * @returns {Array}
+   */
   FindTheWords.Vocabulary.prototype.getNotFound = function () {
     const that = this;
-
     this.wordsNotFound = this.words.filter(function (word) {
       return ($.inArray(word, that.wordsFound) === -1);
     });
     return this.wordsNotFound;
-
   };
 
+  /**
+   * getFound - returns the words found so far
+   *
+   * @returns {Array}
+   */
   FindTheWords.Vocabulary.prototype.getFound = function () {
     const that = this;
     return this.words.filter(function (word) {
@@ -100,6 +147,11 @@
     });
   };
 
+  /**
+   * getSolved - get the words solved by the game by show solution feature
+   *
+   * @returns {Array}
+   */
   FindTheWords.Vocabulary.prototype.getSolved = function () {
     const that = this;
     return this.words.filter(function (word) {
