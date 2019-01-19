@@ -3,7 +3,7 @@
    * Keeps track of the number of times the game is submitted
    *
    * @class H5P.FindTheWords.Counter
-   * @param {H5P.jQuery} $container
+   * @param {H5P.jQuery} $container 
    */
 
   FindTheWords.Counter = function ($container) {

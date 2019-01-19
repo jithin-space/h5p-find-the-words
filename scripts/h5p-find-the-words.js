@@ -23,19 +23,20 @@ H5P.FindTheWords = (function ($, UI) {
     this.extras = extras;
     this.numFound = 0;
     this.isAttempted = false;
+    this.isGameStarted = false;
 
     //only take the unique words
-    const vocabulary = options.wordList.split(',').filter(function (word,pos,self) {
-      return self.indexOf(word)=== pos;
+    const vocabulary = options.wordList.split(',').filter(function (word, pos, self) {
+      return self.indexOf(word) === pos;
     });
 
-    this.options = $.extend(true,{
+    this.options = $.extend(true, {
       vocabulary: vocabulary,
       height: 5,
       width: 5,
       fillBlanks: true,
-      maxAttempts: 3
-    },options);
+      maxAttempts: 5
+    }, options);
 
     H5P.EventDispatcher.call(this);
 
@@ -52,20 +53,20 @@ H5P.FindTheWords = (function ($, UI) {
     };
 
     this.grid = new FindTheWords.WordGrid(this.gridParams);
-    this.vocabulary = new FindTheWords.Vocabulary(this.options.vocabulary,this.options.behaviour.showVocabulary);
+    this.vocabulary = new FindTheWords.Vocabulary(this.options.vocabulary, this.options.behaviour.showVocabulary);
     this.registerDOMElements();
 
     // responsive functionality
     this.on('resize', function () {
 
       const currentSize = this.elementSize;
-      const currentVocMod = this.vocMode;
+      const currentVocMod = this.isVocModeBlock;
       this.calculateElementSize();
       this.setVocabularyMode();
 
       if (this.elementSize !== currentSize) {
         this.$puzzleContainer.empty();
-        this.grid.appendTo(this.$puzzleContainer,this.elementSize );
+        this.grid.appendTo(this.$puzzleContainer, this.elementSize );
         this.grid.drawGrid(MARGIN);
 
         //if there are already marked elements on the grid mark them
@@ -82,25 +83,25 @@ H5P.FindTheWords = (function ($, UI) {
       }
       // vocabulary adjustments on resize
       if (this.options.behaviour.showVocabulary) {
-        if (currentVocMod !== this.vocMode ) {
-          this.vocabulary.setMode(this.vocMode);
-          if (this.vocMode === 'block') {
+        if (currentVocMod !== this.isVocModeBlock ) {
+          this.vocabulary.setMode(this.isVocModeBlock);
+          if (this.isVocModeBlock) {
             this.$puzzleContainer.removeClass('puzzle-inline').addClass('puzzle-block');
           }
           else {
-            this.$puzzleContainer.removeClass('puzzle-block').addClass('puzzle-inline');
             //initial update has to be done manually
-            this.$playArea.css({'width':parseInt(this.$gameContainer.width())+VOCABULARY_INLINE_WIDTH});
+            this.$playArea.css({'width':parseInt(this.$gameContainer.width()) + VOCABULARY_INLINE_WIDTH});
+            this.$puzzleContainer.removeClass('puzzle-block').addClass('puzzle-inline');
           }
         }
       }
 
       // make the playarea just to fit its content
-      if (this.vocMode === 'inline') {
-        this.$playArea.css({'width':parseInt(this.$gameContainer.width())+2});
+      if (! this.isVocModeBlock) {
+        this.$playArea.css({'width':parseInt(this.$gameContainer.width()) + 2});
       }
       else {
-        this.$playArea.css({'width':parseInt(this.$puzzleContainer.width())+2});
+        this.$playArea.css({'width':parseInt(this.$puzzleContainer.width()) + 2});
       }
     });
   }
@@ -134,10 +135,10 @@ H5P.FindTheWords = (function ($, UI) {
 
     const that = this;
 
-    this.$playArea = $('<div />',{
+    this.$playArea = $('<div />', {
       class: 'h5p-play-area'
     });
-    this.$taskDescription = $('<div />',{
+    this.$taskDescription = $('<div />', {
       class: 'h5p-task-description',
       html: this.options.taskDescription,
       tabIndex: 0,
@@ -146,29 +147,29 @@ H5P.FindTheWords = (function ($, UI) {
 
 
     // timer part
-    this.$timer = $('<div/>',{
+    this.$timer = $('<div/>', {
       class: 'time-status',
       tabindex: 0,
-      html: '<span role="term" ><i class="fa fa-clock-o" ></i>&nbsp;&nbsp;'
-       + this.options.l10n.timeSpent + '</span >:&nbsp;&nbsp;'+
+      html: '<span role="term" ><em class="fa fa-clock-o" ></em>'
+       + this.options.l10n.timeSpent + '</span >:' +
         '<span role="definition"  class="h5p-time-spent" >0:00</span>'
     });
     this.timer = new FindTheWords.Timer(this.$timer.find('.h5p-time-spent'));
 
     // counter part
     const counterText = that.options.l10n.found
-      .replace('@found', '<span class="h5p-counter">0</span>&nbsp;')
-      .replace('@totalWords', "<span><b>"+this.vocabulary.words.length+"</b></span>");
+      .replace('@found', '<span class="h5p-counter">0</span>')
+      .replace('@totalWords', "<span><strong>" + this.vocabulary.words.length + "</strong></span>");
 
-    this.$counter= $('<div/>', {
+    this.$counter = $('<div/>', {
       class: 'counter-status',
       tabindex: 0,
-      html: '<div role="term" ><span role="definition" >'+counterText+'</span></div>'
+      html: '<div role="term" ><span role="definition" >' + counterText + '</span></div>'
     });
     this.counter = new FindTheWords.Counter(this.$counter.find('.h5p-counter'));
 
     // feedback plus progressBar
-    this.$feedback = $('<div/>',{
+    this.$feedback = $('<div/>', {
       class: 'feedback-element',
       tabindex: '0'
     });
@@ -188,7 +189,7 @@ H5P.FindTheWords = (function ($, UI) {
     this.$puzzleContainer = $('<div class="puzzle-container puzzle-inline" tabIndex="0" role="grid" />');
     this.$vocabularyContainer = $('<div class="vocabulary-container" tabIndex="0" />');
     this.$footerContainer = $('<div class="footer-container" />');
-    this.$statusContainer = $('<div />',{
+    this.$statusContainer = $('<div />', {
       class: 'game-status',
       'aria-label': 'game-status',
       role: 'group',
@@ -214,7 +215,7 @@ H5P.FindTheWords = (function ($, UI) {
     return UI.createButton({
       title: name,
       click: cfunction,
-      html: '<span><i class="fa fa-'+icon+'" aria-hidden="true"></i></span>&nbsp;' +
+      html: '<span><i class="fa fa-' + icon + '" aria-hidden="true"></i></span>' +
               param
     });
   };
@@ -227,8 +228,8 @@ H5P.FindTheWords = (function ($, UI) {
 
     const containerWidth = this.$container.width();
     const gridCol = this.grid.wordGrid[0].length;
-    let gridMaxWidth = gridCol * ELEMENT_MAX_SIZE + 2* MARGIN;
-    let gridElementStdSize = (containerWidth - 2*MARGIN)/gridCol;
+    const gridMaxWidth = gridCol * ELEMENT_MAX_SIZE + 2 * MARGIN;
+    const gridElementStdSize = (containerWidth - 2 * MARGIN) / gridCol;
 
     if (gridMaxWidth < containerWidth) {
       this.elementSize = ELEMENT_MAX_SIZE;
@@ -247,7 +248,7 @@ H5P.FindTheWords = (function ($, UI) {
    */
   FindTheWords.prototype.setVocabularyMode = function () {
     const gridCol = this.grid.wordGrid[0].length;
-    this.vocMode = (this.$container.width()-(gridCol * this.elementSize + 2* MARGIN) > VOCABULARY_INLINE_WIDTH)?'inline':'block';
+    this.isVocModeBlock = (this.$container.width() - (gridCol * this.elementSize + 2 * MARGIN) > VOCABULARY_INLINE_WIDTH) ? false : true;
   };
 
   /**
@@ -316,6 +317,7 @@ H5P.FindTheWords = (function ($, UI) {
     this.grid = new FindTheWords.WordGrid(this.gridParams);
     this.grid.appendTo(this.$puzzleContainer, this.elementSize);
     this.grid.drawGrid(MARGIN);
+    this.grid.enableGrid();
     this.registerGridEvents();
     this.$submitButton.appendTo(this.$buttonContainer);
     this.$puzzleContainer.focus();
@@ -372,7 +374,6 @@ H5P.FindTheWords = (function ($, UI) {
    */
   FindTheWords.prototype.addQuestionToXAPI = function (xAPIEvent) {
 
-    const that = this;
     const definition = xAPIEvent.getVerifiedStatementValue(
       ['object', 'definition']
     );
@@ -381,19 +382,21 @@ H5P.FindTheWords = (function ($, UI) {
     };
     definition.type =
       'http://adlnet.gov/expapi/activities/cmi.interaction';
-    definition.interactionType = 'other';
+    definition.interactionType = 'choice';
     definition.correctResponsesPattern = [];
-    this.vocabulary.words.forEach(function (word, index) {
-      if (index === 0) {
-        definition.correctResponsesPattern[0] = word+'[.]found[,]';
-      }
-      else if (index === that.vocabulary.words.length - 1) {
-        definition.correctResponsesPattern[0] += word+'[.]found';
-      }
-      else {
-        definition.correctResponsesPattern[0] += word+'[.]found[,]';
-      }
-    });
+    definition.correctResponsesPattern[0] = this.vocabulary.words.join([',']);
+
+    // this.vocabulary.words.forEach(function (word, index) {
+    //   if (index === 0) {
+    //     definition.correctResponsesPattern[0] = word + '[.]found[,]';
+    //   }
+    //   else if (index === that.vocabulary.words.length - 1) {
+    //     definition.correctResponsesPattern[0] += word + '[.]found';
+    //   }
+    //   else {
+    //     definition.correctResponsesPattern[0] += word + '[.]found[,]';
+    //   }
+    // });
   };
 
   /**
@@ -405,25 +408,24 @@ H5P.FindTheWords = (function ($, UI) {
     const maxScore = this.getMaxScore();
     const score = this.getScore();
     const success = (score === maxScore);
-    const response = [''];
+    const response = this.vocabulary.getFound().join('[,]');
 
-    const getFound = this.vocabulary.getFound();
+    // let response = '';
+    // const getFound = this.vocabulary.getFound();
+    // this.vocabulary.words.forEach(function (word) {
+    //
+    //   if (response !== '') {
+    //     response += '[,]';
+    //   }
+    //
+    //   if ($.inArray(word, getFound) !== -1) {
+    //     response += word + '[.]found';
+    //   }
+    //   else {
+    //     response += word + '[.]notFound';
+    //   }
 
-
-    this.vocabulary.words.forEach(function (word) {
-
-      if (response[0] !== '') {
-        response[0] += '[,]';
-      }
-
-      if ($.inArray(word, getFound) !== -1) {
-        response[0] += word+'[.]found';
-      }
-      else {
-        response[0] += word+'[.]notFound';
-      }
-
-    });
+    // });
 
     xAPIEvent.setScoredResult(score, maxScore, this, true, success);
     xAPIEvent.data.statement.result.response = response;
@@ -438,8 +440,11 @@ H5P.FindTheWords = (function ($, UI) {
     const that = this;
 
     this.grid.on('drawStart', function () {
-      that.timer.play();
-      that.triggerXAPI('interacted');
+      if (!that.isGameStarted) {
+        that.timer.play();
+        that.triggerXAPI('interacted');
+        that.isGameStarted = true;
+      }
     });
     this.grid.on('drawEnd', function (event) {
       that.isAttempted = true;
@@ -467,11 +472,11 @@ H5P.FindTheWords = (function ($, UI) {
 
     if (this.grid) {
       this.calculateElementSize();
-      this.grid.appendTo(this.$puzzleContainer,this.elementSize );
+      this.grid.appendTo(this.$puzzleContainer, this.elementSize );
       this.$puzzleContainer.appendTo(this.$gameContainer);
       if (this.options.behaviour.showVocabulary) {
         this.setVocabularyMode();
-        this.vocabulary.appendTo(this.$vocabularyContainer,this.vocMode);
+        this.vocabulary.appendTo(this.$vocabularyContainer, this.isVocModeBlock);
         this.$vocabularyContainer.appendTo(this.$gameContainer);
       }
     }

@@ -25,6 +25,9 @@
     }],
     "no-extra-boolean-cast": "off",
     "no-console": ["error", {"allow": ["warn", "error"]}],
-    "no-restricted-globals": [2, "event"]
+    "no-restricted-globals": [2, "event"],
+    "comma-spacing": ["error", {"before": false, "after": true}],
+    "space-infix-ops": ["error", {"int32Hint": false}],
+    "eqeqeq": [2, "smart"]
   }
 }

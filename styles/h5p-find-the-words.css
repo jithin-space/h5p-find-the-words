@@ -67,7 +67,7 @@
      margin: 4px;
      list-style: none;
 }
- .h5p-find-the-words .vocabulary-container li i{
+ .h5p-find-the-words .vocabulary-container li em{
      visibility: hidden;
 }
  .h5p-find-the-words .vocabulary-block-container{
@@ -93,14 +93,14 @@
  .h5p-find-the-words .vocabulary-container .word-found {
      color: green;
 }
- .h5p-find-the-words .vocabulary-inline-container .word-found i{
+ .h5p-find-the-words .vocabulary-inline-container .word-found em{
      color: green;
      visibility: visible;
 }
  .h5p-find-the-words .vocabulary-container .word-solved {
      color: #0067de;
 }
- .h5p-find-the-words .vocabulary-inline-container .word-solved i{
+ .h5p-find-the-words .vocabulary-inline-container .word-solved em{
      color: #0067de;
      visibility: visible;
 }
@@ -152,4 +152,14 @@
 }
  .h5p-find-the-words .h5p-found , .h5p-find-the-words .h5p-counter, .h5p-find-the-words .h5p-time-spent{
      font-weight: bold;
+     margin-left:4px;
+}
+
+.h5p-find-the-words .time-status span{
+  margin-right:4px;
+
+}
+
+.h5p-find-the-words  em::before{
+  margin-right:8px;
 }

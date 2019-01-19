@@ -5,7 +5,7 @@
    *
    * @class H5P.FindTheWords.Timer
    * @extends H5P.Timer
-   * @param {H5P.jQuery} $element
+   * @param {H5P.jQuery} $element 
    */
   FindTheWords.Timer = function ($element) {
     /** @alias H5P.FindTheWords.Timer# */

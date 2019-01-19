@@ -14,7 +14,7 @@
 		"description": "Comma Separated list of words. Special Characters, White Spaces and Numbers Not allowed",
 		"default": "one,two,three",
 		"regexp": {
-			"pattern": "^([a-zA-Z]+,)+[a-zA-Z]+$"
+			"pattern": "^(?!(?:.*[\"!#$%&./:;<=>?@\\[\\]^_`\\{|}~'()\\-*+\\d]|^[,])).*$"
 		},
 		"importance": "high"
 	},
@@ -87,7 +87,7 @@
 				"type": "text",
 				"label": "Vertical downwards",
 				"description": "pool of letters from which the blanks to be filled",
-				"default": "abcdefghijklmnopqrstuvwxy",
+				"default": "abcdefghijklmnopqrstuvwxyz",
 				"regexp": {
 					"pattern": "^[^\t\n .<>?;:\"'`!@#$%^&*()\\[\\]{}_+=|\\-]*$"
 				}

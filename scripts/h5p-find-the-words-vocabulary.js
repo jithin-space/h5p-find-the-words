@@ -8,7 +8,7 @@
    * @param {boolean} showVocabulary
    *
    */
-  FindTheWords.Vocabulary = function (params,showVocabulary) {
+  FindTheWords.Vocabulary = function (params, showVocabulary) {
 
     /** @alias H5P.FindTheWords.Vocabulary# */
     this.words = params;
@@ -31,21 +31,21 @@
    * @param {String} vocMode    either in inline/block mode
    *
    */
-  FindTheWords.Vocabulary.prototype.appendTo = function ($container,vocMode) {
+  FindTheWords.Vocabulary.prototype.appendTo = function ($container, isModeBlock) {
 
-    let output = '<div class="vocHeading" ><i class="fa fa-book fa-fw" ></i>&nbsp;&nbsp;Find the words</div>\
+    let output = '<div class="vocHeading" ><em class="fa fa-book fa-fw" ></em>Find the words</div>\
     <ul role="list"  tabindex="0">';
     this.words.forEach(function (element) {
-      let identifierName= element.replace(/ /g, '');
-      output+= '<li role="presentation" ><div role="listitem"  aria-label="'+identifierName+' not found" id="'+ identifierName +'"class="word">\
-      <i class="fa fa-check" ></i>&nbsp;' + element + '</div></li>';
+      let identifierName = element.replace(/ /g, '');
+      output += '<li role="presentation" ><div role="listitem"  aria-label="' + identifierName + ' not found" id="' + identifierName + '"class="word">\
+      <em class="fa fa-check" ></em>' + element + '</div></li>';
     });
     output += '</ul>';
 
     $container.html(output);
     $container.addClass('vocabulary-container');
     this.$container = $container;
-    this.setMode(vocMode);
+    this.setMode(isModeBlock);
   };
 
 
@@ -54,8 +54,9 @@
    *
    * @param {String} mode
    */
-  FindTheWords.Vocabulary.prototype.setMode = function (mode) {
-    if (mode === 'inline') {
+  FindTheWords.Vocabulary.prototype.setMode = function (isModeBlock) {
+    // this.$container.toggle('vocabulary-block-container', isModeBlock === true).toggle('vocabulary-inline-container', isModeBlock === false);
+    if (!isModeBlock) {
       this.$container.removeClass('vocabulary-block-container').addClass('vocabulary-inline-container');
     }
     else {
@@ -72,21 +73,20 @@
    */
   FindTheWords.Vocabulary.prototype.checkWord = function (word) {
 
-    const reverse = word.split("").reverse().join("");
-    const originalWord = ($.inArray(word,this.words) != -1)? word: ( $.inArray(reverse,this.words) != -1)? reverse:null;
+    const reverse = word.split('').reverse().join('');
+    const originalWord = (this.words.indexOf(word) !== -1) ? word : ( this.words.indexOf(reverse) !== -1) ? reverse : null;
 
-    if (originalWord) {
-      if ($.inArray(originalWord,this.wordsFound) === -1) {
-        this.wordsFound.push(originalWord);
-        if (this.showVocabulary) {
-          const idName = originalWord.replace(/ /g, '');
-          this.$container.find('#' + idName).addClass('word-found').attr('aria-label', idName+' found');
-        }
-        return true;
-      }
+    if (!originalWord || this.wordsFound.indexOf(originalWord) !== -1) {
       return false;
     }
-    return false;
+
+    this.wordsFound.push(originalWord);
+    if (this.showVocabulary) {
+      const idName = originalWord.replace(/ /g, '');
+      this.$container.find('#' + idName).addClass('word-found').attr('aria-label', idName + ' found');
+    }
+    return true;
+
   };
 
 
@@ -100,7 +100,7 @@
     this.wordsNotFound = this.words;
     if (this.showVocabulary) {
       this.$container.find('.word').each(function () {
-        $(this).removeClass('word-found').removeClass('word-solved').attr('aria-label',$(this).attr('id')+' not found');
+        $(this).removeClass('word-found').removeClass('word-solved').attr('aria-label', $(this).attr('id') + ' not found');
       });
     }
   };
@@ -116,7 +116,7 @@
     if (that.showVocabulary) {
       that.wordsNotFound.forEach(function (word) {
         const idName = word.replace(/ /g, '');
-        that.$container.find('#' + idName).addClass('word-solved').attr('aria-label',idName+' solved');
+        that.$container.find('#' + idName).addClass('word-solved').attr('aria-label', idName + ' solved');
       });
     }
   };
@@ -130,7 +130,7 @@
   FindTheWords.Vocabulary.prototype.getNotFound = function () {
     const that = this;
     this.wordsNotFound = this.words.filter(function (word) {
-      return ($.inArray(word, that.wordsFound) === -1);
+      return (that.wordsFound.indexOf(word) === -1);
     });
     return this.wordsNotFound;
   };
@@ -143,7 +143,7 @@
   FindTheWords.Vocabulary.prototype.getFound = function () {
     const that = this;
     return this.words.filter(function (word) {
-      return ($.inArray(word, that.wordsFound) !== -1);
+      return (that.wordsFound.indexOf(word) !== -1);
     });
   };
 
@@ -155,7 +155,7 @@
   FindTheWords.Vocabulary.prototype.getSolved = function () {
     const that = this;
     return this.words.filter(function (word) {
-      return ($.inArray(word, that.wordsSolved) !== -1);
+      return (that.wordsSolved.indexOf(word) !== -1);
     });
   };
 
