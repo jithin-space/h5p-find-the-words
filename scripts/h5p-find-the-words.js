@@ -22,9 +22,14 @@ H5P.FindTheWords = (function ($, UI) {
     this.isGameStarted = false;
 
     // Only take the unique words
-    const vocabulary = options.wordList.split(',').filter(function (word, pos, self) {
-      return self.indexOf(word) === pos;
-    });
+    const vocabulary = options.wordList
+      .split(',')
+      .map(function (word) {
+        return word.trim();
+      })
+      .filter(function (word, pos, self) {
+        return self.indexOf(word) === pos;
+      });
 
     this.options = $.extend(true, {
       vocabulary: vocabulary,
