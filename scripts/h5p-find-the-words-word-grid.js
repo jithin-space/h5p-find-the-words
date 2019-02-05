@@ -174,7 +174,7 @@
     let overlap = 0;
 
     // traverse the squares to determine if the word fits
-    for ( let index = 0 ; index < word.length; index++) {
+    for (let index = 0 ; index < word.length; index++) {
       const next = fnGetSquare(x, y, index);
       const square = wordGrid[next.y][next.x];
       if (square === word[index]) {
@@ -251,7 +251,7 @@
     }
 
     const selectedLoc = locations[Math.floor(Math.random() * locations.length)];
-    for ( let index = 0; index < word.length; index++) {
+    for (let index = 0; index < word.length; index++) {
       const next = orientations[selectedLoc.orientation](selectedLoc.x, selectedLoc.y, index);
       wordGrid[next.y][next.x] = word[index];
     }
@@ -273,7 +273,7 @@
       }
     }
 
-    for (let i in words) {
+    for (const i in words) {
       if (!placeWordInGrid(wordGrid, options, words[i])) {
         return null;
       }
@@ -288,10 +288,10 @@
    * @return {Object[]} Resulting word grid.
    */
   const fillBlanks = function (wordGrid, fillPool) {
-    for (let i = 0; i < wordGrid.length;i++) {
-      for (let j = 0;j < wordGrid[0].length;j++) {
+    for (let i = 0; i < wordGrid.length; i++) {
+      for (let j = 0;j < wordGrid[0].length; j++) {
         if (!wordGrid[i][j]) {
-          let randomLetter = Math.floor(Math.random() * fillPool.length);
+          const randomLetter = Math.floor(Math.random() * fillPool.length);
           wordGrid[i][j] = fillPool[randomLetter];
         }
       }
@@ -446,8 +446,8 @@
     const touches = event.changedTouches;
     const  first = touches[0];
     const simulatedEvent = document.createEvent('MouseEvent');
-    let type = '';
 
+    let type = '';
     switch (event.type) {
       case 'touchstart':
         type = 'mousedown';
@@ -591,7 +591,7 @@
     const notFound = [];
 
     words.forEach(function (word) {
-      let locations = findBestLocations(that.wordGrid, options, word);
+      const locations = findBestLocations(that.wordGrid, options, word);
       if (locations.length > 0 && locations[0].overlap === word.length) {
         locations[0].word = word;
         found.push(locations[0]);
@@ -738,7 +738,7 @@
             let y1 = wordObject['start'][3];
             let x1 = wordObject['start'][2];
             let x2 = wordObject['end'][2];
-            let y2 = wordObject['end'][3];
+            const y2 = wordObject['end'][3];
 
             do {
               markedWord += that.wordGrid[y1][x1];
@@ -747,7 +747,7 @@
             } while (!((y1 === y2) && (x1 === x2)));
 
             markedWord += that.wordGrid[y2][x2];
-            for (let key in dict) {
+            for (const key in dict) {
               if (dict[key][0] === dir[0] && dict[key][1] === dir[1]) {
                 wordObject['directionKey'] = key;
                 break;
