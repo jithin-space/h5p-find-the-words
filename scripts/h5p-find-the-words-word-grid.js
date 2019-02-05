@@ -1,18 +1,14 @@
 (function (FindTheWords, EventDispatcher, $) {
 
-
   /**
-   * WordGrid - Handles the word grid part of the game
-   *
+   * WordGrid - Handles the word grid part of the game.
    * @class H5P.FindTheWords.WordGrid
    * @extends H5P.EventDispatcher
-   * @param {Object} params Description
-   *
+   * @param {Object} params Description.
    */
   FindTheWords.WordGrid = function (params) {
-
     /** @alias H5P.FindTheWords.WordGrid# */
-    //extending the default parameter set for the grid
+    // extending the default parameter set for the grid
     this.options = params;
 
     EventDispatcher.call(this);
@@ -75,12 +71,12 @@
     }
   };
 
-  /**
-    * Determines if an orientation is possible given the starting square (x,y),
-    * the height (h) and width (w) of the puzzle, and the length of the word (l).
-    * Returns true if the word will fit starting at the square provided using
-    * the specified orientation.
-    */
+  /*
+   * Determines if an orientation is possible given the starting square (x,y),
+   * the height (h) and width (w) of the puzzle, and the length of the word (l).
+   * Returns true if the word will fit starting at the square provided using
+   * the specified orientation.
+   */
   const checkOrientations = {
     horizontal: function (x, y, h, w, l) {
       return w >= x + l;
@@ -108,14 +104,14 @@
     }
   };
 
-  /**
+  /*
    *  Determines the next possible valid square given the square (x,y) was ]
    *  invalid and a word lenght of (l).  This greatly reduces the number of
    *  squares that must be checked. Returning {x: x+1, y: y} will always work
    *  but will not be optimal.
    */
   const skipOrientations = {
-    horizontal: function (x, y, l) {
+    horizontal: function (x, y) {
       return {
         x: 0,
         y: y + 1
@@ -127,7 +123,7 @@
         y: y
       };
     },
-    vertical: function (x, y, l) {
+    vertical: function (x, y) {
       return {
         x: 0,
         y: y + 100
@@ -139,7 +135,7 @@
         y: l - 1
       };
     },
-    diagonal: function (x, y, l) {
+    diagonal: function (x, y) {
       return {
         x: 0,
         y: y + 1
@@ -165,20 +161,16 @@
     }
   };
 
-
   /**
-   * calcOverlap - returns the overlap if the word can be fitted with the grid parameters provided
-
-   * @param {String} word      Word to be fitted
-   * @param {Array} wordGrid   Grid to which word needs to be fitted
-   * @param {type} x           Starting x cordinate
-   * @param {type} y           Starting y cordinate
-   * @param {function} fnGetSquare  Function to get the next grid pos as per the specified direction
-   *
-   * @returns {Number} overlap value if it can be fitted , -1 otherwise
+   * calcOverlap - returns the overlap if the word can be fitted with the grid parameters provided.
+   * @param {string} word Word to be fitted.
+   * @param {Object[]} wordGrid Grid to which word needs to be fitted.
+   * @param {number} x Starting x cordinate.
+   * @param {nuber} y Starting y cordinate.
+   * @param {function} fnGetSquare Function to get the next grid pos as per the specified direction.
+   * @return {number} Overlap value if it can be fitted , -1 otherwise.
    */
   const calcOverlap = function (word, wordGrid, x, y, fnGetSquare) {
-
     let overlap = 0;
 
     // traverse the squares to determine if the word fits
@@ -192,20 +184,17 @@
         return -1;
       }
     }
+
     return overlap;
   };
 
-
   /**
-   * findBestLocations - Find the best possible location for a word in the grid
-   *
-   * @param {Array} wordGrid
+   * findBestLocations - Find the best possible location for a word in the grid.
+   * @param {Object[]} wordGrid
    * @param {Object} options
-   * @param {String} word
-   *
+   * @param {string} word
    */
   const findBestLocations = function (wordGrid, options, word) {
-
     const locations = [];
     const height = options.height;
     const width = options.width;
@@ -250,19 +239,17 @@
   };
 
   /**
-   * placeWordInGrid - find the best location and place the word
-   *
-   * @param {Array} wordGrid
+   * placeWordInGrid - find the best location and place the word.
+   * @param {Object[]} wordGrid
    * @param {Object} options
-   * @param {String} word
-   *
+   * @param {string} word
    */
   const placeWordInGrid = function (wordGrid, options, word) {
-
     const locations = findBestLocations(wordGrid, options, word);
     if (locations.length === 0) {
       return false;
     }
+
     const selectedLoc = locations[Math.floor(Math.random() * locations.length)];
     for ( let index = 0; index < word.length; index++) {
       const next = orientations[selectedLoc.orientation](selectedLoc.x, selectedLoc.y, index);
@@ -272,19 +259,16 @@
   };
 
   /**
-   * fillGrid - Create an empty grid and fill it with words
-   *
-   * @param {Array} words   Description
-   * @param {Object} options Description
-   *
-   * @returns {Array|null} grid array if all words can be fitted else null
+   * fillGrid - Create an empty grid and fill it with words.
+   * @param {Object[]} words Description.
+   * @param {Object} options Description.
+   * @return {Object[]|null} Grid array if all words can be fitted, else null.
    */
   const fillGrid = function (words, options) {
-
     const wordGrid = [];
-    for (let i = 0;i < options.height;i++) {
+    for (let i = 0; i < options.height; i++) {
       wordGrid[i] = [];
-      for (let j = 0;j < options.width;j++) {
+      for (let j = 0; j < options.width; j++) {
         wordGrid[i][j] = '';
       }
     }
@@ -297,17 +281,13 @@
     return wordGrid;
   };
 
-
   /**
-   * fillBlanks - fill the unoccupied spaces with blanks
-   *
-   * @param {Array} wordGrid
-   * @param {String} fillPool
-   *
-   * @returns {Array} resulting word grid
+   * fillBlanks - fill the unoccupied spaces with blanks.
+   * @param {Object[]} wordGrid
+   * @param {string} fillPool
+   * @return {Object[]} Resulting word grid.
    */
   const fillBlanks = function (wordGrid, fillPool) {
-
     for (let i = 0; i < wordGrid.length;i++) {
       for (let j = 0;j < wordGrid[0].length;j++) {
         if (!wordGrid[i][j]) {
@@ -319,17 +299,12 @@
     return wordGrid;
   };
 
-
-
-
   /**
-   * calculateCordinates - function to calculate the cordinates & grid postions at which the event occured
-   *
-   * @param {Number} x           x cordinate of the event
-   * @param {Number} y           y cordinate of the event
-   * @param {Number} elementSize current element size
-   *
-   * @returns {array}  [normalized x,normalized y, row ,col]
+   * calculateCordinates - function to calculate the cordinates & grid postions at which the event occured.
+   * @param {number} x X-cordinate of the event.
+   * @param {number} y Y-cordinate of the event.
+   * @param {number} elementSize Current element size.
+   * @return {Object[]} [normalized x, normalized y, row ,col].
    */
   const calculateCordinates = function (x, y, elementSize) {
     const row1 = Math.floor(x / elementSize);
@@ -347,17 +322,14 @@
    */
 
   /**
-   * getValidDirection - process the line drawn to find if it is a valid marking
-   *
-   * @param {type} x1 starting x cordinate
-   * @param {type} y1 starting y cordinate
-   * @param {type} x2 ending x cordinate
-   * @param {type} y2 ending y cordinate
-   *
-   * @returns {Array|Boolean} direction array if a valid marking false otherwise
+   * getValidDirection - process the line drawn to find if it is a valid marking.
+   * @param {number} x1 Starting x cordinate.
+   * @param {number} y1 Starting y cordinate.
+   * @param {number} x2 Ending x cordinate.
+   * @param {number} y2 Ending y cordinate.
+   * @return {Object[]|boolean} Direction array if a valid marking, false otherwise.
    */
   const getValidDirection = function (x1, y1, x2, y2) {
-
     const dirx = (x2 > x1) ? 1 : ((x2 < x1) ? -1 : 0);
     const diry = (y2 > y1) ? 1 : ((y2 < y1) ? -1 : 0);
     let y = y1;
@@ -374,6 +346,7 @@
         y = y + diry;
       }
     }
+
     if (y2 === y) {
       return [dirx, diry];
     }
@@ -382,17 +355,14 @@
     }
   };
 
-
   // All event handlers are registered here
 
   /**
-   * mouseDownEventHandler
-   *
-   * @param {Obect} e          Event Object
-   * @param {HTMLelement} canvas      Html5 canvas element
-   * @param {Number} elementSize Element size
-   *
-   * @returns {Array}
+   * mouseDownEventHandler.
+   * @param {Object} e Event Object.
+   * @param {HTMLelement} canvas Html5 canvas element.
+   * @param {number} elementSize Element size.
+   * @return {Object[]}
    */
   const mouseDownEventHandler = function (e, canvas, elementSize) {
     const x = e.pageX - $(canvas).offset().left;
@@ -407,16 +377,13 @@
    */
 
   /**
-   * mouseMoveEventHandler -
-   *
-   * @param {Object} e      Event Object
-   * @param {HTMLelement} canvas Html5 Canvas Element
-   * @param {Array} srcPos Position from which the movement started
-   * @param {Number} eSize  Current element size
-   *
+   * mouseMoveEventHandler.
+   * @param {Object} e Event Object.
+   * @param {HTMLelement} canvas Html5 Canvas Element.
+   * @param {Object[]} srcPos Position from which the movement started.
+   * @param {number} eSize  Current element size.
    */
   const mouseMoveEventHandler = function (e, canvas, srcPos, eSize) {
-
     const offsetTop = ($(canvas).offset().top > eSize * 0.75) ? Math.floor(eSize * 0.75) : $(canvas).offset().top;
     const desX = e.pageX - $(canvas).offset().left;
     const desY = e.pageY - Math.abs(offsetTop);
@@ -433,9 +400,7 @@
     context.lineTo(desX - (eSize / 8), desY + (offsetTop / 8));
     context.stroke();
     context.closePath();
-
   };
-
 
   /*
    * event handler for handling mouseup events
@@ -443,14 +408,12 @@
    */
 
   /**
-   * mouseUpEventHandler
-   *
-   * @param {Object} e           Event Object
-   * @param {HTMLelement} canvas      Html5 Canvas Element
-   * @param {Number} elementSize current element size
-   * @param {Array} clickStart  Starting Event location
-   *
-   * @returns {Object} return staring,ending and direction of the current marking
+   * mouseUpEventHandler.
+   * @param {Object} e Event Object.
+   * @param {HTMLelement} canvas Html5 Canvas Element.
+   * @param {number} elementSize Current element size.
+   * @param {Object[]} clickStart Starting Event location.
+   * @return {Object} return staring,ending and direction of the current marking.
    */
   const mouseUpEventHandler = function (e, canvas, elementSize, clickStart) {
     let wordObject = {};
@@ -461,7 +424,7 @@
     const context = canvas.getContext('2d');
 
     if ((Math.abs(clickEnd[0] - x) < 20) && (Math.abs(clickEnd[1] - y) < 15)) {
-      //drag ended within permissible range
+      // Drag ended within permissible range
       wordObject = {
         'start': clickStart,
         'end': clickEnd,
@@ -469,21 +432,17 @@
       };
     }
 
-    //clear if there any markings started
+    // Clear if there any markings started
     context.closePath();
     context.clearRect(0, 0, canvas.width, canvas.height);
     return wordObject;
   };
 
-
   /**
-   * touchHandler - Mapping touchevents to corresponding mouse events
-   *
-   * @param {Object} event Description
-   *
+   * touchHandler - Mapping touchevents to corresponding mouse events.
+   * @param {Object} event Description.
    */
   const touchHandler = function (event) {
-
     const touches = event.changedTouches;
     const  first = touches[0];
     const simulatedEvent = document.createEvent('MouseEvent');
@@ -503,7 +462,7 @@
         return;
     }
 
-    // created and fire a simulated mouse event
+    // Created and fire a simulated mouse event
     simulatedEvent.initMouseEvent(type, true, true, window, 1,
       first.screenX, first.screenY,
       first.clientX, first.clientY, false,
@@ -512,9 +471,7 @@
     event.preventDefault();
   };
 
-
   FindTheWords.WordGrid.prototype.createWordGrid = function () {
-
     let wordGrid = null ;
     let attempts = 0;
 
@@ -523,10 +480,11 @@
       return (a.length < b.length);
     });
 
-    while ( !wordGrid) {
-      while (!wordGrid  && attempts++ < this.options.maxAttempts) {
+    while (!wordGrid) {
+      while (!wordGrid && attempts++ < this.options.maxAttempts) {
         wordGrid = fillGrid(wordList, this.options);
       }
+
       // if grid cannot be formed in the current dimensions
       if (!wordGrid) {
         this.options.height++;
@@ -534,23 +492,21 @@
         attempts = 0;
       }
     }
+
     // fill in empty spaces with random letters
     if (this.options.fillBlanks) {
       wordGrid = fillBlanks(wordGrid, this.options.fillPool);
     }
-    //set the output puzzle
+
+    // set the output puzzle
     this.wordGrid = wordGrid;
   };
 
-
   /**
-   * markWord - mark the word on the output canvas (permanent)
-   *
+   * markWord - mark the word on the output canvas (permanent).
    * @param {Object} wordParams
-   *
    */
   FindTheWords.WordGrid.prototype.markWord = function (wordParams) {
-
     const dirKey = wordParams['directionKey'];
     const clickStart = wordParams['start'];
     const clickEnd = wordParams['end'];
@@ -562,10 +518,11 @@
 
     let startingAngle;
 
-    //set the drawing property values
+    // set the drawing property values
     context.lineWidth = 2;
     context.strokeStyle = 'rgba(107,177,125,0.9)';
     context.fillStyle = 'rgba(107,177,125,0.3)';
+
     if (!this.options.gridActive) {
       context.strokeStyle = 'rgba(51, 102, 255,0.9)';
       context.fillStyle = 'rgba(51, 102, 255,0.1)';
@@ -608,7 +565,7 @@
       }
     }
 
-    //start drawing
+    // start drawing
     context.beginPath();
     context.arc(clickStart[0] - topRadius, clickStart[1] + bottomRadius, lineWidth, startingAngle, startingAngle + (Math.PI));
     context.arc(clickEnd[0] - topRadius, clickEnd[1] + bottomRadius, lineWidth, startingAngle + (Math.PI), startingAngle + (2 * Math.PI));
@@ -618,13 +575,10 @@
   };
 
   /**
-   * mark - mark the words if they are not found
-   *
-   * @param {Array} wordList
-   *
+   * mark - mark the words if they are not found.
+   * @param {Object[]} wordList
    */
   FindTheWords.WordGrid.prototype.mark = function (wordList) {
-
     const words = wordList;
     const that = this;
     const options = {
@@ -646,18 +600,15 @@
         notFound.push(word);
       }
     });
+
     this.markSolution(found);
   };
 
-
   /**
-   * markSolution
-   *
-   * @param {Object} solutions
-   *
+   * markSolution.
+   * @param {Object[]} solutions
    */
   FindTheWords.WordGrid.prototype.markSolution = function (solutions) {
-
     const that = this;
 
     solutions.forEach(function (solution) {
@@ -680,25 +631,23 @@
   };
 
   /**
-   * disableGrid
+   * disableGrid.
    */
   FindTheWords.WordGrid.prototype.disableGrid = function () {
     this.options.gridActive = false;
   };
 
   /**
-   * enableGrid
+   * enableGrid.
    */
   FindTheWords.WordGrid.prototype.enableGrid = function () {
     this.options.gridActive = true;
   };
 
-
   /**
-   * appendTo - Placing the container for drawing the grid
-   *
+   * appendTo - Placing the container for drawing the grid.
    * @param {H5P.jQuery} $container
-   * @param {Number} elementSize
+   * @param {number} elementSize
    */
   FindTheWords.WordGrid.prototype.appendTo = function ($container, elementSize) {
     this.$container = $container;
@@ -709,18 +658,13 @@
     $container.css('width', this.canvasWidth);
   };
 
-
-
   /**
-   * drawGrid - draw the letter on the canvas element provided
-   *
-   * @param {Number} margin Description
-   *
-   * @returns {type} Description
+   * drawGrid - draw the letter on the canvas element provided.
+   * @param {number} margin Description.
    */
   FindTheWords.WordGrid.prototype.drawGrid = function (margin) {
-
     const that = this;
+
     const marginResp = (Math.floor(that.elementSize / 8) < margin) ? (Math.floor(that.elementSize / 8)) : margin;
     const offsetTop = (that.$container.offset().top > that.elementSize * 0.75) ? Math.floor(that.elementSize * 0.75) : that.$container.offset().top;
 
@@ -747,18 +691,21 @@
     this.$container[0].addEventListener('keydown', function () {
       //TODO: need to implement for a11y
     }, false);
+
     this.$drawingCanvas[0].addEventListener('touchstart', function (event) {
       touchHandler(event);
     }, false);
+
     this.$drawingCanvas[0].addEventListener('touchmove', function (event) {
       touchHandler(event);
     }, false);
+
     this.$drawingCanvas[0].addEventListener('touchend', function (event) {
       touchHandler(event);
     }, false);
 
     this.$drawingCanvas.on('mousedown', function (event) {
-      if (that.options.gridActive ) {
+      if (that.options.gridActive) {
         if (!clickMode) {
           that.enableDrawing = true;
           clickStart = mouseDownEventHandler(event, this, that.elementSize);
@@ -768,7 +715,6 @@
     });
 
     this.$drawingCanvas.on('mouseup', function (event) {
-
       if (that.enableDrawing) {
         if (isDragged || clickMode) {
           if (clickMode) {
@@ -787,8 +733,7 @@
             'verticalUp' : [0, -1]
           };
 
-          if ( ! $.isEmptyObject(wordObject) && wordObject['dir'] !== false ) {
-
+          if (!$.isEmptyObject(wordObject) && wordObject['dir'] !== false) {
             const dir = wordObject['dir'];
             let y1 = wordObject['start'][3];
             let x1 = wordObject['start'][2];
@@ -826,7 +771,6 @@
           context.arc(clickStart[0] - (that.elementSize / 8), clickStart[1] + Math.floor(offsetTop / 8), that.elementSize / 4, 0, 2 * Math.PI);
           context.fill();
           context.closePath();
-
         }
       }
     });
@@ -838,6 +782,7 @@
       }
     });
   };
+
   return FindTheWords.WordGrid;
 
 }) (H5P.FindTheWords, H5P.EventDispatcher, H5P.jQuery);

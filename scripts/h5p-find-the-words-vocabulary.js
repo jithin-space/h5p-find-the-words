@@ -1,38 +1,29 @@
 (function (FindTheWords, EventDispatcher, $) {
 
   /**
-   * Vocabulary - Handles the vocabulary part
-   *
+   * Vocabulary - Handles the vocabulary part.
    * @class H5P.FindTheWords.Vocabulary
    * @param {Object} params
    * @param {boolean} showVocabulary
-   *
    */
   FindTheWords.Vocabulary = function (params, showVocabulary) {
-
     /** @alias H5P.FindTheWords.Vocabulary# */
     this.words = params;
     this.showVocabulary = showVocabulary;
     this.wordsFound = [];
     this.wordsNotFound = [];
     this.wordsSolved = [];
-
   };
 
   FindTheWords.Vocabulary.prototype = Object.create(EventDispatcher.prototype);
   FindTheWords.Vocabulary.prototype.constructor = FindTheWords.Vocabulary;
 
-
-
   /**
-   * appendTo - appending vocabulary to the play area
-   *
+   * appendTo - appending vocabulary to the play area.
    * @param {H5P.jQuery} $container
-   * @param {String} vocMode    either in inline/block mode
-   *
+   * @param {string} isModeBlock Either in inline/block mode.
    */
   FindTheWords.Vocabulary.prototype.appendTo = function ($container, isModeBlock) {
-
     let output = '<div class="vocHeading" ><em class="fa fa-book fa-fw" ></em>Find the words</div>\
     <ul role="list"  tabindex="0">';
     this.words.forEach(function (element) {
@@ -48,31 +39,21 @@
     this.setMode(isModeBlock);
   };
 
-
   /**
-   * setMode - set the vocabularies
-   *
-   * @param {String} mode
+   * setMode - set the vocabularies.
+   * @param {string} mode
    */
   FindTheWords.Vocabulary.prototype.setMode = function (isModeBlock) {
-    // this.$container.toggle('vocabulary-block-container', isModeBlock === true).toggle('vocabulary-inline-container', isModeBlock === false);
-    if (!isModeBlock) {
-      this.$container.removeClass('vocabulary-block-container').addClass('vocabulary-inline-container');
-    }
-    else {
-      this.$container.removeClass('vocabulary-inline-container').addClass('vocabulary-block-container');
-    }
+    this.$container
+      .toggleClass('vocabulary-block-container', isModeBlock)
+      .toggleClass('vocabulary-inline-container', !isModeBlock);
   };
-
 
   /**
    * checkWord - if the marked word belongs to the vocabulary as not found.
-   *
-   * @param {String} word
-   *
+   * @param {string} word
    */
   FindTheWords.Vocabulary.prototype.checkWord = function (word) {
-
     const reverse = word.split('').reverse().join('');
     const originalWord = (this.words.indexOf(word) !== -1) ? word : ( this.words.indexOf(reverse) !== -1) ? reverse : null;
 
@@ -85,15 +66,12 @@
       const idName = originalWord.replace(/ /g, '');
       this.$container.find('#' + idName).addClass('word-found').attr('aria-label', idName + ' found');
     }
-    return true;
 
+    return true;
   };
 
-
-
   /**
-   * reset - reset the vocabulary upon game resetting
-   *
+   * reset - reset the vocabulary upon game resetting.
    */
   FindTheWords.Vocabulary.prototype.reset = function () {
     this.wordsFound = [];
@@ -105,10 +83,8 @@
     }
   };
 
-
   /**
-   * solveWords - changes on vocabulary upon showing the solution
-   *
+   * solveWords - changes on vocabulary upon showing the solution.
    */
   FindTheWords.Vocabulary.prototype.solveWords = function () {
     const that = this;
@@ -121,11 +97,9 @@
     }
   };
 
-
   /**
-   * getNotFound - return the list of words that are not found yet
-   *
-   * @returns {Array}
+   * getNotFound - return the list of words that are not found yet.
+   * @return {Object[]}
    */
   FindTheWords.Vocabulary.prototype.getNotFound = function () {
     const that = this;
@@ -136,9 +110,8 @@
   };
 
   /**
-   * getFound - returns the words found so far
-   *
-   * @returns {Array}
+   * getFound - returns the words found so far.
+   * @return {Object[]}
    */
   FindTheWords.Vocabulary.prototype.getFound = function () {
     const that = this;
@@ -148,9 +121,8 @@
   };
 
   /**
-   * getSolved - get the words solved by the game by show solution feature
-   *
-   * @returns {Array}
+   * getSolved - get the words solved by the game by show solution feature.
+   * @return {Object[]}
    */
   FindTheWords.Vocabulary.prototype.getSolved = function () {
     const that = this;
