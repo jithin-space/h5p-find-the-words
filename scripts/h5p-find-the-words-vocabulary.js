@@ -25,7 +25,7 @@
    */
   FindTheWords.Vocabulary.prototype.appendTo = function ($container, isModeBlock) {
     let output = '<div class="vocHeading" ><em class="fa fa-book fa-fw" ></em>Find the words</div>\
-    <ul role="list"  tabindex="0">';
+    <ul role="list" tabindex="0">';
     this.words.forEach(function (element) {
       let identifierName = element.replace(/ /g, '');
       output += '<li role="presentation" ><div role="listitem"  aria-label="' + identifierName + ' not found" id="' + identifierName + '"class="word">\

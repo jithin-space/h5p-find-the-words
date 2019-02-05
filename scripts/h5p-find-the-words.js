@@ -144,8 +144,8 @@ H5P.FindTheWords = (function ($, UI) {
     this.$timer = $('<div/>', {
       class: 'time-status',
       tabindex: 0,
-      html: '<span role="term" ><em class="fa fa-clock-o" ></em>'
-       + this.options.l10n.timeSpent + '</span >:' +
+      html: '<span role="term" ><em class="fa fa-clock-o" ></em>' +
+        this.options.l10n.timeSpent + '</span >:' +
         '<span role="definition"  class="h5p-time-spent" >0:00</span>'
     });
     this.timer = new FindTheWords.Timer(this.$timer.find('.h5p-time-spent'));
@@ -153,12 +153,12 @@ H5P.FindTheWords = (function ($, UI) {
     // counter part
     const counterText = that.options.l10n.found
       .replace('@found', '<span class="h5p-counter">0</span>')
-      .replace('@totalWords', "<span><strong>" + this.vocabulary.words.length + "</strong></span>");
+      .replace('@totalWords', '<span><strong>' + this.vocabulary.words.length + '</strong></span>');
 
     this.$counter = $('<div/>', {
       class: 'counter-status',
       tabindex: 0,
-      html: '<div role="term" ><span role="definition" >' + counterText + '</span></div>'
+      html: '<div role="term"><span role="definition">' + counterText + '</span></div>'
     });
     this.counter = new FindTheWords.Counter(this.$counter.find('.h5p-counter'));
 
