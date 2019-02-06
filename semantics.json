@@ -145,7 +145,7 @@
 				"default": "Retry"
 			},
 			{
-				"label": "Text for \"ShowSolution\" button",
+				"label": "Text for \"Show Solution\" button",
 				"importance": "low",
 				"name": "showSolution",
 				"type": "text",
