@@ -21,8 +21,6 @@
 
 }
  .h5p-find-the-words .game-container{
-    /*text-align: center;
-    */
     position: relative;
     display: table;
 }
@@ -40,7 +38,6 @@
 
 .h5p-find-the-words .puzzle-inline{
   display: table-cell;
-  /*float:left;*/
 }
 
 .h5p-find-the-words .puzzle-block{
@@ -71,15 +68,11 @@
 }
  .h5p-find-the-words .vocabulary-block-container{
      height:auto !important;
-     /*overflow-x: auto;*/
      width:100% !important;
      display: table-row;
 }
-/*.h5p-find-the-words .vocabulary-block-container ul {
-  display: table-cell;
-}*/
+
  .h5p-find-the-words .vocabulary-block-container li{
-     /*float:left;*/
      display:inline-block;
 
 }
@@ -87,7 +80,6 @@
      width: auto !important;
      overflow-y: auto;
      display: table-cell;
-     /*float:left;*/
 }
  .h5p-find-the-words .vocabulary-container .word-found {
      color: green;
