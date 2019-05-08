@@ -2,7 +2,6 @@
      max-width: 68.25em;
       margin:0 auto;
      width: 100%;
-     border: 1px solid #eeeeee;
      font-family: Helvetica, Arial, sans-serif;
 
 }
@@ -131,9 +130,15 @@
 
 }
 
+.h5p-find-the-words .feedback-show .feedback-element {
+    margin: 0.5em;
+
+}
+
+
 .h5p-find-the-words .button-container {
   clear:both;
-  padding: 8px;
+  padding: 8px 0px 0px 8px;
 }
  .h5p-find-the-words .time-status {
      display:inline-block;
