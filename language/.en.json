@@ -81,7 +81,7 @@
           "default": "Retry"
         },
         {
-          "label": "Text for \"ShowSolution\" button",
+          "label": "Text for \"Show Solution\" button",
           "default": "Show Solution"
         },
         {
