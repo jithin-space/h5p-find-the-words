@@ -7,7 +7,6 @@
 
 .h5p-find-the-words .h5p-play-area {
   margin: 0 auto;
-  border: 1px solid #eeeeee;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
@@ -121,13 +120,11 @@
 
 .h5p-find-the-words .feedback-container {
   clear: both;
-  padding: 8px;
   display: none;
+  padding-top: 1em;
 }
 
 .h5p-find-the-words .feedback-show {
-  clear: both;
-  padding: 8px;
   display: block;
 }
 
@@ -137,7 +134,12 @@
 
 .h5p-find-the-words .button-container {
   clear: both;
-  padding: 8px 0px 0px 8px;
+  padding-top: 1em;
+}
+
+.h5p-find-the-words button .fa {
+  /* Add some marging between FA icon and button text */
+  margin-right: 0.5em;
 }
 
 .h5p-find-the-words .time-status {
