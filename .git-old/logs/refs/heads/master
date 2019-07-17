@@ -1,9 +1,0 @@
-0000000000000000000000000000000000000000 11c3804f7adb98b5458ef2598f39c548869189bf jithin <jithin@jithin.space> 1508583315 +0530	commit (initial): first-commit
-11c3804f7adb98b5458ef2598f39c548869189bf 1ae4816d6f8a41e43d7309ede7c3999acc11ec0a jithin <jithin@jithin.space> 1508592178 +0530	merge development: Fast-forward
-1ae4816d6f8a41e43d7309ede7c3999acc11ec0a f579973efaab7d60624750d35d943326eff939dc jithin <jithin@jithin.space> 1515249651 +0530	commit: on development branch
-f579973efaab7d60624750d35d943326eff939dc 47955ec3c9750f98a2a29cc1f8b377a16725cc8b jithin <jithin@jithin.space> 1516189778 +0530	commit: as of 16/01/2018
-47955ec3c9750f98a2a29cc1f8b377a16725cc8b 99fef98e599ab9ea2a8c83cc6f3581e7ccac6ffe jithin <jithin@jithin.space> 1518008316 +0530	merge rework: Fast-forward
-99fef98e599ab9ea2a8c83cc6f3581e7ccac6ffe 352002d9ca581e21083cf4cd0fe77859eb2b6e76 jithin <jithin@jithin.space> 1521893235 +0530	commit: border-issue-fixed
-352002d9ca581e21083cf4cd0fe77859eb2b6e76 004f792e710648599778e920528acf9c794e0063 jithin <jithin@jithin.space> 1525262327 +0530	commit: minor conflict
-004f792e710648599778e920528acf9c794e0063 71508c6cf439ca13758b29582902ec1107cc825c jithin <jithin@jithin.space> 1538143445 +0530	commit: js hint ready
-71508c6cf439ca13758b29582902ec1107cc825c ea0447be5fb29e736f3665452cef8372d894c14f jithin <jithin@jithin.space> 1540453625 +0530	commit: v2_development
