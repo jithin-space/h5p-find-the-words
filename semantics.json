@@ -173,6 +173,14 @@
         "type": "text",
         "default": "You got @score of @total points",
         "description": "Feedback text, variables available: @score and @total. Example: 'You got @score of @total possible points'"
+      },
+      {
+        "label": "Word list header",
+        "importance": "low",
+        "name": "wordListHeader",
+        "type": "text",
+        "default": "Find the words",
+        "maxLength": 20
       }
     ]
   }

@@ -6,9 +6,10 @@
    * @param {Object} params
    * @param {boolean} showVocabulary
    */
-  FindTheWords.Vocabulary = function (params, showVocabulary) {
+  FindTheWords.Vocabulary = function (params, showVocabulary, header) {
     /** @alias H5P.FindTheWords.Vocabulary# */
     this.words = params;
+    this.header = header;
     this.showVocabulary = showVocabulary;
     this.wordsFound = [];
     this.wordsNotFound = [];
@@ -24,8 +25,8 @@
    * @param {string} isModeBlock Either in inline/block mode.
    */
   FindTheWords.Vocabulary.prototype.appendTo = function ($container, isModeBlock) {
-    let output = '<div class="vocHeading" ><em class="fa fa-book fa-fw" ></em>Find the words</div>\
-    <ul role="list" tabindex="0">';
+    let output = '<div class="vocHeading"><em class="fa fa-book fa-fw" ></em>' +
+      this.header + '</div><ul role="list" tabindex="0">';
     this.words.forEach(function (element) {
       const identifierName = element.replace(/ /g, '');
       output += '<li role="presentation" ><div role="listitem"  aria-label="' + identifierName + ' not found" id="' + identifierName + '"class="word">\

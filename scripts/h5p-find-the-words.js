@@ -36,7 +36,10 @@ H5P.FindTheWords = (function ($, UI) {
       height: 5,
       width: 5,
       fillBlanks: true,
-      maxAttempts: 5
+      maxAttempts: 5,
+      l10n: {
+        wordListHeader: 'Find the words'
+      }
     }, options);
 
     H5P.EventDispatcher.call(this);
@@ -54,7 +57,11 @@ H5P.FindTheWords = (function ($, UI) {
     };
 
     this.grid = new FindTheWords.WordGrid(this.gridParams);
-    this.vocabulary = new FindTheWords.Vocabulary(this.options.vocabulary, this.options.behaviour.showVocabulary);
+    this.vocabulary = new FindTheWords.Vocabulary(
+      this.options.vocabulary,
+      this.options.behaviour.showVocabulary,
+      this.options.l10n.wordListHeader
+    );
     this.registerDOMElements();
 
     // responsive functionality
