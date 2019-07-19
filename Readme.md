@@ -7,7 +7,7 @@ A word find game that produces the word grid automatically from a set of words p
 
 ## License
 
-GPL v3
+[GPL v3](LICENSE.md)
 
 ## Credits
 
