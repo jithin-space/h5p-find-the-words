@@ -25,10 +25,10 @@ H5P.FindTheWords = (function ($, UI) {
     const vocabulary = options.wordList
       .split(',')
       .map(function (word) {
-        return word.trim();
+        return word.trim().replace(/ +/g, '');
       })
       .filter(function (word, pos, self) {
-        return self.indexOf(word) === pos;
+        return self.indexOf(word) === pos && word.length > 0;
       });
 
     this.options = $.extend(true, {
