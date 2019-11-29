@@ -7,6 +7,8 @@ A word find game that produces the word grid automatically from a set of words p
 
 ## Screenshots
 
+<img src="https://gitlab.com/icfoss/H5P-FindTheWords/raw/master/screenshots/Screenshot_2019-11-29%20Find%20the%20words.png"/>
+
 
 ## License
 
