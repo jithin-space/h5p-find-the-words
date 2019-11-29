@@ -5,6 +5,9 @@ A word find game that produces the word grid automatically from a set of words p
 
 [See it in action on H5P.org](https://h5p.org/find-the-words)
 
+## Screenshots
+
+
 ## License
 
 [GPL v3](LICENSE)
