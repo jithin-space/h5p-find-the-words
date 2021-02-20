@@ -1,0 +1,105 @@
+{
+  "semantics": [
+    {
+      "label": "Görev tanımı",
+      "description": "Oyunun Tanımı",
+      "default": "Tablodaki kelimeleri bulun"
+    },
+    {
+      "label": "Kelime listesi",
+      "description": "Virgülle Ayrılmış kelime listesi. Özel Karakterler, Beyaz Boşluklar ve Sayılara İzin Verilmez",
+      "default": "bir, iki, üç",
+      "regexp": {}
+    },
+    {
+      "label": "Davranışsal ayarlar",
+      "description": "Bu seçenekler, oyunun nasıl davrandığını denetlemenize izin verir.",
+      "fields": [
+        {
+          "label": "Yönelimler",
+          "description": "Bulmacayı oluştururken kullanılması gereken yön kelimelerinin adlarını içeren bir dizi",
+          "fields": [
+            {
+              "label": "Yatay - soldan sağa"
+            },
+            {
+              "label": "Yatay - sağdan sola"
+            },
+            {
+              "label": "Dikey - aşağıya doğru"
+            },
+            {
+              "label": "Dikey - yukarıya doğru"
+            },
+            {
+              "label": "Çapraz aşağıya doğru- soldan sağa"
+            },
+            {
+              "label": "Çapraz aşağıya doğru- sağdan sola"
+            },
+            {
+              "label": "Çapraz yukarıya doğru- soldan sağa"
+            },
+            {
+              "label": "Çapraz yukarıya doğru- sağdan sola"
+            }
+          ]
+        },
+        {
+          "label": "Dikey - aşağıya doğru",
+          "description": "boşlukların doldurulacağı harf havuzu",
+          "default": "abcdefghijklmnopqrstuvwxy",
+          "regexp": {}
+        },
+        {
+          "label": "Çakışmayı tercih et",
+          "description": "Kelime bulmanın, bir kelimeyi bulmacanın içinde nereye yerleştireceğine nasıl karar verdiğini belirler.  Doğru olduğunda, konumlar arasından üst üste binen en yüksek harf sayısını rastgele seçer ve daha yoğun bir bulmaca oluşturur.  Yanlış olduğunda, daha az yoğun bir bulmaca oluşturarak tüm geçerli konumlar arasından rastgele seçim yapar."
+        },
+        {
+          "label": "Kelime dağarcığını göster",
+          "description": "Oyuncuya kelime dağarcığı gösterilip gösterilmeyeceğini belirler"
+        },
+        {
+          "label": "Çözüm göstermeyi etkinleştir",
+          "description": "Oyun için bir çözümü göster düğmesi ekleyin"
+        },
+        {
+          "label": "Yeniden denemeyi etkinleştir",
+          "description": "Oyun için bir yeniden dene düğmesi ekleyin"
+        }
+      ]
+    },
+    {
+      "label": "Dil Ayarları",
+      "fields": [
+        {
+          "label": "\"Denetle\" düğmesi için metin",
+          "default": "Denetle"
+        },
+        {
+          "label": "\"Yeniden Dene\" düğmesi için metin",
+          "default": "Yeniden Dene"
+        },
+        {
+          "label": "\"Çözümü Göster\" düğmesi için metin",
+          "default": "Çözümü Göster"
+        },
+        {
+          "label": "Sayaç metni",
+          "default": "@found of @totalWords found",
+          "description": "Geri bildirim metni, mevcut değişkenler: @found ve @totalWords. Örnek: '@found / @totalWords bulundu'"
+        },
+        {
+          "label": "Geçen süre metni",
+          "default": "Geçen Süre",
+          "description": "oyun oynarken geçen süreyi gösteren etiket"
+        },
+        {
+          "label": "Geribildirim metni",
+          "default": "@score / @total puana sahipsiniz",
+          "description": "Geri bildirim metni, mevcut değişkenler: @score ve @total. Örnek: ' @score / @total olası puana sahipsiniz'"
+        }
+      ]
+    }
+  ]
+}
