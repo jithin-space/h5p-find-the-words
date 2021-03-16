@@ -8,15 +8,43 @@
     "importance": "high"
   },
   {
-    "name": "wordList",
-    "type": "text",
-    "label": "Word list",
-    "description": "Comma Separated list of words. Special Characters, White Spaces and Numbers Not allowed",
-    "default": "one,two,three",
-    "regexp": {
-      "pattern": "^(?!(?:.*[\"!#$%&./:;<=>?@\\[\\]^_`\\{|}~'()\\-*+\\d]|^[,])).*$"
-    },
-    "importance": "high"
+    "name": "words",
+    "type": "list",
+    "widgets": [
+      {
+        "name": "VerticalTabs",
+        "label": "Default"
+      }
+    ],
+    "label": "Words",
+    "importance": "high",
+    "entity": "word",
+    "min": 2,
+    "max": 100,
+    "field": {
+      "type": "group",
+      "name": "word",
+      "label": "Word",
+      "importance": "high",
+      "fields": [
+        {
+          "name": "word_text",
+          "type": "text",
+          "label": "Word Text",
+          "importance": "high",
+          "description": "Enter a word."
+        },
+        {
+          "name": "audio",
+          "type": "audio",
+          "importance": "high",
+          "label": "Audio Track",
+          "description": "An optional sound that plays when the word is found.",
+          "optional": true,
+          "widgetExtensions": ["AudioRecorder"]
+        }
+      ]
+    }
   },
   {
     "name": "behaviour",
