@@ -5,11 +5,27 @@
       "description": "Description of the Game",
       "default": "Find the words in the Word List. Press and hold to select. Words can be placed in the puzzle from all directions (straight, reverse or diagonal)."
     },
-    {
-      "label": "Word list",
-      "description": "Comma Separated list of words. Special Characters, White Spaces and Numbers Not allowed",
-      "default": "one,two,three",
-      "regexp": {}
+	{
+      "widgets": [
+        {
+          "label": "Default"
+        }
+      ],
+      "label": "words",
+      "entity": "word",
+      "field": {
+        "label": "word",
+        "fields": [
+          {
+            "label": "Word Text",
+            "description": "Enter a word"
+          },
+          {
+            "label": "Audio Track",
+            "description": "An optional sound that plays when the word is found."
+          }
+        ]
+      }
     },
     {
       "label": "Behavioural settings",
