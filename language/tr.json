@@ -6,10 +6,26 @@
       "default": "Kelime Listesindeki kelimeleri bulun. Seçmek için basılı tutun. Kelimeler bulmacaya her yönden (düz,ters veya çapraz) yerleştirilmiş olabilir."
     },
     {
-      "label": "Kelime listesi",
-      "description": "Virgülle Ayrılmış kelime listesi. Özel Karakterler, Beyaz Boşluklar ve Sayılara İzin Verilmez.Türkçe kelimeleri büyük harfle yazınız",
-      "default": "BİR, İKİ, ÜÇ",
-      "regexp": {}
+      "widgets": [
+        {
+          "label": "Default"
+        }
+      ],
+      "label": "kelimeler",
+      "entity": "kelime",
+      "field": {
+        "label": "Kelime",
+        "fields": [
+          {
+            "label": "Kelime Metni",
+            "description": "Bir kelime girin"
+          },
+          {
+            "label": "Ses Dosyası",
+            "description": "Kelime bulunduğunda isteğe bağlı çalan bir ses."
+          }
+        ]
+      }
     },
     {
       "label": "Davranışsal ayarlar",
