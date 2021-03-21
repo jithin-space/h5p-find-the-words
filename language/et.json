@@ -1,0 +1,105 @@
+{
+  "semantics": [
+    {
+      "label": "Ülesande kirjeldus",
+      "description": "Mängu kirjeldus",
+      "default": "Leia sõnarägastikust sõnad."
+    },
+    {
+      "label": "Sõnade loetelu",
+      "description": "Komadega eraldatud loetelu sõnadest. Erilised karakterid, tühikud ja numbrid pole lubatud",
+      "default": "üks,kaks,kolm",
+      "regexp": {}
+    },
+    {
+      "label": "Käitumisseadmed",
+      "description": "Need valikud võimaldavad sul juhtida, kuidas mäng käitub.",
+      "fields": [
+        {
+          "label": "Suunad",
+          "description": "Massiiv, mis sisaldab nende sõnasuundade nimesid, mida kasutatakse pusle loomisel",
+          "fields": [
+            {
+              "label": "Horisontaalne- vasakult paremale"
+            },
+            {
+              "label": "Horisontaalne- paremalt vasakule"
+            },
+            {
+              "label": "Vertikaalne alla"
+            },
+            {
+              "label": "Vertikaalne üles"
+            },
+            {
+              "label": "Diagonaalne alla- vasakult paremale"
+            },
+            {
+              "label": "Diagonaalne alla- paremalt vasakule"
+            },
+            {
+              "label": "Diagonaalne üles- vasakult paremale"
+            },
+            {
+              "label": "Diagonal üles- paremalt vasakule"
+            }
+          ]
+        },
+        {
+          "label": "Vertical downwards",
+          "description": "valik tähti, milledega täidetakse tühimikud",
+          "default": "abcdefghijklmnopqrsšzžtuvwõäöüxy",
+          "regexp": {}
+        },
+        {
+          "label": "Eelista kattumist",
+          "description": "Määrab, kuidas wordfind otsutab, kuhu pusles sõnu paigutada. Kui tõene, siis see valib suvaliselt nende positsioonide hulgast, kus kõige enam tähti kattub, luues kompaktsema pusle. Kui väär, siis see valib suvaliselt kõigi sobivade positsioonide hulgast, luues rohkem laialivalguva pusle."
+        },
+        {
+          "label": "Näita sõnastikku",
+          "description": "Määrab, kas näidata mängijale sõnastikke"
+        },
+        {
+          "label": "Luba näita lahendust",
+          "description": "Lisa mängu näita lahendust nupp"
+        },
+        {
+          "label": "Luba proovi uuesti",
+          "description": "Lisa mängu proovi uuesti nupp"
+        }
+      ]
+    },
+    {
+      "label": "Lokalisatsioon",
+      "fields": [
+        {
+          "label": "Tekst \"Kontrolli\" nupule",
+          "default": "Kontrolli"
+        },
+        {
+          "label": "Tekst \"Proovi uuesti\" nupule",
+          "default": "Proovi uuesti"
+        },
+        {
+          "label": "Tekst \"Näita lahendust\" nupule",
+          "default": "Näita lahendust"
+        },
+        {
+          "label": "Loenduri tekst",
+          "default": "@found @totalWords-st leitud",
+          "description": "Tagasiside tekst, muutujad on: @found (leitud) ja @totalWords (sõnu kokku). Näiteks: '@found @totalWords-st leitud'"
+        },
+        {
+          "label": "Aega kulunud tekst",
+          "default": "Aega kulunud",
+          "description": "Silt mis näitab mängu ajal, kui palju aega on kulunud"
+        },
+        {
+          "label": "Tagasiside text",
+          "default": "Sa said @score punkti @total-st",
+          "description": "Tagasiside tekst, saadaval muutujad: @score (tulemus) ja @total (kõik punktid). Näiteks: 'Sa said @score punkti @total-st võimalikust punktist'"
+        } 
+      ]
+    }
+  ]
+}
