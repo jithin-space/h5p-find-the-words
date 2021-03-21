@@ -21,6 +21,20 @@ H5P.FindTheWords = (function ($, UI) {
     this.isAttempted = false;
     this.isGameStarted = false;
 
+  //const audio = options.audio;
+	//const word_text = options.words[0].word_text;
+    
+	const words_obj = options.words; //[object Object],[object Object],[object Object]
+    
+	var wordlist_array = [];
+	for (var i = 0; i < words_obj.length; i++) 
+	{
+	   wordlist_array.push(words_obj[i].word_text);
+    }
+	
+	var wordlist_string = wordlist_array.join(",");
+	options.wordList  = wordlist_string;
+    
     // Only take the unique words
     const vocabulary = options.wordList
       .split(',')
