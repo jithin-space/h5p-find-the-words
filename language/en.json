@@ -3,20 +3,36 @@
     {
       "label": "Task description",
       "description": "Description of the Game",
-      "default": "Find the words from the grid"
+      "default": "Find the words in the Word List. Press and hold to select. Words can be placed in the puzzle from all directions (straight, reverse or diagonal)."
     },
-    {
-      "label": "Word list",
-      "description": "Comma Separated list of words. Special Characters, White Spaces and Numbers Not allowed",
-      "default": "one,two,three",
-      "regexp": {}
+	{
+      "widgets": [
+        {
+          "label": "Default"
+        }
+      ],
+      "label": "words",
+      "entity": "word",
+      "field": {
+        "label": "word",
+        "fields": [
+          {
+            "label": "Word Text",
+            "description": "Enter a word"
+          },
+          {
+            "label": "Audio Track",
+            "description": "An optional sound that plays when the word is found."
+          }
+        ]
+      }
     },
     {
       "label": "Behavioural settings",
       "description": "These options will let you control how the game behaves.",
       "fields": [
         {
-          "label": "Orientations",
+          "label": "Set Word Orientations",
           "description": "An array containing the names of the word directions that should be used when creating the puzzle",
           "fields": [
             {
@@ -46,7 +62,7 @@
           ]
         },
         {
-          "label": "Vertical downwards",
+          "label": "Set pool of letters",
           "description": "pool of letters from which the blanks to be filled",
           "default": "abcdefghijklmnopqrstuvwxy",
           "regexp": {}
@@ -98,6 +114,10 @@
           "label": "Feedback text",
           "default": "You got @score of @total points",
           "description": "Feedback text, variables available: @score and @total. Example: 'You got @score of @total possible points'"
+        },
+        {
+          "label": "Word list header",
+          "default": "Word List"
         }
       ]
     }

@@ -1,0 +1,125 @@
+{
+  "semantics": [
+    {
+      "label": "Görev tanımı",
+      "description": "Oyunun Tanımı",
+      "default": "Kelime Listesindeki kelimeleri bulun. Seçmek için basılı tutun. Kelimeler bulmacaya her yönden (düz,ters veya çapraz) yerleştirilmiş olabilir."
+    },
+    {
+      "widgets": [
+        {
+          "label": "Default"
+        }
+      ],
+      "label": "kelimeler",
+      "entity": "kelime",
+      "field": {
+        "label": "Kelime",
+        "fields": [
+          {
+            "label": "Kelime Metni",
+            "description": "Bir kelime girin"
+          },
+          {
+            "label": "Ses Dosyası",
+            "description": "Kelime bulunduğunda isteğe bağlı çalan bir ses."
+          }
+        ]
+      }
+    },
+    {
+      "label": "Davranışsal ayarlar",
+      "description": "Bu seçenekler, oyunun nasıl davrandığını kontrol etmenize izin verir.",
+      "fields": [
+        {
+          "label": "Kelime Yönü Belirle",
+          "description": "Bulmacayı oluştururken kullanılması gereken yön kelimelerinin adlarını içeren bir dizi",
+          "fields": [
+            {
+              "label": "Yatay - soldan sağa"
+            },
+            {
+              "label": "Yatay - sağdan sola"
+            },
+            {
+              "label": "Aşağı doğru dikey"
+            },
+            {
+              "label": "Dikey yukarı"
+            },
+            {
+              "label": "Aşağı doğru çapraz - soldan sağa"
+            },
+            {
+              "label": "Aşağı doğru çapraz - sağdan sola"
+            },
+            {
+              "label": "Çapraz yukarı - soldan sağa"
+            },
+            {
+              "label": "Çapraz yukarı - sağdan sola"
+            }
+          ]
+        },
+        {
+          "label": "Harf Havuzu Belirle",
+          "description": "Boşlukların doldurulacağı harf havuzu",
+          "default": "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ",
+          "regexp": {}
+        },
+        {
+          "label": "Örtüşmeyi tercih et",
+          "description": "Kelime bulmanın bir kelimeyi bulmacanın içinde nereye yerleştireceğine nasıl karar verdiğini belirler.   Doğru olduğunda, konumlar arasından üst üste binen en yüksek harf sayısını rastgele seçer ve daha yoğun bir bulmaca oluşturur.   Yanlış olduğunda, tüm geçerli konumlar arasından rastgele seçer ve daha az yoğun bir bulmaca oluşturur."
+        },
+        {
+          "label": "Kelime dağarcığını göster",
+          "description": "Oyuncuya kelime dağarcığı gösterilip gösterilmeyeceğini belirler"
+        },
+        {
+          "label": "Çözümünü gösteri etkinleştir",
+          "description": "Oyun için bir çözüm göster düğmesi ekleyin"
+        },
+        {
+          "label": "Yeniden denemeyi etkinleştir",
+          "description": "Oyun için bir yeniden dene düğmesi ekleyin"
+        }
+      ]
+    },
+    {
+      "label": "Yerelleştirme",
+      "fields": [
+        {
+          "label": " \"Denetle\" Düğmesi Metni",
+          "default": "Denetle"
+        },
+        {
+          "label": " \"Tekrar Dene\" Düğmesi Metni",
+          "default": "Tekrar Dene"
+        },
+        {
+          "label": " \"Çözümü Göster\" Düğmesi Metni",
+          "default": "Çözümü Göster"
+        },
+        {
+          "label": "Sayaç metni",
+          "default": "@found / @totalWords bulundu",
+          "description": "Geri bildirim metni, mevcut değişkenler: @found ve @totalWords. Örnek: '@found / @totalWords bulundu'"
+        },
+        {
+          "label": "Geçen Süre Metni",
+          "default": "Geçen Süre",
+          "description": "oyun oynarken harcanan zamanı gösteren etiket"
+        },
+        {
+          "label": "Geri bildirim metni",
+          "default": " @score / @total puan aldınız",
+          "description": "Geri bildirim metni, mevcut değişkenler: @score ve @total. Örnek: ' @score / @total olası puan aldınız'"
+        },
+		{
+          "label": "Kelime listesi başlığı",
+          "default": "Kelime Listesi"
+        }
+      ]
+    }
+  ]
+}
