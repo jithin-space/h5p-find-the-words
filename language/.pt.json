@@ -1,0 +1,105 @@
+{
+  "semantics": [
+    {
+      "label": "Descrição da tarefa",
+      "description": "Descrição dao jogo",
+      "default": "Encontrar as palavras da grelha "
+    },
+    {
+      "label": "Lista de palavras",
+      "description": "Lista de palavras separadas por vírgulas. Não permitidos caracteres especiais, espaços em branco e números",
+      "default": "um,dois,três",
+      "regexp": {}
+    },
+    {
+      "label": "Configurações do comportamento",
+      "description": "Estas opções permitirão que controle como o jogo se comporta.",
+      "fields": [
+        {
+          "label": "Orientações",
+          "description": "Uma matriz contendo os nomes das direções das palavras que devem ser usadas ao criar o quebra-cabeça",
+          "fields": [
+            {
+              "label": "Horizontal - esquerda para a direita"
+            },
+            {
+              "label": "Horizontal - direita para esquerda"
+            },
+            {
+              "label": "Vertical para baixo"
+            },
+            {
+              "label": "Vertical para cima"
+            },
+            {
+              "label": "Diagonal para baixo - esquerda para a direita"
+            },
+            {
+              "label": "Diagonal para baixo - direita para esquerda"
+            },
+            {
+              "label": "Diagonal para cima - esquerda para a direita"
+            },
+            {
+              "label": "Diagonal para cima - direita para esquerda"
+            }
+          ]
+        },
+        {
+          "label": "Vertical para baixo",
+          "description": "conjunto de letras a partir do qual os espaços em branco serão preenchidos",
+          "default": "abcdefghijklmnopqrstuvwxy",
+          "regexp": {}
+        },
+        {
+          "label": "Prefirir sobreposição ",
+          "description": "Determina como o localizador de palavras decide onde colocar uma palavra no quebra-cabeça. Quando verdadeiro, ele seleciona aleatoriamente entre as posições o maior número de letras que se sobrepõem, criando um quebra-cabeça mais compacto. Quando falso, ele seleciona aleatoriamente entre todas as posições válidas, criando um quebra-cabeça menos compacto."
+        },
+        {
+          "label": "Mostrar vocabulário",
+          "description": "Determina se deve, ou não, mostrar o vocabulário para o jogador "
+        },
+        {
+          "label": "Ativar mostrar solução",
+          "description": "Adicionar um botão de mostrar solução"
+        },
+        {
+          "label": "Permitir repetir",
+          "description": "Adicionar um botão de repetir o jogo"
+        }
+      ]
+    },
+    {
+      "label": "Localização",
+      "fields": [
+        {
+          "label": "Texto para o botão \"Verificar\"",
+          "default": "Verificar"
+        },
+        {
+          "label": "Texto para o botão \"Repetir\"",
+          "default": "Tentar novamente"
+        },
+        {
+          "label": "Texto para o botão \"Mostrar Solução\"",
+          "default": "Mostrar solução"
+        },
+        {
+          "label": "Palavras",
+          "default": "@found de @totalWords encontradas",
+          "description": "Feedback text, variables available: @found and @totalWords. Example: '@found of @totalWords found'"
+        },
+        {
+          "label": "Texto para Tempo gasto",
+          "default": "Tempo gasto",
+          "description": "etiqueta para mostrar o tempo gasto durante o jogo"
+        },
+        {
+          "label": "Texto de Feedback",
+          "default": "Obteve @score de @total pontos",
+          "description": "Texto de feedback, variáveis disponíveis: @score e @total. Exemplo: 'Obteve @score de @total pontos possíveis'"
+        }
+      ]
+    }
+  ]
+}
