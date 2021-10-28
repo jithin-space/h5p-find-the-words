@@ -38,7 +38,8 @@ H5P.FindTheWords = (function ($, UI) {
       fillBlanks: true,
       maxAttempts: 5,
       l10n: {
-        wordListHeader: 'Find the words'
+        wordListHeader: 'Find the words',
+        submit: 'Submit',
       }
     }, options);
 
@@ -177,7 +178,9 @@ H5P.FindTheWords = (function ($, UI) {
     this.$progressBar = UI.createScoreBar(this.vocabulary.words.length, 'scoreBarLabel');
 
     // buttons section
-    that.$submitButton = that.createButton('submit', 'check', that.options.l10n.check, that.gameSubmitted);
+    const checkText = (that.extras.isScoringEnabled || that.extras.isReportingEnabled)
+      ? that.options.l10n.submit : that.options.l10n.check;
+    that.$submitButton = that.createButton('submit', 'check', checkText, that.gameSubmitted);
     if (this.options.behaviour.enableShowSolution) {
       this.$showSolutionButton = this.createButton('solution', 'eye', this.options.l10n.showSolution, that.showSolutions);
     }
