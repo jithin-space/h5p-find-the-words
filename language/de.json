@@ -1,0 +1,105 @@
+{
+  "semantics": [
+    {
+      "label": "Aufgabenbeschreibung",
+      "description": "Beschreibung des Spiels",
+      "default": "Finde die Wörter im Raster"
+    },
+    {
+      "label": "Wortliste",
+      "description": "Mit Komma getrennte Wortliste. Sonderzeichen, Leerzeichen und Zahlen nicht erlaubt",
+      "default": "eins,zwei,drei",
+      "regexp": {}
+    },
+    {
+      "label": "Verhaltenseinstellungen",
+      "description": "Diese Optionen erlauben es Ihnen, das Verhalten des Spiels zu steuern.",
+      "fields": [
+        {
+          "label": "Ausrichtungen",
+          "description": "Ein Array, das die Namen der Wortrichtungen enthält, die beim Erstellen des Rätsels verwendet werden sollen",
+          "fields": [
+            {
+              "label": "Horizontal- links nach rechts"
+            },
+            {
+              "label": "Horizontal- rechts nach links"
+            },
+            {
+              "label": "Vertikal abwärts"
+            },
+            {
+              "label": "Vertikal aufwärts"
+            },
+            {
+              "label": "Diagonal abwärts- links nach rechts"
+            },
+            {
+              "label": "Diagonal abwärts- rechts nach links"
+            },
+            {
+              "label": "Diagonal aufwärts- links nach rechts"
+            },
+            {
+              "label": "Diagonal aufwärts- rechts nach links"
+            }
+          ]
+        },
+        {
+          "label": "Vertikal abwärts",
+          "description": "Buchstabenpool, aus dem die zu füllenden Lücken ausgewählt werden",
+          "default": "abcdefghijklmnopqrstuvwxy",
+          "regexp": {}
+        },
+        {
+          "label": "Überschneidungen bevorzugen",
+          "description": "Bestimmt, wie das Spiel entscheidet, wo ein Wort im Rätsel platziert wird. Wenn wahr, wird zufällig unter den Positionen mit der höchsten Anzahl von Überschneidungen ausgewählt, was ein kompakteres Rätsel ergibt. Wenn falsch, wird zufällig unter allen gültigen Positionen ausgewählt, was ein weniger kompaktes Rätsel ergibt."
+        },
+        {
+          "label": "Wortschatz anzeigen",
+          "description": "Bestimmt, ob dem Spieler Wortschätze angezeigt werden"
+        },
+        {
+          "label": "Lösung anzeigen aktivieren",
+          "description": "Fügt einen Knopf zum Anzeigen der Lösung zum Spiel hinzu"
+        },
+        {
+          "label": "Neuversuch aktivieren",
+          "description": "Fügt einen Neustart-Knopf zum Spiel hinzu"
+        }
+      ]
+    },
+    {
+      "label": "Lokalisierung",
+      "fields": [
+        {
+          "label": "Text für \"Prüfen\"-Knopf",
+          "default": "Prüfen"
+        },
+        {
+          "label": "Text für \"Neuerstart\"-Knopf",
+          "default": "Neuer Versuch"
+        },
+        {
+          "label": "Text für \"Lösung anzeigen\"-Knopf",
+          "default": "Lösung anzeigen"
+        },
+        {
+          "label": "Zählertext",
+          "default": "@found von @totalWords gefunden",
+          "description": "Feedback-Text, verfügbare Variablen: @found und @totalWords. Beispiel: '@found von @totalWords gefunden'"
+        },
+        {
+          "label": "Text für verbrachte Zeit",
+          "default": "Verbrachte Zeit",
+          "description": "Bezeichnung für die Anzeige der während des Spiels verbrachten Zeit"
+        },
+        {
+          "label": "Feedback-Text",
+          "default": "Sie haben @score von @total Punkten erreicht",
+          "description": "Feedback-Text, verfügbare Variablen: @score und @total. Beispiel: 'Sie haben @score von @total möglichen Punkten erreicht'"
+        }
+      ]
+    }
+  ]
+}
