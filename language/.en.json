@@ -48,7 +48,7 @@
         {
           "label": "Vertical downwards",
           "description": "pool of letters from which the blanks to be filled",
-          "default": "abcdefghijklmnopqrstuvwxy",
+          "default": "abcdefghijklmnopqrstuvwxyz",
           "regexp": {}
         },
         {
