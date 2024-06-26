@@ -1,0 +1,105 @@
+{
+  "semantics": [
+    {
+      "label": "Navodilo udeležencem",
+      "description": "Opis reševanja zadane naloge.",
+      "default": "Poišči besede iz mreže"
+    },
+    {
+      "label": "Seznam besed",
+      "description": "Besede v seznamu so med seboj ločene z vejico. Posebni znaki, presledki in števila niso dovoljeni.",
+      "default": "ena,dva,tri",
+      "regexp": {}
+    },
+    {
+      "label": "Nastavitve interakcije",
+      "description": "Nastavitve omogočajo nadzor nad interakcijo aktivnosti za udeležence.",
+      "fields": [
+        {
+          "label": "Usmerjenost",
+          "description": "Pravila določajo smer upoštevanja odgovorov v mreži.",
+          "fields": [
+            {
+              "label": "Vodoravno od leve proti desni"
+            },
+            {
+              "label": "Vodoravno od desne proti levi"
+            },
+            {
+              "label": "Navpično navzdol"
+            },
+            {
+              "label": "Navpično navzgor"
+            },
+            {
+              "label": "Diagonalno navzdol od leve proti desni"
+            },
+            {
+              "label": "Diagonalno navzdol od desne proti levi"
+            },
+            {
+              "label": "Diagonalno navzgor od leve proti desni"
+            },
+            {
+              "label": "Diagonalno navzgor od desne proti levi"
+            }
+          ]
+        },
+        {
+          "label": "Bazen črk",
+          "description": "Seznam črk za polnjenje praznih polj v mreži.",
+          "default": "abcčdefghijklmnoprsštuvzž",
+          "regexp": {}
+        },
+        {
+          "label": "Prekrivanje ima prednost",
+          "description": "Omogočena nastavitev bo pri postavitvi črk temeljila k čim večjemu prekrivanju besed, zato bo naloga kompaktnejša."
+        },
+        {
+          "label": "Prikaži besednjak",
+          "description": "Udeležencem je prikazan besednjak z iskanimi pojmi."
+        },
+        {
+          "label": "Omogoči gumb \"Prikaži rešitev\"",
+          "description": "Prikaže gumb za ogled rešitve."
+        },
+        {
+          "label": "Omogoči gumb \"Poskusi ponovno\"",
+          "description": "Prikaže gumb za ponovno reševanje."
+        }
+      ]
+    },
+    {
+      "label": "Določitev",
+      "fields": [
+        {
+          "label": "Besedilo za gumb \"Preveri\"",
+          "default": "Preveri"
+        },
+        {
+          "label": "Besedilo za gumb \"Poskusi ponovno\"",
+          "default": "Poskusi ponovno"
+        },
+        {
+          "label": "Besedilo za gumb \"Prikaži rešitev\"",
+          "default": "Prikaži rešitev"
+        },
+        {
+          "label": "Besedilo števca najdenih besed",
+          "default": "Najdeno @found od @totalWords",
+          "description": "@found in @totalWords sta spremenljivki."
+        },
+        {
+          "label": "Besedilo za porabljen čas",
+          "default": "Porabljen čas",
+          "description": "Informacija udeležencu o porabljenem času za označitev vseh besed."
+        },
+        {
+          "label": "Besedilo povratne informacije",
+          "default": "Dosežene točke: @score od @total",
+          "description": "@score in @total sta spremenljivki."
+        }
+      ]
+    }
+  ]
+}
