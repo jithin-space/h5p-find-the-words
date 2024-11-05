@@ -1,0 +1,109 @@
+{
+    "semantics": [
+    {
+        "label": "Užduoties aprašymas",
+        "description": "Žaidimo aprašymas",
+        "default": "Raskite žodžius tinklelyje"
+    },
+    {
+        "label": "Žodžių sąrašas",
+        "description": "Kableliu atskirti žodžiai. Specialūs simboliai, tarpai ar skaičiai draudžiami.",
+        "default": "vienas,du,trys",
+        "regexp": {}
+    },
+    {
+        "label": "Veikimo nustatymai",
+        "description": "Šios parinktys leis jums valdyti, kaip žaidimas veiks.",
+        "fields": [
+            {
+                "label": "Kryptys",
+                "description": "Masyvas, kuriame yra žodžių krypčių, kurios turėtų būti naudojamos kuriant galvosūkį, pavadinimai",
+                "fields": [
+                    {
+                        "label": "Horizontalus - iš kairės į dešinę"
+                    },
+                    {
+                        "label": "Horizontalus - iš dešinės į kairę"
+                    },
+                    {
+                        "label": "Vertikaliai žemyn"
+                    },
+                    {
+                        "label": "Vertikaliai aukštyn"
+                    },
+                    {
+                        "label": "Įstrižainė žemyn - iš kairės į dešinę"
+                    },
+                    {
+                        "label": "Įstrižai žemyn - iš dešinės į kairę"
+                    },
+                    {
+                        "label": "Įstrižainė aukštyn - iš kairės į dešinę"
+                    },
+                    {
+                        "label": "Įstrižainė aukštyn - iš dešinės į kairę"
+                    }
+                ]
+            },
+            {
+                "label": "Vertikaliai žemyn",
+                "description": "Raidžių sąrašas, iš kurio reikia užpildyti tuščias vietas",
+                "default": "abcdefghijklmnopqrstuvwxyząčęėįšųūž",
+                "regexp": {}
+            },
+            {
+                "label": "Pirmenybė teikiama žodžių persidengimui",
+                "description": "Nustato, kaip žodžių paieška nusprendžia, kur įdėti žodį galvosūkyje. Kai tiesa, ji atsitiktinai iš pozicijų parenka didžiausią skaičių raidžių, kurios persidengia ir sukuria kompaktiškesnį galvosūkį. Kai klaidinga, ji atsitiktinai pasirenka iš visų galiojančių pozicijų ir sukuria mažiau kompaktišką galvosūkį."
+            },
+            {
+                "label": "Rodyti žodyną",
+                "description": "Nustato, ar žaidėjui rodyti žodžių žodyną"
+            },
+            {
+                "label": "Įgalinti rodyti sprendimą",
+                "description": "Pridėkite žaidimo sprendimo mygtuką"
+            },
+            {
+                "label": "Įgalinti bandymą iš naujo",
+                "description": "Pridėkite žaidimo kartojimo mygtuką"
+            }
+        ]
+    },
+    {
+        "label": "Lokalizacija",
+        "fields": [
+            {
+                "label": "Mygtuko „Tikrinti“ tekstas",
+                "default": "Tikrinti"
+            },
+            {
+                "label": "Mygtuko „Bandyti dar kartą“ tekstas",
+                "default": "Bandyti dar kartą"
+            },
+            {
+                "label": "Mygtuko „Rodyti sprendimą“ tekstas",
+                "default": "Rodyti sprendimą"
+            },
+            {
+                "label": "Skaitliuko tekstas",
+                "default": "@found rasta iš @totalWords",
+                "description": "Atsiliepimo tekstas, galimi kintamieji: @found ir @totalWords. Pavyzdys: „@found iš @totalWords“"
+            },
+            {
+                "label": "Praleistas laiko tekstas",
+                "default": "Praleistas laikas",
+                "description": "Etiketė, rodanti laiką, praleistą žaidžiant žaidimą"
+            },
+            {
+                "label": "Atsiliepimo tekstas",
+                "default": "Jūs gavote @score balus iš @total",
+                "description": "Atsiliepimo tekstas, galimi kintamieji: @score ir @total. Pavyzdys: „Jūs gavote @score iš @total galimų taškų“"
+            },
+            {
+                "label": "Žodžių sąrašo antraštė",
+                "default": "Žodžiai",
+            }
+        ]
+    }
+]
+}
