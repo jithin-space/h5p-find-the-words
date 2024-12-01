@@ -85,8 +85,8 @@
       {
         "name": "fillPool",
         "type": "text",
-        "label": "Vertical downwards",
-        "description": "pool of letters from which the blanks to be filled",
+        "label": "Letter pool",
+        "description": "Select the pool of letters from which the blanks will be filled",
         "default": "abcdefghijklmnopqrstuvwxyz",
         "regexp": {
           "pattern": "^[^\t\n .<>?;:\"'`!@#$%^&*()\\[\\]{}_+=|\\-]*$"
