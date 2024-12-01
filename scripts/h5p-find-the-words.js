@@ -297,6 +297,7 @@ H5P.FindTheWords = (function ($, UI) {
    * resetTask - resetting the game.
    */
   FindTheWords.prototype.resetTask = function () {
+    this.isGameStarted = false;
     this.numFound = 0;
     this.timer.reset();
     this.counter.reset();
