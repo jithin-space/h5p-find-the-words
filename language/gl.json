@@ -1,0 +1,105 @@
+{
+  "semantics": [
+    {
+      "label": "Descrición da tarefa",
+      "description": "Descrición do Xogo",
+      "default": "Atopa as palabras na grella"
+    },
+    {
+      "label": "Lista de palabras",
+      "description": "Lista de palabras separadas por comas. Non se permiten caracteres especiais, espazos en branco ou números",
+      "default": "un,dous,tres",
+      "regexp": {}
+    },
+    {
+      "label": "Configuración do comportamento",
+      "description": "Estas opcións permitiranche controlar o comportamento do xogo.",
+      "fields": [
+        {
+          "label": "Orientacións",
+          "description": "Unha matriz que contén os nomes das direccións das palabras que se van a usar ao crear o crebacabezas",
+          "fields": [
+            {
+              "label": "Horizontal- esquerda a dereita"
+            },
+            {
+              "label": "Horizontal- dereita a esquerda"
+            },
+            {
+              "label": "Vertical cara abaixo"
+            },
+            {
+              "label": "Vertical cara arriba"
+            },
+            {
+              "label": "Diagonal cara abaixo- esquerda a dereita"
+            },
+            {
+              "label": "Diagonal cara abaixo- dereita a esquerda"
+            },
+            {
+              "label": "Diagonal cara arriba- esquerda a dereita"
+            },
+            {
+              "label": "Diagonal cara arriba- dereita a esquerda"
+            }
+          ]
+        },
+        {
+          "label": "Vertical cara abaixo",
+          "description": "conxunto de letras usadas para completar os ocos",
+          "default": "abcdefghijklmnñopqrstuvwxy",
+          "regexp": {}
+        },
+        {
+          "label": "Preferir superposición",
+          "description": "Determina como a actividade decide onde poñer unha palabra no crebacabezas. Cando se activa, selecciona ao chou o maior número de letras que se superpoñen para crear un crebacabezas máis compacto. Cando non, selecciona ao chou entre todas as posicións válidas para crear un crebacabezas menos compacto."
+        },
+        {
+          "label": "Amosar vocabulario",
+          "description": "Determina se o xogador pode ver os vocabularios"
+        },
+        {
+          "label": "Activar amosar solución",
+          "description": "Engadir un botón amosar solución ao xogo"
+        },
+        {
+          "label": "Activar reintentar",
+          "description": "Engadir un botón reintentar ao xogo"
+        }
+      ]
+    },
+    {
+      "label": "Adaptación local",
+      "fields": [
+        {
+          "label": "Texto para o botón \"Comprobar\"",
+          "default": "Comprobar"
+        },
+        {
+          "label": "Texto para o botón \"Reintentar\"",
+          "default": "Reintentar"
+        },
+        {
+          "label": "Texto para o botón \"Amosar solución\"",
+          "default": "Amosar solución"
+        },
+        {
+          "label": "Texto do contador",
+          "default": "Atopadas @found de @totalWords",
+          "description": "texto de retroalimentación. Variables dispoñibles: @found e @totalWords. Exemplo: 'atopadas @found de @totalWords'"
+        },
+        {
+          "label": "Texto de tempo empregado",
+          "default": "Tempo Empregado",
+          "description": "Etiqueta que amosa o tempo empregado xogando"
+        },
+        {
+          "label": "Texto de retroalimentación",
+          "default": "Conseguiches @score puntos de @total",
+          "description": "Texto de retroalimentación, variables dispoñibles: @score e @total. Exemplo: 'Conseguiches @score puntos de @total posibles'"
+        }
+      ]
+    }
+  ]
+}
