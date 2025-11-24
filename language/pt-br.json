@@ -1,0 +1,105 @@
+{
+  "semantics": [
+    {
+      "label": "Descrição da tarefa",
+      "description": "Descrição do jogo",
+      "default": "Encontre as palavras na grade"
+    },
+    {
+      "label": "Lista de palavras",
+      "description": "Lista de palavras separadas por vírgula. Não são permitidos caracteres especiais, espaços em branco ou números",
+      "default": "um,dois,três",
+      "regexp": {}
+    },
+    {
+      "label": "Configurações de comportamento",
+      "description": "Estas opções permitem controlar o comportamento do jogo.",
+      "fields": [
+        {
+          "label": "Orientações",
+          "description": "Selecione as direções em que as palavras podem ser posicionadas no jogo",
+          "fields": [
+            {
+              "label": "Horizontal - da esquerda para a direita"
+            },
+            {
+              "label": "Horizontal - da direita para a esquerda"
+            },
+            {
+              "label": "Vertical - de cima para baixo"
+            },
+            {
+              "label": "Vertical - de baixo para cima"
+            },
+            {
+              "label": "Diagonal para baixo - da esquerda para a direita"
+            },
+            {
+              "label": "Diagonal para baixo - da direita para a esquerda"
+            },
+            {
+              "label": "Diagonal para cima - da esquerda para a direita"
+            },
+            {
+              "label": "Diagonal para cima - da direita para a esquerda"
+            }
+          ]
+        },
+        {
+          "label": "Banco de letras",
+          "description": "Conjunto de letras usado para preencher os espaços vazios",
+          "default": "abcdefghijklmnopqrstuvwxyz",
+          "regexp": {}
+        },
+        {
+          "label": "Preferir sobreposição",
+          "description": "Determina como o jogo decide onde colocar uma palavra. Quando ativado, seleciona aleatoriamente entre as posições com maior número de letras sobrepostas, criando um jogo mais compacto. Quando desativado, seleciona aleatoriamente entre todas as posições válidas."
+        },
+        {
+          "label": "Mostrar vocabulário",
+          "description": "Determina se a lista de palavras a encontrar será exibida para o jogador"
+        },
+        {
+          "label": "Habilitar botão \"Mostrar solução\"",
+          "description": "Adiciona um botão de mostrar solução ao jogo"
+        },
+        {
+          "label": "Habilitar botão \"Tentar novamente\"",
+          "description": "Adiciona um botão de tentar novamente ao jogo"
+        }
+      ]
+    },
+    {
+      "label": "Tradução da Interface",
+      "fields": [
+        {
+          "label": "Texto para o botão \"Verificar\"",
+          "default": "Verificar"
+        },
+        {
+          "label": "Texto para o botão \"Tentar novamente\"",
+          "default": "Tentar novamente"
+        },
+        {
+          "label": "Texto para o botão \"Mostrar Solução\"",
+          "default": "Mostrar solução"
+        },
+        {
+          "label": "Texto do contador",
+          "default": "@found de @totalWords encontradas",
+          "description": "Texto de feedback. Variáveis disponíveis: @found e @totalWords. Exemplo: '@found de @totalWords encontradas'"
+        },
+        {
+          "label": "Texto de tempo gasto",
+          "default": "Tempo gasto",
+          "description": "Rótulo para mostrar o tempo gasto durante o jogo"
+        },
+        {
+          "label": "Texto de feedback",
+          "default": "Você fez @score de @total pontos",
+          "description": "Texto de feedback. Variáveis disponíveis: @score e @total. Exemplo: 'Você fez @score de @total pontos possíveis'"
+        }
+      ]
+    }
+  ]
+}
