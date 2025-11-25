@@ -3,7 +3,7 @@
     {
       "label": "Descrição da tarefa",
       "description": "Descrição do jogo",
-      "default": "Encontre as palavras na grade"
+      "default": "Encontre as palavras listadas abaixo"
     },
     {
       "label": "Lista de palavras",
@@ -98,6 +98,10 @@
           "label": "Texto de feedback",
           "default": "Você fez @score de @total pontos",
           "description": "Texto de feedback. Variáveis disponíveis: @score e @total. Exemplo: 'Você fez @score de @total pontos possíveis'"
+        },
+        {
+          "label": "Cabeçalho da lista de palavras",
+          "default": "Encontre as palavras"
         }
       ]
     }
