@@ -365,8 +365,9 @@
    * @return {Object[]}
    */
   const mouseDownEventHandler = function (e, canvas, elementSize) {
-    const x = e.pageX - $(canvas).offset().left;
-    const y = e.pageY - $(canvas).offset().top;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     return calculateCordinates(x, y, elementSize);
   };
 
@@ -384,20 +385,20 @@
    * @param {number} eSize  Current element size.
    */
   const mouseMoveEventHandler = function (e, canvas, srcPos, eSize) {
-    const offsetTop = ($(canvas).offset().top > eSize * 0.75) ? Math.floor(eSize * 0.75) : $(canvas).offset().top;
-    const desX = e.pageX - $(canvas).offset().left;
-    const desY = e.pageY - Math.abs(offsetTop);
+    const rect = canvas.getBoundingClientRect();
+    const desX = e.clientX - rect.left;
+    const desY = e.clientY - rect.top;
+  
     const context = canvas.getContext('2d');
-
-    // Draw the current marking
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+  
     context.fillStyle = 'rgba(107,177,125,0.3)';
     context.beginPath();
     context.lineCap = 'round';
-    context.moveTo(srcPos[0] - (eSize / 8), srcPos[1] + (offsetTop / 8));
+    context.moveTo(srcPos[0] - (eSize / 8), srcPos[1] + (eSize / 8));
     context.strokeStyle = 'rgba(107,177,125,0.4)';
     context.lineWidth = Math.floor(eSize / 2);
-    context.lineTo(desX - (eSize / 8), desY + (offsetTop / 8));
+    context.lineTo(desX - (eSize / 8), desY + (eSize / 8));
     context.stroke();
     context.closePath();
   };
@@ -416,23 +417,22 @@
    * @return {Object} return staring,ending and direction of the current marking.
    */
   const mouseUpEventHandler = function (e, canvas, elementSize, clickStart) {
-    let wordObject = {};
-    const offsetTop = ($(canvas).offset().top > elementSize * 0.75) ? Math.floor(elementSize * 0.75) * (-1) : $(canvas).offset().top;
-    const x = e.pageX - $(canvas).offset().left;
-    const y = e.pageY - Math.abs(offsetTop);
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+  
     const clickEnd = calculateCordinates(x, y, elementSize);
     const context = canvas.getContext('2d');
-
+    let wordObject = {};
+  
     if ((Math.abs(clickEnd[0] - x) < 20) && (Math.abs(clickEnd[1] - y) < 15)) {
-      // Drag ended within permissible range
       wordObject = {
         'start': clickStart,
         'end': clickEnd,
         'dir': getValidDirection(clickStart[2], clickStart[3], clickEnd[2], clickEnd[3])
       };
     }
-
-    // Clear if there any markings started
+  
     context.closePath();
     context.clearRect(0, 0, canvas.width, canvas.height);
     return wordObject;
@@ -666,7 +666,8 @@
     const that = this;
 
     const marginResp = (Math.floor(that.elementSize / 8) < margin) ? (Math.floor(that.elementSize / 8)) : margin;
-    const offsetTop = (that.$container.offset().top > that.elementSize * 0.75) ? Math.floor(that.elementSize * 0.75) : that.$container.offset().top;
+    // const offsetTop = (that.$container.offset().top > that.elementSize * 0.75) ? Math.floor(that.elementSize * 0.75) : that.$container.offset().top;
+    const offsetTop = Math.floor(that.elementSize * 0.75); 
 
     this.$gridCanvas = $('<canvas id="grid-canvas" class="canvas-element" height="' + that.canvasHeight + 'px" width="' + that.canvasWidth + 'px" />').appendTo(that.$container);
     this.$outputCanvas = $('<canvas class="canvas-element" height="' + that.canvasHeight + 'px" width="' + that.canvasWidth + 'px"/>').appendTo(that.$container);
